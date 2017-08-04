@@ -17,6 +17,7 @@ export class AssignroomsComponent implements OnInit {
   hsttype: any;
   roomslist = [];
   roomno: any;
+  reg_no;
   searchval   = 'reg_no';
   roombox     = false;
   searchbox   = false;
@@ -45,11 +46,9 @@ export class AssignroomsComponent implements OnInit {
   });
   newForm = new FormGroup({
     roomno    : new FormControl(),
-    totbeds   : new FormControl(),
-    roomtype  : new FormControl(),
     hosteltype: new FormControl(),
-    hostelid  : new FormControl(),
-    blockid   : new FormControl()
+    bedno     : new FormControl(),
+    reg_no    : new FormControl()
 
   });
   editForm = new FormGroup({
@@ -155,6 +154,7 @@ export class AssignroomsComponent implements OnInit {
   submitA(value) {
     console.log(value);
     this.searchval = value.search;
+    this.reg_no    = this.searchval;
 
     this.searchbox   = true;
     this.showdetails = true;
@@ -171,13 +171,13 @@ export class AssignroomsComponent implements OnInit {
 
   }
 
-  getRooms($event) {
+  getRooms(event) {
           this.roomslist = [];
           
-       this.hsttype = $event.target.value;
+       this.hsttype = event.target.value;
                       
                 const value        = {
-      hosteltype: $event.target.value
+      hosteltype: event.target.value
     }
     this._apiService.getAVLRoomsList(value).subscribe(rblist => {
       console.log(rblist);
@@ -186,9 +186,9 @@ export class AssignroomsComponent implements OnInit {
     });
   }
 
-  getbeds($event) {
-    console.log($event.target.value);
-    this.roomno  = $event.target.value;
+  getbeds(event) {
+    console.log(event.target.value);
+    this.roomno  = event.target.value;
     this.bedlist = [];
 
     const val = {
@@ -230,7 +230,7 @@ export class AssignroomsComponent implements OnInit {
       }
 
 
-      console.log(beds);
+      console.log(beds,this.bedlist);
 
 
     });
@@ -255,20 +255,21 @@ export class AssignroomsComponent implements OnInit {
   @ViewChild('popup3') popup3: Popup;
   @ViewChild('popup4') popup4: Popup;
 
-  add() {
+  add(value) {
 
-    this.newForm.reset()
-    this.newForm.patchValue({
-      roomtype  : 'AC',
-      hosteltype: 'Boys'
-    });
+      
+        this.newForm.patchValue({
+        reg_no: this.reg_no
+        });
+        console.log(value,this.newForm);
+      
 
     this.popup1.options = {
-      header           : "Add New Room",
+      header           : "Add New User",
       color            : "#2c3e50",                      // red, blue.... 
       widthProsentage  : 40,                             // The with of the popou measured by browser width 
       animationDuration: 1,                              // in seconds, 0 = no animation 
-      showButtons      : true,                           // You can hide this in case you want to use custom buttons 
+      showButtons      : false,                          // You can hide this in case you want to use custom buttons 
       confirmBtnContent: "Add",                          // The text on your confirm button 
       cancleBtnContent : "Cancel",                       // the text on your cancel button 
       confirmBtnClass  : "btn btn-default btn-square",   // your class for styling the confirm button 
@@ -374,28 +375,29 @@ export class AssignroomsComponent implements OnInit {
 
     // });
   }
-  addRoom(value) {
+  addnewUser() {
+console.log(this.newForm);
 
-    this._apiService.addRoomConfig(value).subscribe(add => {
-      if (add.data != 'already exists') {
-        this._apiService.getRoomType().subscribe(list => {
-          console.log(list);
-          this.typelist = list.data;
+    // this._apiService.addRoomConfig(value).subscribe(add => {
+    //   if (add.data != 'already exists') {
+    //     this._apiService.getRoomType().subscribe(list => {
+    //       console.log(list);
+    //       this.typelist = list.data;
 
-          const val = { rtype: this.roomtype, htype: this.hosteltype }
+    //       const val = { rtype: this.roomtype, htype: this.hosteltype }
 
-          this._apiService.getRoomsList(val).subscribe(lists => {
-            console.log(lists);
-            this.roomsdata = lists.data;
-            this.popup1.hide();
-            this.addpop();
-          });
-        });
-      } else {
-        this.popToast();
-      }
+    //       this._apiService.getRoomsList(val).subscribe(lists => {
+    //         console.log(lists);
+    //         this.roomsdata = lists.data;
+    //         this.popup1.hide();
+    //         this.addpop();
+    //       });
+    //     });
+    //   } else {
+    //     this.popToast();
+    //   }
 
-    });
+    // });
   }
 
   deletebookings() {

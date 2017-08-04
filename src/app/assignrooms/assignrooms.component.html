@@ -168,11 +168,11 @@
                 </div>
               </div>
               <div class="col-lg-4 col-md-6">
-                <form [formGroup]="editForm">
+                <form [formGroup]="newForm">
                   <div class="col-md-12" style="border:1px solid #ddd;">
                     <div class="form-horizontal">
                       <div class="form-group text-center" style="background-color: #f9f9f9; border-bottom: 1px solid #ddd;padding: 5px;">
-                        <label class="control-label">Details</label>
+                        <label class="control-label">Enter Room Details</label>
                       </div>
                       <div class="form-group">
                         <label class="control-label col-md-5"> Hostel Type : </label>
@@ -213,7 +213,7 @@
               <div class="col-lg-12">
 
                 <button (click)="delete()" class="btn btn-danger btn-square pull-right"> Cancel </button>&nbsp;
-                <button class="btn btn-default btn-square pull-right" style="margin-right: 5px;"> Submit </button>
+                <button (click)="add(newForm.value)" class="btn btn-default btn-square pull-right" style="margin-right: 5px;"> Submit </button>
               </div>
 
             </div>
@@ -236,53 +236,13 @@
 
 </div>
 
-<popup #popup1 (confirmClick)="addRoom(newForm.value)">
+<popup #popup1>
 
-  <form [formGroup]="newForm">
-    <div class="form-horizontal">
-      <div class="form-group">
-        <label class="control-label col-md-4"> Room No : </label>
-        <div class="col-md-4">
-          <input class="form-control" formControlName="roomno">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Total Beds : </label>
-        <div class="col-md-4">
-          <input class="form-control" formControlName="totbeds">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Select Room Type : </label>
-        <div class="col-md-4">
-          <select formControlName="roomtype" class="form-control" (change)="getTypeof2($event)">
-                     <option *ngFor="let item of typelist" value="{{item.type"> {{item.type}} </option>  
-                  </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Select Hostel Type : </label>
-        <div class="col-md-4">
-          <select formControlName="hosteltype" class="form-control" (change)="getHstType($event)">
-                     <option  value="Girls"> Girls </option>
-                        <option  value="Boys"> Boys </option>    
-                  </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Hostel Id : </label>
-        <div class="col-md-4">
-          <input class="form-control" formControlName="hostelid">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Block Id : </label>
-        <div class="col-md-4">
-          <input class="form-control" formControlName="blockid">
-        </div>
-      </div>
-    </div>
-  </form>
+<h3>Are You Sure To Add New User</h3>
+<button (click)="addnewUser()" class="pull-right btn btn-default btn-square">Add</button>
+<button (click)="hide()" class="pull-right btn btn-info btn-primary"> Close </button>
+  <div class="clearfix"></div>
+
 </popup>
 
 <popup #popup2 (confirmClick)="editRoom(editForm.value)">
