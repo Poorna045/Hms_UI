@@ -1,0 +1,449 @@
+<toaster-container [toasterconfig]="toasterconfig">
+</toaster-container>
+
+<div id="wrapper">
+  <!-- begin TOP NAVIGATION -->
+  <app-header></app-header>
+  <!-- end TOP NAVIGATION -->
+
+  <!-- begin SIDE NAVIGATION -->
+  <app-sidemenu [page]="_apiService.page"></app-sidemenu>
+  <!-- end SIDE NAVIGATION -->
+
+  <!-- begin MAIN PAGE CONTENT -->
+  <div id="page-wrapper">
+
+    <div class="spl-content">
+
+      <!-- begin PAGE TITLE ROW -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="page-title">
+            <!--<h1>
+              Admin <small>Dashboard</small>
+            </h1>-->
+            <ol class="breadcrumb">
+              <li><i class="fa fa-dashboard"></i> <a [routerLink]="['/dashboard']">Dashboard</a>
+              </li>
+              <!--<li class="active">Blank Page</li>-->
+            </ol>
+          </div>
+        </div>
+        <!-- /.col-lg-12 -->
+      </div>
+      <!-- /.row -->
+      <!-- end PAGE TITLE ROW -->
+      <div class="row">
+
+        <div class="portlet portlet-default">
+          <div class="portlet-heading">
+            <div class="portlet-title">
+              <h4> Change Rooms </h4>
+            </div>
+            <!-- <div class="portlet-widgets">
+              <i class="fa fa-plus-square" style="font-size:15px"></i> <a (click)="add()">Add Room</a>
+            </div> -->
+            <div class="clearfix"></div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="portlet-body">
+            <div class="">
+
+              <div class="form-horizontal">
+                <div class="form-group">
+                  <form [formGroup]="topForm1">
+                    <div class="col-md-2">
+                      <label class="control-label"> Search with : </label>
+                      <select formControlName="search" class="form-control">
+                        <option value="reg_no"> Reg No </option> 
+                        <option value="registrationid"> Reg Id </option> 
+                        <option value="roomno"> Room No </option>  
+                      </select>
+                    </div>
+                    <div class="col-md-2">
+                      <label class="control-label"> Hostel Type : </label>
+                      <select formControlName="hosteltype" class="form-control">
+                        <option value="Boys"> Boys </option> 
+                        <option value="Girls"> Girls </option> 
+                      </select>
+                    </div>
+                    <div class="col-md-2">
+                      <button class="btn btn-info btn-square" (click)="submitA(topForm1.value)" style="margin-top: 23px;">Submit </button>
+                    </div>
+                  </form>
+                  <form [formGroup]="topForm">
+                    <div class="col-md-3" *ngIf="searchbox==true">
+                      <label class="control-label">&nbsp;</label>
+                      <input *ngIf="searchval == 'reg_no'" type="text" formControlName="reg_no" class="form-control" placeholder="Enter Reg_no">
+                      <input *ngIf="searchval == 'registrationid'" formControlName="reg_no" type="text" class="form-control" placeholder="Enter Hostel Registered Id ">
+                    </div>
+
+                    <div class="col-md-2" *ngIf="roombox==true">
+                      <label class="control-label">  Room No :</label>
+                      <select formControlName="roomno" class="form-control" (change)="getbeds($event)">
+                        <option *ngFor="let item of roomslist" value="{{item.roomno}}"> {{item.roomno}} </option> 
+                      </select>
+                    </div>
+                    <div class="col-md-2" *ngIf="roombox==true">
+                      <label class="control-label">  Bed No :</label>
+                      <select formControlName="bedno" class="form-control">
+                        <option *ngFor="let item of bedlist" value="{{item}}"> {{item}} </option> 
+                      </select>
+                    </div>
+                    <button *ngIf="roombox==true || searchbox==true" class="btn btn-info btn-square" (click)="submit(topForm.value)" style="margin-top: 23px;">Submit </button>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+            <div *ngIf="showdetails" class="row">
+              <div class="col-lg-8 col-md-6">
+                <div class="row">
+                  <table class="table table-bordered" style="margin-left: 7px;">
+                    <div class="col-lg-6 col-sm-6" style="padding: 8px;">
+                      <table class="table table-hover table-bordered table-striped">
+                        <tbody>
+                          <tr>
+                            <td colspan="2" style="font-weight: bolder;color: red;padding: 10px 69px;">
+                              User Details</td>
+                          </tr>
+                          <tr>
+                            <td width="150">Stud Name</td>
+                            <th>Poorna</th>
+                          </tr>
+                          <tr>
+                            <td>Reg No </td>
+                            <th>CSE001</th>
+                          </tr>
+                          <tr>
+                            <td>DOB</td>
+                            <th>1995-05-02</th>
+                          </tr>
+                          <tr>
+                            <td>Gender</td>
+                            <th>Male</th>
+                          </tr>
+                          <tr>
+                            <td>PwD(Person with Disability)</td>
+                            <th>No</th>
+                          </tr>
+                          <tr>
+                            <td>Distance bw (clg-hse) </td>
+                            <th>60</th>
+                          </tr>
+                          <tr>
+                            <td>College</td>
+                            <th>REC</th>
+                          </tr>
+                          <tr>
+                            <td> Branch </td>
+                            <th>Cse</th>
+                          </tr>
+                          <tr>
+                            <td>Year </td>
+                            <th>2 nd</th>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="col-lg-6 col-sm-6" style="padding: 8px;">
+                      <table class="table table-hover table-bordered table-striped">
+                        <tbody>
+                          <tr>
+                            <td width="150">Father Name </td>
+                            <th>Veerabadram</th>
+                          </tr>
+                          <tr>
+                            <td>Father No</td>
+                            <th>9665871255</th>
+                          </tr>
+                          <tr>
+                            <td>Father Email</td>
+                            <th>1234@gmail.com</th>
+                          </tr>
+                          <tr>
+                            <td>Mother Name</td>
+                            <th>anasuya</th>
+                          </tr>
+                          <tr>
+                            <td>Address</td>
+                            <th>vizag</th>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table class="table table-hover table-bordered table-striped">
+                        <tr>
+                          <td width="150">Gaurdian Name</td>
+                          <th> Rama Rao </th>
+                        </tr>
+                        <tr>
+                          <td>Relation</td>
+                          <th>Son-in-law</th>
+                        </tr>
+                        <tr>
+                          <td>Mobile No</td>
+                          <th> 9587421568 </th>
+                        </tr>
+                        <tr>
+                          <td>Email</td>
+                          <th> rao@gmail.com </th>
+                        </tr>
+                        <tr>
+                          <td>Address</td>
+                          <th> Vizianagaram </th>
+                        </tr>
+                      </table>
+                    </div>
+                  </table>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <table class="table table-hover table-bordered table-striped">
+                  <tr>
+                    <td colspan="2" style="font-weight: bolder;color: red;padding: 10px 69px;">
+                      Room Details</td>
+                  </tr>
+                  <tr>
+                    <td width="150">Room No </td>
+                    <th> 101 </th>
+                  </tr>
+                  <tr>
+                    <td>Bed No</td>
+                    <th> 3 </th>
+                  </tr>
+                  <tr>
+                    <td>Room Type</td>
+                    <th> AC </th>
+                  </tr>
+                </table>
+                <table class="table table-hover table-bordered table-striped">
+                  <tr>
+                    <td width="150"> Block Id </td>
+                    <th> 12 </th>
+                  </tr>
+                  <tr>
+                    <td>Hostel Id</td>
+                    <th> 3 </th>
+                  </tr>
+                </table>
+
+              </div>
+              <div class="col-lg-12">
+                
+                <button (click)="delete()" class="btn btn-danger btn-square pull-right"> Delete</button>&nbsp;
+                <button class="btn btn-default btn-square pull-right" style="margin-right: 5px;"> Edit</button>
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+      <!-- end DASHBOARD CIRCLE TILES -->
+
+    </div>
+    <!-- /.page-content -->
+
+  </div>
+  <!-- /#page-wrapper -->
+  <!-- end MAIN PAGE CONTENT -->
+
+</div>
+
+<popup #popup1 (confirmClick)="addRoom(newForm.value)">
+
+  <form [formGroup]="newForm">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <label class="control-label col-md-4"> Room No : </label>
+        <div class="col-md-4">
+          <input class="form-control" formControlName="roomno">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4"> Total Beds : </label>
+        <div class="col-md-4">
+          <input class="form-control" formControlName="totbeds">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4"> Select Room Type : </label>
+        <div class="col-md-4">
+          <select formControlName="roomtype" class="form-control" (change)="getTypeof2($event)">
+                     <option *ngFor="let item of typelist" value="{{item.type"> {{item.type}} </option>  
+                  </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4"> Select Hostel Type : </label>
+        <div class="col-md-4">
+          <select formControlName="hosteltype" class="form-control" (change)="getHstType($event)">
+                     <option  value="Girls"> Girls </option>
+                        <option  value="Boys"> Boys </option>    
+                  </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4"> Hostel Id : </label>
+        <div class="col-md-4">
+          <input class="form-control" formControlName="hostelid">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4"> Block Id : </label>
+        <div class="col-md-4">
+          <input class="form-control" formControlName="blockid">
+        </div>
+      </div>
+    </div>
+  </form>
+</popup>
+
+<popup #popup2 (confirmClick)="editRoom(editForm.value)">
+  <form [formGroup]="editForm">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <label class="control-label col-md-4"> Room No : </label>
+        <div class="col-md-4">
+          <input class="form-control" formControlName="roomno">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4"> Avail Beds : </label>
+        <div class="col-md-4">
+          <input class="form-control" formControlName="avlbeds">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4"> Total Beds : </label>
+        <div class="col-md-4">
+          <input class="form-control" formControlName="totbeds">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4"> Room Status : </label>
+        <div class="col-md-4">
+          <select formControlName="rcstatus" class="form-control">
+                   <option  value="available"> Available </option>
+                   <option value="filled"> Filled </option> 
+                  </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4"> Select Room Type : </label>
+        <div class="col-md-4">
+          <select formControlName="roomtype" class="form-control">
+                     <option *ngFor="let item of typelist" value="{{item.type}}"> {{item.type}} </option>  
+                  </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4"> Select Hostel Type : </label>
+        <div class="col-md-4">
+          <select formControlName="hosteltype" class="form-control">
+                     <option  value="Girls"> Girls </option>
+                        <option  value="Boys"> Boys </option>    
+                  </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4"> Hostel Id : </label>
+        <div class="col-md-4">
+          <input class="form-control" formControlName="hostelid">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-4"> Block Id : </label>
+        <div class="col-md-4">
+          <input class="form-control" formControlName="blockid">
+        </div>
+      </div>
+    </div>
+  </form>
+</popup>
+
+<popup #popup3 (confirmClick)="deletebookings()">
+
+  <h3>Are you sure to Delete this user from this Room {{ roomno }} </h3>
+
+</popup>
+
+<popup #popup4>
+  <div class="col-md-6">
+    <h4>User Details</h4>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Detail</th>101
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Name</td>
+          <td>{{fullview.firstname}}</td>
+        </tr>
+        <tr>
+          <td>DOB</td>
+          <td>{{fullview.dob}}</td>
+        </tr>
+        <tr>
+          <td>Mobile</td>
+          <td>{{fullview.mobile}}</td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td>{{fullview.email}}</td>
+        </tr>
+        <tr>
+          <td>Gender</td>
+          <td>{{fullview.gender}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-responsive col-md-6">
+    <h4>Parent Details </h4>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Detail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Father Name</td>
+          <td>{{fullview.fname}}</td>
+        </tr>
+        <tr>
+          <td>Occupation</td>
+          <td>{{fullview.occupation}}</td>
+        </tr>
+        <tr>
+          <td>Mobile</td>
+          <td>{{fullview.parentmobile}}</td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td>{{fullview.parentemail}}</td>
+        </tr>
+        <tr>
+          <td>Address</td>
+          <td>{{fullview.permanentaddress}}</td>
+        </tr>
+        <tr>
+          <td>Name</td>
+          <td>{{fullview.parentemail</td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+  <button (click)="hide()" class="pull-right btn btn-info btn-square"> Close </button>
+  <div class="clearfix"></div>
+</popup>

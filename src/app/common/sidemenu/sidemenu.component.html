@@ -1,0 +1,117 @@
+<nav class="navbar-side" role="navigation">
+  <div class="navbar-collapse sidebar-collapse collapse">
+    <ul id="side" class="nav navbar-nav side-nav">
+      <!-- begin SIDE NAV USER PANEL -->
+      <li class="side-user hidden-xs">
+        <img class="img-circle" src={{img}} height="150px" alt="">
+        <p class="welcome">
+          <i class="fa fa-key"></i> Logged in as
+        </p>
+        <p class="name tooltip-sidebar-logout">
+          {{usertype}}
+          <span class="last-name">{{name}}</span> <a style="color: inherit" class="logout_open" href="#logout" data-toggle="tooltip"
+            data-placement="top" title="Logout"><i class="fa fa-sign-out"></i></a>
+        </p>
+        <div class="clearfix"></div>
+      </li>
+      <!-- end SIDE NAV USER PANEL -->
+      <!-- begin SIDE NAV SEARCH -->
+      <!--<li class="nav-search">
+          <form role="form">
+            <input type="search" class="form-control" placeholder="Search...">
+            <button class="btn">
+                <i class="fa fa-search"></i>
+            </button>
+          </form>
+        </li>-->
+      <!-- end SIDE NAV SEARCH -->
+      <!-- begin DASHBOARD LINK -->
+      <li>
+        <a [ngClass]="{'active': (page=='dashboard')}" [routerLink]="['/dashboard']"><i class="fa fa-dashboard"></i> Dashboard</a>
+      </li>
+      <!-- end DASHBOARD LINK -->
+      <!-- <li>
+        <a [ngClass]="{'active': (page=='staff')}" [routerLink]="['/staff']"><i class="fa fa-users"></i> Hostel</a>
+      </li> -->
+      <!--  <li>
+        <a><i class="fa fa-book"></i> Library</a>
+      </li>
+      <li>
+        <a><i class="fa fa-file-o"></i> Issue Register</a>
+      </li>
+      <li>
+        <a><i class="fa fa-comments"></i> Grievances & Complaints</a>
+      </li> -->
+      <!-- begin CHARTS DROPDOWN -->
+      <li class="panel">
+        <a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#hostel">
+              <i class="fa fa-users"></i> Hostel <i class="fa fa-caret-down"></i>
+          </a>
+        <ul class="collapse nav" id="hostel">
+          <li>
+            <a [ngClass]="{'active': (page=='roomtype')}" [routerLink]="['/roomtype']">
+                  <i class="fa fa-angle-double-right"></i> Room Types
+              </a>
+          </li>
+          <li>
+            <a [ngClass]="{'active': (page=='bookings')}" [routerLink]="['/bookings']">
+                  <i class="fa fa-angle-double-right"></i> Bookings
+              </a>
+          </li>
+          <li>
+            <a [ngClass]="{'active': (page=='registration')}" [routerLink]="['/registration']">
+                  <i class="fa fa-angle-double-right"></i> Registration
+              </a>
+          </li>
+          <li>
+            <a [ngClass]="{'active': (page=='feeconfig')}" [routerLink]="['/feeconfig']">
+                  <i class="fa fa-angle-double-right"></i> Fee Config
+              </a>
+          </li>
+          <li>
+            <a [ngClass]="{'active': (page=='allot')}" [routerLink]="['/allot']">
+                  <i class="fa fa-angle-double-right"></i> Rooms Allot
+              </a>
+          </li>
+          <li>
+            <a [ngClass]="{'active': (page=='roomsconfig')}" [routerLink]="['/roomsconfig']">
+                  <i class="fa fa-angle-double-right"></i> Rooms Config
+              </a>
+          </li>
+             <li>
+            <a [ngClass]="{'active': (page=='assignrooms')}" [routerLink]="['/assignrooms']">
+                  <i class="fa fa-angle-double-right"></i> Assign Rooms
+              </a>
+          </li>
+             <li>
+            <a [ngClass]="{'active': (page=='changeroom')}" [routerLink]="['/changeroom']">
+                  <i class="fa fa-angle-double-right"></i> Change Rooms
+              </a>
+          </li>
+        </ul>
+      </li>
+      <!-- <li>
+        <a [ngClass]="{'active': (page=='college')}" [routerLink]="['/college']"><i class="fa fa-university"></i> College</a>
+      </li>
+      <li>
+        <a [ngClass]="{'active': (page=='departments')}" [routerLink]="['/departments']"><i class="fa fa-university"></i> Departments</a>
+      </li>
+      <li>
+        <a [ngClass]="{'active': (page=='courses')}" [routerLink]="['/courses']"><i class="fa fa-book"></i>Courses</a>
+      </li>
+      <li>
+        <a [ngClass]="{'active': (page=='branches')}" [routerLink]="['/branches']"><i class="fa fa-snowflake-o"></i>Branches</a>
+      </li>
+      <li>
+        <a [ngClass]="{'active': (page=='designations')}" [routerLink]="['/designations']"><i class="fa fa-user"></i>Designations</a>
+      </li>
+      <li>
+        <a [ngClass]="{'active': (page=='year')}" [routerLink]="['/year']"><i class="fa fa-calendar"></i>Year</a>
+      </li> -->
+      <!-- end PAGES DROPDOWN -->
+    </ul>
+    <!-- /.side-nav -->
+  </div>
+  <!-- /.navbar-collapse -->
+</nav>
+<!-- /.navbar-side -->
