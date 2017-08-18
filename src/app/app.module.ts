@@ -13,9 +13,9 @@ import { ApiService } from "./services/api.service";
 //third party
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToasterModule, ToasterService} from 'angular2-toaster';
-import {PopupModule} from 'ng2-opd-popup';
 import {DataTableModule} from "angular2-datatable";
 import { MyDatePickerModule } from 'mydatepicker';
+import {PopupModule} from 'ng2-opd-popup';
 
 
 import { AppComponent } from './app.component';
@@ -33,6 +33,7 @@ import { AllotComponent } from './allot/allot.component';
 import { RoomsconfigComponent } from './roomsconfig/roomsconfig.component';
 import { AssignroomsComponent } from './assignrooms/assignrooms.component';
 import { ChangeroomComponent } from './changeroom/changeroom.component';
+import { AssainroomstestComponent } from './assainroomstest/assainroomstest.component';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { ChangeroomComponent } from './changeroom/changeroom.component';
     AllotComponent,
     RoomsconfigComponent,
     AssignroomsComponent,
-    ChangeroomComponent
+    ChangeroomComponent,
+    AssainroomstestComponent
   ],
   imports: [
     BrowserModule,

@@ -95,6 +95,13 @@ export class ApiService {
     return this.callApi(AppSettings.GET_ROOMS_AVLB_API, 'post', body);
   }
 
+  // // get user details list
+  //   getAVLRoomsList(body) {
+
+  //   return this.callApi(AppSettings.GET_ROOMS_AVLB_API, 'post', body);
+  // }
+
+
    // get beds list by room no
     getbedslistbyroomno(body) {
 
@@ -106,6 +113,25 @@ export class ApiService {
 
     return this.callApi(AppSettings.GET_DETAILS_TO_ADD_API, 'post', body);
   }
+
+    // get student details by id
+    getuserdetailsbyid(body) {
+
+    return this.callApi(AppSettings.GET_DETAILS_BY_ID_API, 'post', body);
+  }
+
+  // get student details by id
+    getuserdetailsbybedno(body) {
+
+    return this.callApi(AppSettings.GET_DETAILS_BY_ROOMNO_API, 'post', body);
+  }
+
+    // get total rooms details
+    getTOTRoomsList(body) {
+
+    return this.callApi(AppSettings.GET_TOT_ROOMS_API, 'post', body);
+  }
+ 
  
  
  

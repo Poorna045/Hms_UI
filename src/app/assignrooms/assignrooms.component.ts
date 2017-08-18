@@ -12,7 +12,25 @@ import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
   styleUrls  : ['./assignrooms.component.css']
 })
 export class AssignroomsComponent implements OnInit {
-  userdetails: any;
+  userdetails={
+    firstname:'',
+    reg_no:'',
+    dob:'',
+    distance:'',
+    college:'',
+    branch:'',
+    year:'',
+    fathername:'',
+    parentmobile:'',
+    parentemail:'',
+    mothername:'',
+    parentaddress:'',
+    guardianname:'',
+    guardianrelation:'',
+    guardianmobile:'',
+    guardianemail:'',
+    guardianaddress:'',
+  };
   bedlist = [];
   hsttype: any;
   roomslist = [];
@@ -162,7 +180,7 @@ export class AssignroomsComponent implements OnInit {
 
     this._apiService.getstudentDetailstoADD(value).subscribe(rblist => {
       console.log(rblist);
-      console.log(rblist.data.gaurdianmobile);
+      console.log(rblist.data.guardianmobile);
       this.userdetails = rblist.data;
       // this.roomslist = rblist.data;
 

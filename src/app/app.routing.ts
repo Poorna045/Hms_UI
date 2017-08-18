@@ -10,6 +10,7 @@ import { AllotComponent } from "./allot/allot.component";
 import { RoomsconfigComponent } from "./roomsconfig/roomsconfig.component";
 import { AssignroomsComponent } from "./assignrooms/assignrooms.component";
 import { ChangeroomComponent } from "./changeroom/changeroom.component";
+import { AssainroomstestComponent } from "./assainroomstest/assainroomstest.component";
 
 const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -23,6 +24,7 @@ const appRoutes: Routes = [
     { path: 'roomsconfig', component: RoomsconfigComponent, canActivate: [AuthGuard] },
     { path: 'assignrooms', component: AssignroomsComponent, canActivate: [AuthGuard] },
     { path: 'changeroom', component: ChangeroomComponent, canActivate: [AuthGuard] },
+      { path: 'assainroomstest', component: AssainroomstestComponent, canActivate: [AuthGuard] },
     { path: '', redirectTo: "login", pathMatch: "full" },
     { path: '**', redirectTo: 'dashboard', pathMatch: "full" }
 ];
