@@ -29,7 +29,8 @@ export class AppSettings {
     public static EDIT_BOOKING_API: string = 'http://127.0.0.1/hmsserver/Api/editbooking';
     public static DELETE_BOOKING_API: string = 'http://127.0.0.1/hmsserver/Api/deletebooking';
     public static REGLIST_API: string = 'http://127.0.0.1/hmsserver/Api/getreglist';
-    public static VACANT_API: string = 'http://127.0.0.1/hmsserver/Api/vacantroom'
+    public static VACANT_API: string = 'http://127.0.0.1/hmsserver/Api/vacantroom';
+    public static WAITING_API: string = 'http://127.0.0.1/hmsserver/Api/waitinglist';
     public static FEE_CONFIG_API: string = 'http://127.0.0.1/hmsserver/Api/feeconfig';
     public static ADD_ROOM_API: string = 'http://127.0.0.1/hmsserver/Api/addroomconfig';
     public static GET_ROOMS_API: string = 'http://127.0.0.1/hmsserver/Api/getroomconfig';
@@ -46,4 +47,33 @@ export class AppSettings {
     public static DELETE_TYPE_API: string = 'http://127.0.0.1/hmsserver/Api/deleteroomtype';
     public static GETBOOKLIST_API: string = 'http://127.0.0.1/hmsserver/Api/getbookingslist';
 
+
+// new 
+
+  public static EDIT_STUD_DETAILS_API: string = 'http://127.0.0.1/hmsserver/Api/editstuddetails';
+   public static ALLOCATE_ROOM_STUD_API: string = 'http://127.0.0.1/hmsserver/Api/allocateroomstud';
+   public static FREE_THE_ROOM_API: string = 'http://127.0.0.1/hmsserver/Api/freetheroom';
+   public static AVL_SEATS_COUNT_API: string = 'http://127.0.0.1/hmsserver/Api/getavlseatscount';
+   public static EDIT_ROOM_CONFIG_API: string = 'http://127.0.0.1/hmsserver/Api/editroomconfig';
+   public static DELETE_ROOM_CONFIG_API: string = 'http://127.0.0.1/hmsserver/Api/deleteroomconfig';
+   public static ADD_BILL_TYPE_API: string = 'http://127.0.0.1/hmsserver/Api/addbilltype';
+   public static GET_BILL_TYPES_API: string = 'http://127.0.0.1/hmsserver/Api/getbilltypes';
+   public static DELETE_BILL_TYPE_API: string = 'http://127.0.0.1/hmsserver/Api/deletebilltype';
+   public static ADD_PAYMENT_DATA_API: string = 'http://127.0.0.1/hmsserver/Api/addpaymentdata';
+   public static GET_PAYMENT_DATA_API: string = 'http://127.0.0.1/hmsserver/Api/getmaintenancedata';
+   
+
+
+   // venkat
+
+   public static ADD_REGISTRATION_API: string = 'http://127.0.0.1/hmsserver/Api/addregistration';
+   public static ADD_COMPLAINTS_API: string = 'http://127.0.0.1/hmsserver/Api/addcomplaints';
+   public static ADD_NOTIFICATION_API: string = 'http://127.0.0.1/hmsserver/Api/addnotification';
+   public static GET_NOTIFICATIONS_API:string = 'http://127.0.0.1/hmsserver/Api/getNotifications';
+   public static GET_INSTRUCTIONS_API:string = 'http://127.0.0.1/hmsserver/Api/getInstructions';
+   public static ADD_INSTRUCTIONS_API:string = 'http://127.0.0.1/hmsserver/Api/addInstractions';
+   public static ADD_EVENTS_API:string = 'http://127.0.0.1/hmsserver/Api/addEvents';
+   public static GET_EVENTS_API:string = 'http://127.0.0.1/hmsserver/Api/getEvents';          
+   public static GET_COMPLAINTS_API: string = 'http://127.0.0.1/hmsserver/Api/getcomplaints';
+   
 }

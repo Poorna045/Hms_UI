@@ -12,6 +12,8 @@ import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
   styleUrls: ['./assainroomstest.component.css']
 })
 export class AssainroomstestComponent implements OnInit {
+  model: { day: number; month: number; year: number; };
+  goroomtype: any;
 
   enablebuttons = false;
   roomslists = [];
@@ -29,6 +31,7 @@ export class AssainroomstestComponent implements OnInit {
 
   userdetails = {
     rid: '',
+    dateofbirth:'',
     studentname: '',
     reg_no: '',
     dob: '',
@@ -52,8 +55,12 @@ export class AssainroomstestComponent implements OnInit {
     bedno: '',
     type: '',
     blockid: '',
-    hostelid: ''
+    hostelid: '',
+    rstatus:''
   };
+
+
+
 
   reg_Form = new FormGroup({
     studentname: new FormControl(),
@@ -62,7 +69,7 @@ export class AssainroomstestComponent implements OnInit {
     pwd: new FormControl(),
     distance: new FormControl(),
     roomtype: new FormControl(),
-    // priority                : new FormControl(),
+    // occupation                : new FormControl(),
     fathername: new FormControl(),
     occupation: new FormControl(),
     parentmobile: new FormControl(),
@@ -123,7 +130,7 @@ export class AssainroomstestComponent implements OnInit {
     hosteltype: new FormControl(),
     bedno: new FormControl(),
     reg_no: new FormControl(),
-    roomtype: new FormControl()
+    // roomtype: new FormControl()
 
   });
   editForm = new FormGroup({
@@ -179,6 +186,21 @@ export class AssainroomstestComponent implements OnInit {
 
   }
 
+  allocateroom(value){
+value['reg_no']=this.userdetails.reg_no;
+value['hsttype']=this.goroomtype;
+    console.log(value);
+
+this._apiService.allocateRoom(value).subscribe(allow=>{
+  console.log(allow);
+  this.submit(value);
+
+this.back();
+
+});
+
+  }
+
   searchwith($event) {
     this.searchval = $event.target.value;
     console.log($event.target.value);
@@ -193,7 +215,7 @@ export class AssainroomstestComponent implements OnInit {
   }
 
   getRooms() {
-    this.roomslist = [];
+    this.roomslists = [];
 
     if (this.userdetails.genderT == 'M') {
       this.hsttypes = 'Boys';
@@ -233,6 +255,8 @@ export class AssainroomstestComponent implements OnInit {
     } else {
       this.showtype = false;
     }
+    this.roombox=false;
+    this.searchbox=false;
   }
 
   submit(value) {
@@ -249,7 +273,7 @@ export class AssainroomstestComponent implements OnInit {
         console.log(userl.data);
 
         if (userl.data != null) {
-          this.getRooms();
+       
 
           this.userdetails = userl.data;
           this.invaliduser = false;
@@ -269,19 +293,20 @@ export class AssainroomstestComponent implements OnInit {
         const value = {
           hosteltype: this.hsttype
         }
-
+this.roomslist=[];
         this._apiService.getTOTRoomsList(value).subscribe(rblist => {
           console.log(rblist);
           this.roomslist = rblist.data;
-
+   this.getRooms();
         });
       });
     } else {
       this.submitreg_no = value.reg_no;
+       value['type'] = this.hsttype;
       this._apiService.getuserdetailsbyid(value).subscribe(lis => {
         console.log(lis);
         if (lis.data != null) {
-          this.getRooms();
+        
           if (lis.data.studentname == null) {
             this.shownodetails = true;
             this.shownoroom = false;
@@ -315,7 +340,7 @@ export class AssainroomstestComponent implements OnInit {
           this.enablebuttons = false;
         }
 
-
+  this.getRooms();
         console.log(this.userdetails, lis.data);
 
       });
@@ -369,10 +394,14 @@ export class AssainroomstestComponent implements OnInit {
       this.shownoroom = true;
       this.shownodetails = false;
       this.invaliduser = false;
+      console.log('ifs');
+      
     } else {
       this.shownoroom = false;
       this.shownodetails = false;
       this.invaliduser = false;
+      console.log('elses');
+      
     }
   }
   click() {
@@ -433,6 +462,7 @@ if(this.userdetails.genderT=='M'){
 
 
   getbedss(event) {
+    // this.goroomtype=roomtyp
     console.log(event.target.value);
     this.roomno = event.target.value;
     this.bedlist = [];
@@ -482,11 +512,7 @@ if(this.userdetails.genderT=='M'){
     });
   }
 
-  allocatenew(value) {
-    console.log(value);
-    this.enablebuttons = true;
 
-  }
 
   getTypeof2($event) {
     console.log($event.target.value);
@@ -508,10 +534,45 @@ if(this.userdetails.genderT=='M'){
   @ViewChild('popup4') popup4: Popup;
 
 
+EditRegistrtion(value){
+
+value['registrationid']=this.userdetails.rid;
+console.log(value,'skj',this.userdetails.rid);
+this._apiService.editStudDetails(value).subscribe(editDet=>{
+console.log(editDet);
+const val={}; 
+val['roomno']=this.roomval;
+val['bedno']=this.bedval;
+val['reg_no']=this.userdetails.reg_no;
+this.submit(val);
+setTimeout(()=>{    //<<<---    using ()=> syntax
+     
+ },3000);
+this.back();
+
+
+
+});
+
+}
 
   editDetails() {
     this.showEditForm = true;
+    var ds=new Date(this.userdetails.dateofbirth)
+    // this.model={day:ds.getDate(),month:ds.getMonth(),year:ds.getFullYear()};
+    
+    console.log(ds,'ds value',this.userdetails.dateofbirth);
+   
     this.reg_Form.patchValue(this.userdetails);
+    this.reg_Form.patchValue({ dateofbirth: { formatted: this.userdetails.dateofbirth } });
+    // this.reg_Form.patchValue({
+    //   dateofbirth:{date:{
+    //     day:ds.getDate(),
+    //     month:ds.getMonth(),
+    //     year:ds.getFullYear()
+    //   }
+    // }
+    // })
   }
 
   regisForm() {
@@ -590,15 +651,15 @@ if(this.userdetails.genderT=='M'){
   delete() {
     // this.popup.show();
     this.popup3.options = {
-      header: "Delete Booking",
+      header: "Empty The Room",
       color: "#2c3e50",                      // red, blue.... 
       widthProsentage: 40,                             // The with of the popou measured by browser width 
       animationDuration: 1,                              // in seconds, 0 = no animation 
       showButtons: true,                           // You can hide this in case you want to use custom buttons 
       confirmBtnContent: "Delete",                       // The text on your confirm button 
       cancleBtnContent: "Cancel",                       // the text on your cancel button 
-      confirmBtnClass: "btn btn-danger btn-square",    // your class for styling the confirm button 
-      cancleBtnClass: "btn btn-warning btn-square",   // you class for styling the cancel button 
+      confirmBtnClass: "btn btn-danger btn-sm btn-square",    // your class for styling the confirm button 
+      cancleBtnClass: "btn btn-white btn-sm btn-square",   // you class for styling the cancel button 
       animation: "fadeInDown",                   // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown' 
     };
 
@@ -662,21 +723,29 @@ if(this.userdetails.genderT=='M'){
     });
   }
 
-  deletebookings() {
-    const value = {
-      bid: this.bid
+  freetheroom() {
+    let tye='';
+    if(this.userdetails.genderT=='M'){
+      tye='Boys'
+    }else{
+      tye='Girls'
     }
-    this._apiService.deleteBooking(value).subscribe(deletes => {
-      this._apiService.getRoomType().subscribe(list => {
-        console.log(list); this.typelist = list.data; const val = { type: 'all' }
-        this._apiService.getreglist(val).subscribe(lists => {
-          console.log(list);
-          this.reglist = lists.data;
-          this.popup3.hide();
-          this.delpop();
-        });
+    const value = {
+      reg_no:this.userdetails.reg_no,
+      hosteltype:tye,
+      roomno:this.userdetails.roomno
+    }
+    this._apiService.freetheroom(value).subscribe(free => {
+      console.log(free);
 
-      })
+    
+      value['hsttype']=tye;
+          console.log(value);
+
+        this.submit(value);
+      
+      this.back();
+      this.popup3.hide();
 
     });
   }

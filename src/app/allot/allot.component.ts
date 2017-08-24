@@ -7,39 +7,45 @@ import { Popup } from "ng2-opd-popup";
 import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
 
 @Component({
-  selector   : 'app-allot',
+  selector: 'app-allot',
   templateUrl: './allot.component.html',
-  styleUrls  : ['./allot.component.css']
+  styleUrls: ['./allot.component.css']
 })
 export class AllotComponent implements OnInit {
+  hosteltype='Boys';
+  regid: any;
+  ANonacSeats: any;
+  AacSeats: any;
+  NonacSeats: any;
+  acSeats: any;
   typerooms = '';
-  typeroom  = 'all';
-  fullview  = new Object();
-  reglist   = [];
-  typelist  = [];
+  typeroom = 'all';
+  fullview = new Object();
+  reglist = [];
+  typelist = [];
 
   bid: any;
-  public filterQuery  = "";
-  public rowsOnPage   = 5;
-  public sortBy       = "";
-  public sortOrder    = "asc";
-         bookingslist = [];
+  public filterQuery = "";
+  public rowsOnPage = 5;
+  public sortBy = "";
+  public sortOrder = "asc";
+  bookingslist = [];
 
-  public toasterconfig: ToasterConfig = 
+  public toasterconfig: ToasterConfig =
   new ToasterConfig({
 
     showCloseButton: true,
-    tapToDismiss   : true,
-    timeout        : 5000
+    tapToDismiss: true,
+    timeout: 5000
 
   });
   public toasterService: ToasterService;
   constructor(private _router: Router,
-    private _route        : ActivatedRoute,
-    private _apiService   : ApiService,
-    private fb            : FormBuilder,
-    private popup         : Popup,
-            toasterService: ToasterService) {
+    private _route: ActivatedRoute,
+    private _apiService: ApiService,
+    private fb: FormBuilder,
+    private popup: Popup,
+    toasterService: ToasterService) {
     this.toasterService = toasterService;
   }
 
@@ -51,22 +57,75 @@ export class AllotComponent implements OnInit {
   ngOnInit() {
     this._apiService.page = "allot";
     this._apiService.getRoomType().subscribe(list => {
-      console.log(list); this.typelist = list.data; const val = { type: 'all' }
+      console.log(list); this.typelist = list.data;
+      let gender='M';
+      
+       const val = {
+          type: 'all' ,
+          gender:gender
+      }
       this._apiService.getreglist(val).subscribe(lists => {
         console.log(list);
         this.reglist = lists.data;
+        const gs = {
+          hosteltype: 'Boys'
+        }
+        this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
+          console.log(seats, 'seats test');
+          this.acSeats =  seats.data.acseats;
+          this.NonacSeats = seats.data.nonacseats;
+          this.AacSeats = seats.data.Aacseats;
+          this.ANonacSeats = seats.data.Anonacseats;
+
+        });
       });
 
     })
   }
 
+  getavlseats($event)
+{
+  const gs = {
+    hosteltype: $event.target.value
+  }
+  this.hosteltype=$event.target.value;
+  this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
+    console.log(seats, 'seats test');
+    this.acSeats = seats.data.acseats;
+    this.NonacSeats = seats.data.nonacseats;
+    this.AacSeats = seats.data.Aacseats;
+    this.ANonacSeats = seats.data.Anonacseats;
+
+    let gender='M';
+    if(this.hosteltype=='Girls'){
+      gender='F'
+    }
+    
+     const val = {
+        type: this.typeroom ,
+        gender:gender
+    }
+    this._apiService.getreglist(val).subscribe(lists => {
+      console.log(lists);
+      this.reglist = lists.data;
+    
+    });
+
+  });
+}
   getTypeof($event) {
     console.log($event.target.value);
-    
-                  this.typeroom = $event.target.value;
 
+    this.typeroom = $event.target.value;
+    let gender='M';
+    if(this.hosteltype=='Girls'){
+      gender='F'
+    }
+    
+   
     const val = {
-      type: $event.target.value
+      type: $event.target.value,
+      gender:gender
     }
     this._apiService.getreglist(val).subscribe(list => {
       console.log(list);
@@ -75,28 +134,28 @@ export class AllotComponent implements OnInit {
     });
   }
 
-   getTypeof2($event) {
+  getTypeof2($event) {
     console.log($event.target.value);
-  this.typerooms = $event.target.value;
+    this.typerooms = $event.target.value;
   }
   onDateChanged(event: IMyDateModel) {
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
   }
 
   newForm = new FormGroup({
-    startdate   : new FormControl(),
-    enddate     : new FormControl(),
-    description : new FormControl(),
+    startdate: new FormControl(),
+    enddate: new FormControl(),
+    description: new FormControl(),
     semstartdate: new FormControl(),
-    semenddate  : new FormControl()
+    semenddate: new FormControl()
 
   });
   editForm = new FormGroup({
-    startdate   : new FormControl(),
-    enddate     : new FormControl(),
-    description : new FormControl(),
+    startdate: new FormControl(),
+    enddate: new FormControl(),
+    description: new FormControl(),
     semstartdate: new FormControl(),
-    semenddate  : new FormControl()
+    semenddate: new FormControl()
 
   });
 
@@ -110,36 +169,43 @@ export class AllotComponent implements OnInit {
     this.newForm.reset()
 
     this.popup1.options = {
-      header           : "Add New Booking",
-      color            : "#2c3e50",                      // red, blue.... 
-      widthProsentage  : 40,                             // The with of the popou measured by browser width 
+      header: "Add New Booking",
+      color: "#2c3e50",                      // red, blue.... 
+      widthProsentage: 40,                             // The with of the popou measured by browser width 
       animationDuration: 1,                              // in seconds, 0 = no animation 
-      showButtons      : true,                           // You can hide this in case you want to use custom buttons 
+      showButtons: true,                           // You can hide this in case you want to use custom buttons 
       confirmBtnContent: "Add",                          // The text on your confirm button 
-      cancleBtnContent : "Cancel",                       // the text on your cancel button 
-      confirmBtnClass  : "btn btn-default btn-square",   // your class for styling the confirm button 
-      cancleBtnClass   : "btn btn-danger btn-square",    // you class for styling the cancel button 
-      animation        : "fadeInDown",                   // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown' 
+      cancleBtnContent: "Cancel",                       // the text on your cancel button 
+      confirmBtnClass: "btn btn-default btn-square",   // your class for styling the confirm button 
+      cancleBtnClass: "btn btn-danger btn-square",    // you class for styling the cancel button 
+      animation: "fadeInDown",                   // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown' 
     };
 
     this.popup1.show(this.popup1.options);
   }
 
-  edit(dt) {
-    this.fullview  = dt;
-    this.typerooms = 'AC';
+  accept(dt) {
+    this.fullview = dt;
+    if(this.typeroom=='AC'){
+      this.typerooms = 'AC';
+    }else if(this.typeroom=='Non-AC'){
+      this.typerooms='Non-AC';
+    }else if(this.typeroom=='all'){
+      this.typerooms='AC';
+    }
+    
 
     this.popup2.options = {
-      header           : "Edit Booking",
-      color            : "#2c3e50",                     // red, blue.... 
-      widthProsentage  : 40,                            // The with of the popou measured by browser width 
+      header: "Acceptance ",
+      color: "#2c3e50",                     // red, blue.... 
+      widthProsentage: 40,                            // The with of the popou measured by browser width 
       animationDuration: 1,                             // in seconds, 0 = no animation 
-      showButtons      : false,                         // You can hide this in case you want to use custom buttons 
-      confirmBtnContent: "Edit",                        // The text on your confirm button 
-      cancleBtnContent : "Cancel",                      // the text on your cancel button 
-      confirmBtnClass  : "btn btn-info btn-square",     // your class for styling the confirm button 
-      cancleBtnClass   : "btn btn-danger btn-square",   // you class for styling the cancel button 
-      animation        : "fadeInDown",                  // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown' 
+      showButtons: false,                         // You can hide this in case you want to use custom buttons 
+      confirmBtnContent: "Accept",                        // The text on your confirm button 
+      cancleBtnContent: "Cancel",                      // the text on your cancel button 
+      confirmBtnClass: "btn btn-info btn-square",     // your class for styling the confirm button 
+      cancleBtnClass: "btn btn-danger btn-square",   // you class for styling the cancel button 
+      animation: "fadeInDown",                  // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown' 
     };
 
     this.popup2.show(this.popup2.options);
@@ -153,36 +219,40 @@ export class AllotComponent implements OnInit {
   }
 
   view(dt) {
-    this.fullview       = dt;
+    this.fullview = dt;
     this.popup4.options = {
-      header           : "Student Info !",
-      color            : "#2c3e50",                     // red, blue.... 
-      widthProsentage  : 60,                            // The with of the popou measured by browser width 
+      header: "Student Info !",
+      color: "#2c3e50",                     // red, blue.... 
+      widthProsentage: 60,                            // The with of the popou measured by browser width 
       animationDuration: 1,                             // in seconds, 0 = no animation 
-      showButtons      : false,                         // You can hide this in case you want to use custom buttons 
+      showButtons: false,                         // You can hide this in case you want to use custom buttons 
       confirmBtnContent: "Edit",                        // The text on your confirm button 
-      cancleBtnContent : "Ok",                          // the text on your cancel button 
-      confirmBtnClass  : "btn btn-info btn-square",     // your class for styling the confirm button 
-      cancleBtnClass   : "btn btn-danger btn-square",   // you class for styling the cancel button 
-      animation        : "fadeInDown",                  // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown' 
+      cancleBtnContent: "Ok",                          // the text on your cancel button 
+      confirmBtnClass: "btn btn-info btn-square",     // your class for styling the confirm button 
+      cancleBtnClass: "btn btn-danger btn-square",   // you class for styling the cancel button 
+      animation: "fadeInDown",                  // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown' 
     };
 
     this.popup4.show(this.popup4.options);
   }
-  delete(dt) {
+  wait(dt) {
     // this.popup.show();
-    this.bid            = dt.bid;
+    // this.fullview=dt;
+    this.regid=dt.registrationid;
     this.popup3.options = {
-      header           : "Delete Booking",
-      color            : "#2c3e50",                      // red, blue.... 
-      widthProsentage  : 40,                             // The with of the popou measured by browser width 
+      header: "Waiting List",
+      color: "#2c3e50",                      // red, blue.... 
+      widthProsentage: 40,                             // The with of the popou measured by browser width 
       animationDuration: 1,                              // in seconds, 0 = no animation 
-      showButtons      : true,                           // You can hide this in case you want to use custom buttons 
-      confirmBtnContent: "Delete",                       // The text on your confirm button 
-      cancleBtnContent : "Cancel",                       // the text on your cancel button 
-      confirmBtnClass  : "btn btn-warning btn-square",   // your class for styling the confirm button 
-      cancleBtnClass   : "btn btn-danger btn-square",    // you class for styling the cancel button 
-      animation        : "fadeInDown",                   // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown' 
+      showButtons: true,
+      cancleBtnContent: "Cancel",  
+      cancleBtnClass: "btn btn-white btn-square btn-sm",    // you class for styling the cancel button 
+      confirmBtnContent: "Submit",
+      confirmBtnClass: "btn btn-warning btn-square btn-sm",   // your class for styling the confirm button                             
+     
+
+
+      animation: "fadeInDown",                   // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown' 
     };
 
     this.popup3.show(this.popup3.options);
@@ -199,10 +269,10 @@ export class AllotComponent implements OnInit {
     this.toasterService.pop('success', '', " Succesfully Added New Booking !");
   }
   editpop() {
-    this.toasterService.pop('success', '', " Your Booking Changes are Succesful");
+    this.toasterService.pop('success', '', " Successfully Accepted ");
   }
   delpop() {
-    this.toasterService.pop('success', '', " Your Booking Deletion is Succesful");
+    this.toasterService.pop('success', '', " Status Successfully Changed to Waiting list");
   }
 
   popToast2() {
@@ -223,38 +293,83 @@ export class AllotComponent implements OnInit {
     });
   }
   addstudent() {
-// this.fullview["newtype"] = this.typeroom;
-if(this.typeroom =='all'){
-this.fullview["type"] = this.typerooms;
-}
-console.log(this.fullview);
+    // this.fullview["newtype"] = this.typeroom;
+    if (this.typeroom == 'all') {
+      this.fullview["type"] = this.typerooms;
+    }
+    console.log(this.fullview);
 
     this._apiService.vacantroom(this.fullview).subscribe(add => {
       this._apiService.getRoomType().subscribe(list => {
-        console.log(list); this.typelist = list.data; const val = { type: 'all' }
+        console.log(list); this.typelist = list.data; 
+       
+        let gender='M';
+        if(this.hosteltype=='Girls'){
+          gender='F'
+        }
+      
+       
+        const val = {
+          type: this.typeroom,
+          gender:gender
+        }
         this._apiService.getreglist(val).subscribe(lists => {
           console.log(list);
           this.reglist = lists.data;
           this.popup2.hide();
           this.editpop();
+          const gs = {
+            hosteltype: this.hosteltype
+          }
+          this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
+            console.log(seats, 'seats test');
+            this.acSeats = seats.data.acseats;
+            this.NonacSeats = seats.data.nonacseats;
+            this.AacSeats = seats.data.Aacseats;
+            this.ANonacSeats = seats.data.Anonacseats;
+  
+          });
+
         });
 
       })
     });
   }
 
-  deletebookings() {
+  waitinglist() {
     const value = {
-      bid: this.bid
+      registrationid:this.regid
     }
-    this._apiService.deleteBooking(value).subscribe(deletes => {
+    this._apiService.waitinglist(value).subscribe(deletes => {
       this._apiService.getRoomType().subscribe(list => {
-        console.log(list); this.typelist = list.data; const val = { type: 'all' }
+        console.log(list); this.typelist = list.data; 
+      
+        let gender='M';
+        if(this.hosteltype=='Girls'){
+          gender='F'
+        }
+      
+       
+        const val = {
+          type: this.typeroom,
+          gender:gender
+        }
         this._apiService.getreglist(val).subscribe(lists => {
           console.log(list);
           this.reglist = lists.data;
           this.popup3.hide();
           this.delpop();
+          const gs = {
+            hosteltype: this.hosteltype
+          }
+          this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
+            console.log(seats, 'seats test');
+            this.acSeats = seats.data.acseats;
+            this.NonacSeats = seats.data.nonacseats;
+            this.AacSeats = seats.data.Aacseats;
+            this.ANonacSeats = seats.data.Anonacseats;
+  
+          });
         });
 
       })

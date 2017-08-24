@@ -1,0 +1,20 @@
+.nav-tabs, .nav-pills {
+    margin-bottom: 0px;
+}
+
+.nav-tabs {
+    border-bottom: 0px solid #dddddd;
+}
+.tab-content{
+    border: 1px solid #dddddd;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+    border-bottom-color: #ddd;
+}
+.tab-pane {
+    padding: 10px;
+}
+.li-color{
+    color: #34495e;
+    font-weight: bold;
+}

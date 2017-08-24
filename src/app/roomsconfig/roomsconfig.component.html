@@ -89,6 +89,9 @@
                       <mfDefaultSorter by="avlbeds">Avail Beds</mfDefaultSorter>
                     </th>
                     <th>
+                      <mfDefaultSorter by="">Filled Beds</mfDefaultSorter>
+                    </th>
+                    <th>
                       <mfDefaultSorter by="totbeds">Total Beds</mfDefaultSorter>
                     </th>
                     <th>
@@ -96,6 +99,9 @@
                     </th>
                     <th>
                       <mfDefaultSorter by="roomtype">Room Type</mfDefaultSorter>
+                    </th>
+                    <th>
+                      <mfDefaultSorter by="roomrent">Room Rent</mfDefaultSorter>
                     </th>
                     <th>
                       <mfDefaultSorter by="hosteltype">Hstl Type</mfDefaultSorter>
@@ -116,13 +122,15 @@
                     <td>{{i+1}}</td>
                     <td>{{dt.roomno}}</td>
                     <td>{{dt.avlbeds }} &nbsp;
-                      <a (mouseover)="view(dt)">
-                        <u> view </u>
-                      </a>
+                      <button [disabled]="dt.avlbeds<=0" (click)="view(dt)" class="btn btn-green btn-xs btn-square"><span tooltipPlacement="top" tooltip="view"><i class="fa fa-eye"></i></span></button>
+                    </td>
+                    <td>{{dt.totbeds-dt.avlbeds }} &nbsp;
+                      <button [disabled]="(dt.totbeds-dt.avlbeds)<=0" (click)="filllist(dt)" class="btn btn-green btn-xs btn-square"><span tooltipPlacement="top" tooltip="view"><i class="fa fa-eye"></i></span></button>
                     </td>
                     <td> {{dt.totbeds}}</td>
                     <td>{{dt.rcstatus}}</td>
                     <td>{{dt.roomtype}}</td>
+                    <td>{{dt.roomrent | currency:'INR':true}}</td>
                     <td>{{dt.hosteltype}}</td>
                     <td>{{dt.hostelid}}</td>
                     <td>{{dt.blockid}}</td>
@@ -168,192 +176,154 @@
 
   <form [formGroup]="newForm">
     <div class="form-horizontal">
-      <div class="form-group">
-        <label class="control-label col-md-4"> Room No : </label>
+      <div class="form-group col-md-12">
         <div class="col-md-4">
-          <input class="form-control" formControlName="roomno">
+          <label class="control-label"> Room No  </label>
+          <input type="text" class="form-control" placeholder="Enter Room No" formControlName="roomno">
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Total Beds : </label>
         <div class="col-md-4">
-          <input class="form-control" formControlName="totbeds">
+          <label class="control-label"> Total Beds  </label>
+          <input type="number" class="form-control" placeholder="Enter " formControlName="totbeds">
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Select Room Type : </label>
         <div class="col-md-4">
+          <label class="control-label"> Select Room Type  </label>
           <select formControlName="roomtype" class="form-control" (change)="getTypeof2($event)">
                      <option *ngFor="let item of typelist" value="{{item.type}}"> {{item.type}} </option>  
                   </select>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Select Hostel Type : </label>
         <div class="col-md-4">
+          <label class="control-label"> Select Hostel Type  </label>
           <select formControlName="hosteltype" class="form-control" (change)="getHstType($event)">
                      <option  value="Girls"> Girls </option>
                         <option  value="Boys"> Boys </option>    
                   </select>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Hostel Id : </label>
         <div class="col-md-4">
-          <input class="form-control" formControlName="hostelid">
+          <label class="control-label"> Hostel Id  </label>
+          <input type="text" class="form-control" placeholder="Enter Hostel Id" formControlName="hostelid">
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Block Id : </label>
         <div class="col-md-4">
-          <input class="form-control" formControlName="blockid">
+          <label class="control-label"> Block Id  </label>
+          <input type="text" class="form-control" placeholder="Enter Block Id" formControlName="blockid">
+        </div>
+        <div class="col-md-4">
+          <label class="control-label"> Room Rent  </label>
+          <input type="number" class="form-control" placeholder="Enter Room Rent" formControlName="roomrent">
         </div>
       </div>
     </div>
   </form>
 </popup>
 
-<popup #popup2 (confirmClick)="editRoom(editForm.value)" >
+<popup #popup2 (confirmClick)="editRoom(editForm.value)">
   <form [formGroup]="editForm">
     <div class="form-horizontal">
-      <div class="form-group">
-        <label class="control-label col-md-4"> Room No : </label>
-        <div class="col-md-4">
-          <input class="form-control" formControlName="roomno">
+      <div class="form-group col-md-12">
+        <div class=" col-md-4">
+          <label> Room No </label>
+          <input type="text" class="form-control" formControlName="roomno">
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Avail Beds : </label>
-        <div class="col-md-4">
-          <input class="form-control" formControlName="avlbeds">
+        <div class=" col-md-4">
+          <label> Avail Beds </label>
+          <input type="number" class="form-control" formControlName="avlbeds">
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Total Beds : </label>
         <div class="col-md-4">
-          <input class="form-control" formControlName="totbeds">
+          <label> Total Beds </label>
+          <input type="number" class="form-control" formControlName="totbeds">
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Room Status : </label>
         <div class="col-md-4">
+          <label> Room Status </label>
           <select formControlName="rcstatus" class="form-control">
-                   <option  value="available"> Available </option>
-                   <option value="filled"> Filled </option> 
-                  </select>
+                <option  value="available"> Available </option>
+                <option value="filled"> Filled </option> 
+          </select>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Select Room Type : </label>
         <div class="col-md-4">
+          <label> Select Room Type </label>
           <select formControlName="roomtype" class="form-control">
-                     <option *ngFor="let item of typelist" value="{{item.type}}"> {{item.type}} </option>  
-                  </select>
+             <option *ngFor="let item of typelist" value="{{item.type}}"> {{item.type}} </option>  
+          </select>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Select Hostel Type : </label>
         <div class="col-md-4">
+          <label> Room Rent </label>
+          <input type="number" class="form-control" formControlName="roomrent">
+        </div>
+        <div class="col-md-4">
+          <label> Select Hostel Type </label>
           <select formControlName="hosteltype" class="form-control">
-                     <option  value="Girls"> Girls </option>
-                        <option  value="Boys"> Boys </option>    
-                  </select>
+                    <option  value="Girls"> Girls </option>
+                    <option  value="Boys"> Boys </option>    
+               </select>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Hostel Id : </label>
-        <div class="col-md-4">
-          <input class="form-control" formControlName="hostelid">
+        <div class=" col-md-4">
+          <label> Hostel Id </label>
+          <input type="text" class="form-control" formControlName="hostelid">
         </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Block Id : </label>
-        <div class="col-md-4">
-          <input class="form-control" formControlName="blockid">
+        <div class=" col-md-4">
+          <label> Block Id </label>
+          <input type="text" class="form-control" formControlName="blockid">
         </div>
       </div>
     </div>
   </form>
 </popup>
 
-<popup #popup3 (confirmClick)="deletebookings()">
+<popup #popup3 (confirmClick)="deleteconfig()">
 
-  <h3>Are you sure to Delete this Room Type </h3>
+  <h3>Are you Sure to Delete this Room Permanently from {{hosteltype}} Hostel</h3>
 
 </popup>
 
-<popup #popup4>
-  <div class="col-md-6">
-    <h4>User Details</h4>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Detail</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Name</td>
-          <td>{{fullview.firstname}}</td>
-        </tr>
-        <tr>
-          <td>DOB</td>
-          <td>{{fullview.dob}}</td>
-        </tr>
-        <tr>
-          <td>Mobile</td>
-          <td>{{fullview.mobile}}</td>
-        </tr>
-        <tr>
-          <td>Email</td>
-          <td>{{fullview.email}}</td>
-        </tr>
-        <tr>
-          <td>Gender</td>
-          <td>{{fullview.gender}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="table-responsive col-md-6">
-    <h4>Parent Details </h4>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Detail</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Father Name</td>
-          <td>{{fullview.fname}}</td>
-        </tr>
-        <tr>
-          <td>Occupation</td>
-          <td>{{fullview.occupation}}</td>
-        </tr>
-        <tr>
-          <td>Mobile</td>
-          <td>{{fullview.parentmobile}}</td>
-        </tr>
-        <tr>
-          <td>Email</td>
-          <td>{{fullview.parentemail}}</td>
-        </tr>
-        <tr>
-          <td>Address</td>
-          <td>{{fullview.permanentaddress}}</td>
-        </tr>
-        <tr>
-          <td>Name</td>
-          <td>{{fullview.parentemail}}</td>
-        </tr>
-      </tbody>
+<popup #popup4 (confirmClick)="hide()">
+  <div class="col-md-12">
+    <h4>Available Beds List</h4>
 
+    <table id="employee" class="table table-striped table-bordered dt-responsive table-green nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th nowrap>Room No</th>
+          <th nowrap>Hosteltype</th>
+          <th nowrap>Bed No(s)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{roomno}}</td>
+          <td>{{hosteltype}}</td>
+          <td nowrap>{{bedlists.toString()}}</td>
+        </tr>
+      </tbody>
     </table>
   </div>
-  <button (click)="hide()" class="pull-right btn btn-info btn-square"> Close </button>
-  <div class="clearfix"></div>
+
+</popup>
+
+<popup #popup5 (confirmClick)="hide()">
+  <div class="col-md-12">
+    <h4>Available Beds List</h4>
+
+    <table id="employee" class="table table-striped table-bordered dt-responsive table-green nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th nowrap>Reg No</th>
+          <th nowrap>Room No</th>
+          <th nowrap>Bed No</th>
+          <th nowrap>Hostel Type</th>
+          <th nowrap>Room Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of filledlist">
+          <td>{{a.reg_no}}</td>
+          <td>{{a.roomno}}</td>
+          <td nowrap>{{a.bedno}}</td>
+          <td>{{a.hosteltype}}</td>
+          <td>{{a.roomtype}}</td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
 </popup>

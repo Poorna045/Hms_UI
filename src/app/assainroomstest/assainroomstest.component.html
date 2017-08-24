@@ -39,7 +39,7 @@
         <div class="portlet portlet-default">
           <div class="portlet-heading">
             <div class="portlet-title">
-              <h4> Assign Rooms Test</h4>
+              <h4> Assign Rooms</h4>
             </div>
             <!-- <div class="portlet-widgets">
               <i class="fa fa-plus-square" style="font-size:15px"></i> <a (click)="add()">Add Room</a>
@@ -62,7 +62,9 @@
                     </div>
                     <div class="col-md-4">
                       <label>Date of Birth</label>
-                      <input type="text" class="form-control" name="dateofbirth" formControlName="dateofbirth" required />
+                      <!-- <input type="text" class="form-control" name="dateofbirth" formControlName="dateofbirth" required /> -->
+                    <my-date-picker name="dateofbirth"  [options]="myDatePickerOptions"
+                    formControlName="dateofbirth" required></my-date-picker>
                     </div>
                     <div class="col-md-4">
                       <label>Gender</label>
@@ -106,12 +108,16 @@
                       <input type="text" class="form-control" name="parentemail" formControlName="parentemail" />
                     </div>
                     <div class="col-md-4">
+                      <label>Occupation</label>
+                      <input type="text" class="form-control" name="occupation" formControlName="occupation" />
+                    </div>
+                    <div class="col-md-4">
                       <label>Address</label>
-                      <textarea class="form-control" name="parentaddress" formControlName="parentaddress"></textarea>
+                      <textarea style="resize:vertical" class="form-control" name="parentaddress" formControlName="parentaddress"></textarea>
                     </div>
                     <!-- <div class="col-md-4">
                       <label>Permanent Address</label>
-                      <textarea class="form-control" name="permanentaddress" formControlName="permanentaddress"></textarea>
+                      <textarea style="resize:vertical" class="form-control" name="permanentaddress" formControlName="permanentaddress"></textarea>
                     </div> -->
                     <div class="clearfix"></div>
                     <div class="bottom-mrg">
@@ -135,11 +141,11 @@
                     </div>
                     <div class="col-md-4">
                       <label>Address</label>
-                      <textarea class="form-control" name="guardianaddress" formControlName="guardianaddress"></textarea>
+                      <textarea style="resize:vertical" class="form-control" name="guardianaddress" formControlName="guardianaddress"></textarea>
                     </div>
                     <!-- <div class="col-md-4">
                       <label>Permanent Address</label>
-                      <textarea class="form-control" name="guardianpermanentaddress" formControlName="guardianpermanentaddress"></textarea>
+                      <textarea style="resize:vertical" class="form-control" name="guardianpermanentaddress" formControlName="guardianpermanentaddress"></textarea>
                     </div> -->
                     <div class="clearfix"></div><br/>
                     <div class="col-md-4 pull-right text-right"><button type="submit" class="btn btn-default btn-sm btn-square" style="margin-right: 5px;">Submit</button><a (click)="back()" class="btn btn-primary btn-sm btn-square">Back</a></div>
@@ -154,7 +160,7 @@
                   <form [formGroup]="topForm1">
                     <div class="col-md-2">
                       <label class="control-label"> Search with : </label>
-                      <select formControlName="search" class="form-control" (change)="enableType($event)">
+                      <select formControlName="search" class="form-control" (change)="enableType($event)" required>
                         <option value="reg_no"> Reg No </option>
                         <option value="roomno"> Room No </option>  
                       </select>
@@ -179,7 +185,7 @@
                     <div class="col-md-2" *ngIf="roombox==true">
                       <label class="control-label">  Room No :</label>
                       <select formControlName="roomno" class="form-control" (change)="getbeds($event)">
-                        <option *ngFor="let item of roomslist" value="{{item.roomno}}"> {{item.roomno}} </option> 
+                        <option *ngFor="let item of roomslist" value="{{item.roomno}}"> {{item.roomno}} - {{item.roomtype}} </option> 
                       </select>
                     </div>
                     <div class="col-md-2" *ngIf="roombox==true">
@@ -347,7 +353,10 @@
                             </tr>
                             <tr>
                               <td width="150">Stud Name</td>
-                              <th>{{userdetails.studentname}}</th>
+                              <th>{{userdetails.studentname}} 
+                                <span *ngIf="userdetails.rstatus=='Allocated'" class="btn btn-success pull-right"  tooltipPlacement="top" tooltip="{{userdetails.rstatus}}">{{userdetails.rstatus | slice:0:2}}</span>
+                                <span *ngIf="userdetails.rstatus=='Accepted'" class="btn btn-info pull-right"  tooltipPlacement="top" tooltip="{{userdetails.rstatus}}">{{userdetails.rstatus | slice:0:2}}</span>
+                              </th>
                             </tr>
                             <tr>
                               <td>Reg No </td>
@@ -432,6 +441,10 @@
                             <td>Address</td>
                             <th> {{userdetails.guardianaddress}} </th>
                           </tr>
+                          <tr>
+                              <td>User Status</td>
+                              <th> {{userdetails.rstatus}} </th>
+                            </tr>
                         </table>
                       </div>
                     </table>
@@ -504,32 +517,32 @@
                         <div class="form-group">
                           <label class="control-label col-md-5"> Room No : </label>
                           <div class="col-md-4">
-                            <select formControlName="roomno" class="form-control" (change)="getbedss($event)">
-                          <option *ngFor="let item of roomslists" value="{{item.roomno}}"> {{item.roomno}} </option>  
+                            <select formControlName="roomno" class="form-control" (change)="getbedss($event)" required>
+                          <option *ngFor="let item of roomslists" (click)="goroomtype=item.roomtype" value="{{item.roomno}}"> {{item.roomno}} - {{item.roomtype}} </option>  
                         </select>
                           </div>
                         </div>
                         <div class="form-group">
                           <label class="control-label col-md-5"> Bed No : </label>
                           <div class="col-md-4">
-                            <select formControlName="bedno" class="form-control">
+                            <select formControlName="bedno" class="form-control" required>
                         <option *ngFor="let item of bedlists" value="{{item}}"> {{item}} </option>  
                       </select>
                           </div>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                           <label class="control-label col-md-5"> Room Type : </label>
                           <div class="col-md-4">
-                            <select formControlName="roomtype" class="form-control">
+                            <select formControlName="roomtype" class="form-control" required>
                           <option  value="AC"> AC </option>
                           <option value="Non-AC"> Non-AC </option> 
                         </select>
                           </div>
-                        </div>
+                        </div> -->
 
                       </div>
                       <button (click)="back()" class="btn btn-primary btn-square pull-right" style="margin-right: 5px;"> Back </button>&nbsp;
-                      <button class="btn btn-info btn-square pull-right" (click)="allocatenew(newForm.value)" style="margin-right: 5px;">Submit</button>
+                      <button class="btn btn-info btn-square pull-right" (click)="allocateroom(newForm.value)" style="margin-right: 5px;">Submit</button>
                       <div class="clearfix"></div><br>
                     </div>
 
@@ -692,9 +705,9 @@
     </form>
   </popup>
 
-  <popup #popup3 (confirmClick)="deletebookings()">
+  <popup #popup3 (confirmClick)="freetheroom()">
 
-    <h3>Are you sure to Delete this user from this Room {{ roomno }} </h3>
+    <h3>Are you sure to Delete this user from this Room {{ userdetails.roomno }}  and Bed No {{ userdetails.bedno }}</h3>
 
   </popup>
 

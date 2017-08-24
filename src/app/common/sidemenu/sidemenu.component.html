@@ -27,7 +27,7 @@
       <!-- end SIDE NAV SEARCH -->
       <!-- begin DASHBOARD LINK -->
       <li>
-        <a [ngClass]="{'active': (page=='dashboard')}" [routerLink]="['/dashboard']"><i class="fa fa-dashboard"></i> Dashboard</a>
+        <a style="background-color:#16a085" [ngClass]="{'active': (page=='dashboard')}" [routerLink]="['/dashboard']"><i class="fa fa-dashboard"></i> Dashboard</a>
       </li>
       <!-- end DASHBOARD LINK -->
       <!-- <li>
@@ -47,7 +47,7 @@
         <a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#hostel">
               <i class="fa fa-users"></i> Hostel <i class="fa fa-caret-down"></i>
           </a>
-        <ul class="collapse nav" id="hostel">
+        <ul class="nav" id="hostel">
           <li>
             <a [ngClass]="{'active': (page=='roomtype')}" [routerLink]="['/roomtype']">
                   <i class="fa fa-angle-double-right"></i> Room Types
@@ -62,6 +62,17 @@
             <a [ngClass]="{'active': (page=='registration')}" [routerLink]="['/registration']">
                   <i class="fa fa-angle-double-right"></i> Registration
               </a>
+          </li>
+
+          <!-- <li>
+            <a [ngClass]="{'active': (page=='complaints')}" [routerLink]="['/complaints']">
+                <i class="fa fa-angle-double-right"></i> Complaints
+            </a>
+          </li> -->
+          <li>
+            <a [ngClass]="{'active': (page=='complaintslist')}" [routerLink]="['/complaintslist']">
+                <i class="fa fa-angle-double-right"></i> Complaints List
+            </a>
           </li>
           <li>
             <a [ngClass]="{'active': (page=='feeconfig')}" [routerLink]="['/feeconfig']">
@@ -78,7 +89,7 @@
                   <i class="fa fa-angle-double-right"></i> Rooms Config
               </a>
           </li>
-             <li>
+          <!-- <li>
             <a [ngClass]="{'active': (page=='assignrooms')}" [routerLink]="['/assignrooms']">
                   <i class="fa fa-angle-double-right"></i> Assign Rooms
               </a>
@@ -87,12 +98,28 @@
             <a [ngClass]="{'active': (page=='changeroom')}" [routerLink]="['/changeroom']">
                   <i class="fa fa-angle-double-right"></i> Change Rooms
               </a>
-          </li>
-              <li>
+          </li> -->
+          <li>
             <a [ngClass]="{'active': (page=='assainroomstest')}" [routerLink]="['/assainroomstest']">
-                  <i class="fa fa-angle-double-right"></i> Assign Rooms test
+                  <i class="fa fa-angle-double-right"></i> Assign Rooms
               </a>
           </li>
+          <li>
+            <a [ngClass]="{'active': (page=='maintenancehistory')}" [routerLink]="['/maintenancehistory']">
+                  <i class="fa fa-angle-double-right"></i> Maintenance History
+              </a>
+          </li>
+          <!-- <li>
+            <a [ngClass]="{'active': (page=='maintenancepayment')}" [routerLink]="['/maintenancepayment']">
+                  <i class="fa fa-angle-double-right"></i> Maintenance Payment
+              </a>
+          </li> -->
+          <li>
+              <a [ngClass]="{'active': (page=='servicestype')}" [routerLink]="['/servicestype']">
+                    <i class="fa fa-angle-double-right"></i> Services Types
+                </a>
+            </li>
+
         </ul>
       </li>
       <!-- <li>

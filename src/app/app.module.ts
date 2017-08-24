@@ -15,7 +15,9 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToasterModule, ToasterService} from 'angular2-toaster';
 import {DataTableModule} from "angular2-datatable";
 import { MyDatePickerModule } from 'mydatepicker';
+import {TooltipModule} from "ng2-tooltip";
 import {PopupModule} from 'ng2-opd-popup';
+
 
 
 import { AppComponent } from './app.component';
@@ -34,6 +36,13 @@ import { RoomsconfigComponent } from './roomsconfig/roomsconfig.component';
 import { AssignroomsComponent } from './assignrooms/assignrooms.component';
 import { ChangeroomComponent } from './changeroom/changeroom.component';
 import { AssainroomstestComponent } from './assainroomstest/assainroomstest.component';
+import { RegistrationComponent } from "./registration/registration.component";
+import { ComplaintsComponent } from "./complaints/complaints.component";
+import { ComplaintslistComponent } from "./complaintslist/complaintslist.component";
+import { InstructionsComponent } from "./instructions/instructions.component";
+import { MaintenancepaymentComponent } from './maintenancepayment/maintenancepayment.component';
+import { MaintenancehistoryComponent } from './maintenancehistory/maintenancehistory.component';
+import { BilltypesComponent } from './billtypes/billtypes.component';
 
 
 @NgModule({
@@ -52,7 +61,14 @@ import { AssainroomstestComponent } from './assainroomstest/assainroomstest.comp
     RoomsconfigComponent,
     AssignroomsComponent,
     ChangeroomComponent,
-    AssainroomstestComponent
+    AssainroomstestComponent,
+    RegistrationComponent,
+    ComplaintsComponent,
+    ComplaintslistComponent,
+    InstructionsComponent,
+    MaintenancepaymentComponent,
+    MaintenancehistoryComponent,
+    BilltypesComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,7 +80,8 @@ import { AssainroomstestComponent } from './assainroomstest/assainroomstest.comp
      HttpModule,
      ReactiveFormsModule,
      DataTableModule,
-     MyDatePickerModule
+     MyDatePickerModule,
+     TooltipModule
   ],
   providers: [ AuthGuard,
     AuthenticationService,

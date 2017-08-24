@@ -1,0 +1,277 @@
+<toaster-container [toasterconfig]="toasterconfig">
+</toaster-container>
+
+
+<div id="wrapper">
+  <!-- begin TOP NAVIGATION -->
+  <app-header></app-header>
+  <!-- end TOP NAVIGATION -->
+  <!-- begin SIDE NAVIGATION -->
+  <app-sidemenu [page]="_apiService.page"></app-sidemenu>
+  <!-- end SIDE NAVIGATION -->
+  <!-- begin MAIN PAGE CONTENT -->
+  <div id="page-wrapper">
+    <div class="spl-content">
+      <!-- begin PAGE TITLE ROW -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="page-title">
+            <!--<h1>
+                Admin <small>Dashboard</small>
+              </h1>-->
+            <ol class="breadcrumb">
+              <li><i class="fa fa-dashboard"></i> <a [routerLink]="['/dashboard']">Dashboard</a>
+              </li>
+              <!--<li class="active">Blank Page</li>-->
+            </ol>
+          </div>
+        </div>
+        <!-- /.col-lg-12 -->
+      </div>
+      <!-- /.row -->
+      <!-- end PAGE TITLE ROW -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="portlet portlet-default">
+            <div class="portlet-heading">
+              <div class="portlet-title">
+                <h4>Notice!</h4>
+              </div>
+              <div class="portlet-widgets" *ngIf="utype=='adm'">
+                <i class="fa fa-plus-square" style="font-size:15px"></i> <a (click)="add()">Add New Notice</a>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="portlet-body">
+              <ul id="myTab" class="nav nav-tabs">
+                <li class="active"><a href="#notifications" data-toggle="tab"><i class="fa fa-chain-broken"></i> Notifications</a></li>
+                <li><a href="#instructions" data-toggle="tab"><i class="fa fa-th-large"></i> Instructions</a></li>
+                <li><a href="#upcomingevents" data-toggle="tab"><i class="fa fa-calendar"></i> Upcoming Events</a></li>
+              </ul>
+              <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade active in" id="notifications">
+                  <!-- <marquee scrollamount="1" scrolldelay="50" direction="up"> -->
+                  <ul style="margin-top: 10px;" *ngFor="let data of notification_detail">
+                    <li><span class="li-color">{{data.notificationdate}}
+                      <!-- {{data.notificationdate | date:'y MMM d j'}} -->
+                     </span>:
+                      <a href="#">
+                        <font>{{data.noticedescription}}</font>
+                      </a>
+                    </li><br>
+                  </ul>
+                  <!-- </marquee> -->
+                </div>
+                <div class="tab-pane fade" id="instructions">
+                  <ul style="margin-top: 10px;" *ngFor="let data of instruction_detail">
+                    <li><span class="li-color">{{data.instructiondate}} </span>:
+                      <a href="#">
+                        <font>{{data.instructiondescription}}</font>
+                      </a>
+                    </li><br>
+                  </ul>
+                </div>
+                <div class="tab-pane fade" id="upcomingevents">
+                  <ul style="margin-top: 10px;" *ngFor="let data of event_detail">
+                    <li><span class="li-color">{{data.eventtype}}</span><br/>
+                      <a href="#">
+                        <font>{{data.eventdate}} {{data.eventtime}}<br/> {{data.eventdescription}}</font>
+                      </a>
+                    </li><br>
+                    <!-- <li><span class="li-color">Funchep's "Food Social" DJs & Street Food Eats Party</span><br/>
+                      <a href="#">
+                        <font>November 23 at 5:00pm<br/> The New Parish in oakland, California</font>
+                      </a>
+                    </li><br> -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end DASHBOARD CIRCLE TILES -->
+    </div>
+    <!-- /.page-content -->
+  </div>
+  <!-- /#page-wrapper -->
+  <!-- end MAIN PAGE CONTENT -->
+</div>
+<!-- <popup #popup1>
+  <form [formGroup]="noticeForm" *ngIf="loading1==true" (confirmClick)="addNotice()">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <label class="control-label col-md-5"> Notification date : </label>
+        <div class="col-md-6">
+          <my-date-picker [options]="myDatePickerOptions" formControlName="notificationdate"></my-date-picker>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-5">Notification Description : </label>
+        <div class="col-md-7">
+          <textarea style="resize:vertical" class="form-control" formControlName="noticedescription" style="resize: vertical;"></textarea>
+        </div>
+      </div>
+      <hr/>
+      <div class="col-md-12">
+        <div class="form-group">
+          <a class="btn btn-danger btn-square pull-right" (click)=hide()>Cancel</a>
+          <a class="btn btn-default btn-square pull-right" style="margin-right: 5px;">Submit</a>
+          <a class="btn btn-green btn-square" (click)=open_inst()>Goto Instructions</a>
+        </div>
+      </div>
+    </div>
+  </form>
+  <form [formGroup]="noticeForm" *ngIf="loading2==true">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <label class="control-label col-md-5"> Instruction date : </label>
+        <div class="col-md-6">
+          <my-date-picker [options]="myDatePickerOptions" formControlName="instructiondate"></my-date-picker>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-5">Instruction Description : </label>
+        <div class="col-md-7">
+          <textarea style="resize:vertical" class="form-control" formControlName="instructiondescription" style="resize: vertical;"></textarea>
+        </div>
+      </div>
+      <hr/>
+      <div class="col-md-12">
+        <div class="form-group">
+          <a class="btn btn-danger btn-square pull-right" (click)=hide()>Cancel</a>
+          <a class="btn btn-default btn-square pull-right" style="margin-right: 5px">Submit</a>
+          <a class="btn btn-green btn-square" (click)=open_event()>Goto Event</a>
+        </div>
+      </div>
+    </div>
+  </form>
+  <form [formGroup]="noticeForm" *ngIf="loading3==true">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <label class="control-label col-md-5"> Event Type : </label>
+        <div class="col-md-6">
+          <input type="text" class="form-control" formControlName="eventtype">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-5"> Event date : </label>
+        <div class="col-md-6">
+          <my-date-picker [options]="myDatePickerOptions" formControlName="eventdate"></my-date-picker>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-5">Event Description : </label>
+        <div class="col-md-7">
+          <textarea style="resize:vertical" class="form-control" formControlName="eventdescription" style="resize: vertical;"></textarea>
+        </div>
+      </div>
+      <hr/>
+      <div class="col-md-12">
+        <div class="form-group">
+          <a class="btn btn-danger btn-square pull-right" (click)=hide()>Cancel</a>
+          <a class="btn btn-default btn-square pull-right" style="margin-right: 5px;">Submit</a>
+          <a class="btn btn-green btn-square" (click)=open_notice()>Go Back  </a>
+        </div>
+      </div>
+    </div>
+  </form>
+</popup> -->
+<popup #popup1>
+  <ul id="myTab1" class="nav nav-tabs" style="border-bottom: 1px solid #dddddd; margin-top: -25px;">
+    <li class="active"><a href="#notifications1" data-toggle="tab"><i class="fa fa-chain-broken"></i> Notifications</a></li>
+    <li><a href="#instructions1" data-toggle="tab"><i class="fa fa-th-large"></i> Instructions</a></li>
+    <li><a href="#upcomingevents1" data-toggle="tab"><i class="fa fa-calendar"></i> Upcoming Events</a></li>
+  </ul>
+  <div id="myTabContent1" class="tab-content" style="border: 0px solid #fff;">
+    <div class="tab-pane fade active in" id="notifications1">
+      <form [formGroup]="noticeForm">
+        <div class="form-horizontal">
+          <div class="form-group">
+            <label class="control-label col-md-5"> Notification date : </label>
+            <div class="col-md-6">
+              <my-date-picker [options]="myDatePickerOptions" formControlName="notificationdate"></my-date-picker>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-5">Notification Description : </label>
+            <div class="col-md-7">
+              <textarea style="resize:vertical" class="form-control" formControlName="noticedescription" style="resize: vertical;"></textarea>
+            </div>
+          </div>
+          <hr/>
+          <div class="col-md-12">
+            <div class="form-group">
+              <a class="btn btn-danger btn-square pull-right" (click)="hide()">Cancel</a>
+              <a class="btn btn-default btn-square pull-right" (click)="addNotification(noticeForm.value)" style="margin-right: 5px;">Submit</a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="tab-pane fade" id="instructions1">
+      <form [formGroup]="instructionsForm">
+        <div class="form-horizontal">
+          <div class="form-group">
+            <label class="control-label col-md-5"> Instruction date : </label>
+            <div class="col-md-6">
+              <my-date-picker [options]="myDatePickerOptions" formControlName="instructiondate"></my-date-picker>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-5">Instruction Description : </label>
+            <div class="col-md-7">
+              <textarea style="resize:vertical" class="form-control" formControlName="instructiondescription" style="resize: vertical;"></textarea>
+            </div>
+          </div>
+          <hr/>
+          <div class="col-md-12">
+            <div class="form-group">
+              <a class="btn btn-danger btn-square pull-right" (click)="hide()">Cancel</a>
+              <a class="btn btn-default btn-square pull-right" (click)="addInstructions()" style="margin-right: 5px">Submit</a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="tab-pane fade" id="upcomingevents1">
+      <form [formGroup]="eventForm">
+        <div class="form-horizontal">
+          <div class="form-group">
+            <label class="control-label col-md-4"> Event Type : </label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" formControlName="eventtype">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-4"> Event Date : </label>
+            <div class="col-md-6">
+              <my-date-picker [options]="myDatePickerOptions" formControlName="eventdate"></my-date-picker>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-4"> Event Time : </label>
+            <div class="col-md-6">
+              <select class="form-control" formControlName="eventtime">
+                <option *ngFor="let a of timings" value="{{a.value}}">{{a.title}}</option>        
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-4">Event Description : </label>
+            <div class="col-md-7">
+              <textarea style="resize:vertical" class="form-control" formControlName="eventdescription" style="resize: vertical;"></textarea>
+            </div>
+          </div>
+          <hr/>
+          <div class="col-md-12">
+            <div class="form-group">
+              <a class="btn btn-danger btn-square pull-right" (click)="hide()">Cancel</a>
+              <a class="btn btn-default btn-square pull-right" (click)="addEvents()" style="margin-right: 5px;">Submit</a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</popup>

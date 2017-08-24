@@ -58,7 +58,8 @@ export class BookingsComponent implements OnInit {
     enddate     : new FormControl(),
     description : new FormControl(),
     semstartdate: new FormControl(),
-    semenddate  : new FormControl()
+    semenddate  : new FormControl(),
+    hosteltype:new FormControl()
 
   });
   editForm = new FormGroup({
@@ -66,7 +67,8 @@ export class BookingsComponent implements OnInit {
     enddate     : new FormControl(),
     description : new FormControl(),
     semstartdate: new FormControl(),
-    semenddate  : new FormControl()
+    semenddate  : new FormControl(),
+    hosteltype:new FormControl()
 
   });
 
@@ -77,6 +79,7 @@ export class BookingsComponent implements OnInit {
   add() {
 
     this.newForm.reset()
+    this.newForm.patchValue({ hosteltype: 'Boys' });
 
     this.popup1.options = {
       header           : "Add New Booking",
@@ -86,8 +89,8 @@ export class BookingsComponent implements OnInit {
       showButtons      : true,                           // You can hide this in case you want to use custom buttons 
       confirmBtnContent: "Add",                          // The text on your confirm button 
       cancleBtnContent : "Cancel",                       // the text on your cancel button 
-      confirmBtnClass  : "btn btn-default btn-square",   // your class for styling the confirm button 
-      cancleBtnClass   : "btn btn-danger btn-square",    // you class for styling the cancel button 
+      confirmBtnClass  : "btn btn-info btn-sm btn-square",   // your class for styling the confirm button 
+      cancleBtnClass   : "btn btn-white btn-sm btn-square",    // you class for styling the cancel button 
       animation        : "fadeInDown",                   // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown' 
     };
 
@@ -102,6 +105,7 @@ export class BookingsComponent implements OnInit {
     this.editForm.patchValue({ semstartdate: { formatted: dt.semstartdate } });
     this.editForm.patchValue({ semenddate: { formatted: dt.semenddate } });
     this.editForm.patchValue({ description: dt.description });
+    this.editForm.patchValue({ hosteltype: dt.hosteltype });
 
     this.bid = dt.bid;
 
@@ -113,8 +117,8 @@ export class BookingsComponent implements OnInit {
       showButtons      : true,                          // You can hide this in case you want to use custom buttons 
       confirmBtnContent: "Edit",                        // The text on your confirm button 
       cancleBtnContent : "Cancel",                      // the text on your cancel button 
-      confirmBtnClass  : "btn btn-info btn-square",     // your class for styling the confirm button 
-      cancleBtnClass   : "btn btn-danger btn-square",   // you class for styling the cancel button 
+      confirmBtnClass  : "btn btn-info btn-sm btn-square",     // your class for styling the confirm button 
+      cancleBtnClass   : "btn btn-white btn-sm btn-square",   // you class for styling the cancel button 
       animation        : "fadeInDown",                  // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown' 
     };
 

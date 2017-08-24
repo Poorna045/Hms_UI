@@ -11,13 +11,20 @@ import { RoomsconfigComponent } from "./roomsconfig/roomsconfig.component";
 import { AssignroomsComponent } from "./assignrooms/assignrooms.component";
 import { ChangeroomComponent } from "./changeroom/changeroom.component";
 import { AssainroomstestComponent } from "./assainroomstest/assainroomstest.component";
+import { InstructionsComponent } from "./instructions/instructions.component";
+import { ComplaintsComponent } from "./complaints/complaints.component";
+import { ComplaintslistComponent } from "./complaintslist/complaintslist.component";
+import { RegistrationComponent } from "./registration/registration.component";
+import { MaintenancepaymentComponent } from "./maintenancepayment/maintenancepayment.component";
+import { MaintenancehistoryComponent } from "./maintenancehistory/maintenancehistory.component";
+import { BilltypesComponent } from "./billtypes/billtypes.component";
 
 const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'dashboard/:page', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'bookings', component: BookingsComponent, canActivate: [AuthGuard] },
-    { path: 'registration', component: StudregisComponent, canActivate: [AuthGuard] },
+    { path: 'registration', component: RegistrationComponent, canActivate: [AuthGuard] },
     { path: 'roomtype', component: RoomtypeComponent, canActivate: [AuthGuard] },
     { path: 'feeconfig', component: FeeconfigComponent, canActivate: [AuthGuard] },
     { path: 'allot', component: AllotComponent, canActivate: [AuthGuard] },
@@ -25,7 +32,13 @@ const appRoutes: Routes = [
     { path: 'assignrooms', component: AssignroomsComponent, canActivate: [AuthGuard] },
     { path: 'changeroom', component: ChangeroomComponent, canActivate: [AuthGuard] },
       { path: 'assainroomstest', component: AssainroomstestComponent, canActivate: [AuthGuard] },
-    { path: '', redirectTo: "login", pathMatch: "full" },
+      { path: 'instructions', component: InstructionsComponent, canActivate: [AuthGuard] }, 
+      { path: 'complaints', component: ComplaintsComponent, canActivate: [AuthGuard] },
+      { path: 'complaintslist', component: ComplaintslistComponent, canActivate: [AuthGuard] },
+      { path: 'maintenancehistory', component: MaintenancehistoryComponent, canActivate: [AuthGuard] },
+      { path: 'maintenancepayment', component: MaintenancepaymentComponent, canActivate: [AuthGuard] },
+      { path: 'servicestype', component: BilltypesComponent, canActivate: [AuthGuard] },
+    { path: '', redirectTo: "dashboard", pathMatch: "full" },
     { path: '**', redirectTo: 'dashboard', pathMatch: "full" }
 ];
 
