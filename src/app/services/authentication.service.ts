@@ -9,7 +9,7 @@ import { ApiService } from '../services/api.service';
 export class AuthenticationService {
   public userLoggedIn: boolean = false;
 
-  constructor(private http: Http, private _apiService: ApiService) { }
+  constructor(public http: Http, public _apiService: ApiService) { }
 
   login(username: string, password: string) {
     

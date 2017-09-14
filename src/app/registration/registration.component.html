@@ -1,4 +1,3 @@
-
 <toaster-container [toasterconfig]="toasterconfig">
 </toaster-container>
 
@@ -43,129 +42,72 @@
               <div class="clearfix"></div>
             </div>
             <div class="portlet-body">
-              <form [formGroup]="reg_Form" (ngSubmit)="addRegistrtion(reg_Form.value)">
-                <div class="bottom-mrg">
-                  <h3 class="bottom-line">Student Details</h3>
+              <form [formGroup]="reg_Form" >
+                <div class="form-horizontal" *ngIf="utype=='adm'">
+                  <div class="form-group">
+                    <div class="col-md-4" >
+                      <label>User Type :</label>
+                      <select class="form-control" name="utype" formControlName="utype" (change)="getuserdata($event.target.value)">
+                          <option value="std">Student</option>
+                          <option value="stf">Staff</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
-                <!-- <span class="line">
-                    <h2><span>Student Details</span></h2>
-                </span> -->
-                <div class="">
-                  <div class="col-md-4" *ngIf="utype=='adm'">
-                    <label>Register number</label>
-                    <input type="text" class="form-control" name="reg_no" formControlName="reg_no" required />
-                  </div>
-                  <div class="col-md-4" *ngIf="utype=='adm'">
-                    <label>Student Name</label>
-                    <input type="text" class="form-control" name="studentname" formControlName="studentname" required />
-                  </div>
-                  <div class="col-md-4" *ngIf="utype=='std'">
-                    <label>Student Name</label>
-                    <input type="text" class="form-control" name="studentname" formControlName="studentname" required disabled />
-                  </div>
-                  <div class="col-md-4">
-                    <label>Date of Birth</label>
-                    <my-date-picker name="dateofbirth"  [options]="myDatePickerOptions"
-                    formControlName="dateofbirth" required></my-date-picker>
-                    <!-- <input type="text" class="form-control" name="dateofbirth" formControlName="dateofbirth" required /> -->
-                  </div>
-                  <div class="col-md-4">
-                    <label>Gender</label>
-                    <select class="form-control" name="genderT" formControlName="genderT">
-                    <option value="M">Male</option>
-                    <option value="F">Female</option>
+                <div class="clearfix"></div><br/>
+                <div class="form-horizontal">
+                  <div class="form-group">
+                    <div class="col-md-4" *ngIf="utype=='adm'">
+                      <label>Register Number</label>
+                      <angular2-multiselect style="padding:6px !important ;" [(ngModel)]="showusers" [data]="studsData" class="form-control" name="reg_no" formControlName="reg_no"
+                        [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"></angular2-multiselect>
+                      <!-- <input type="text" class="form-control" name="reg_no" formControlName="reg_no" required /> -->
+                    </div>
+                    <div class="col-md-4" *ngIf="utype!='adm'">
+                      <label>Register Number</label>
+                      <input type="text" class="form-control" name="reg_no" disabled formControlName="reg_no" required />
+                    </div>
+                    <div class="col-md-4">
+                      <label>Student Name</label>
+                      <input type="text" class="form-control" name="studentname" formControlName="studentname" required disabled />
+                    </div>
+                    <div class="col-md-4">
+                      <label>Hostel Location</label>
+                      <select class="form-control" name="hostellocation" formControlName="hostellocation" (change)="hostelChange($event.target.value)"> 
+                        <option *ngFor="let types of selectedhosteldata" value="{{types.hid}}">{{types.hlocation}}</option>                        
+                        <option value="all">Any</option>
                     </select>
-                  </div>
-                  <div class="col-md-4">
-                    <label>PwD (Person with Disability)</label>
-                    <select class="form-control" name="pwd" formControlName="pwd">
-                    <option value="1">YES</option>
-                    <option value="0">NO</option>
+                    </div>
+                  </div>  <br>
+                   <div class="form-group">
+
+
+                    <div *ngIf="hlpriority">
+                    <div class="col-md-4">
+                      <label>Location Priority</label>
+                      <select class="form-control" name="locationpriority" formControlName="locationpriority">
+                        <option *ngFor="let types of selectedhosteldata" value="{{types.hid}}">{{types.hlocation}}</option>
+                      </select>
+                    </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label>Room Type</label>
+                      <select class="form-control" name="roomtype" formControlName="roomtype" (change)="RoomChange($event)">
+                      <option *ngFor="let types of roomType" value="{{types.typeid}}">{{types.type}}</option>
+                      <option value="all">Any </option>
                   </select>
-                  </div>
-                  <div class="col-md-4">
-                    <label>Distance B/W House & Hostel(Kms)</label>
-                    <input type="text" class="form-control" name="distance" formControlName="distance" />
-                  </div>
-                  <div class="col-md-4">
-                    <label>Room Type</label>
-                    <select class="form-control" name="roomtype" formControlName="roomtype" (change)="RoomChange($event)">
-                      <option *ngFor="let types of roomType" value="{{types.type}}">{{types.type}}</option>
-                      <option value="all">All </option>
-                  </select>
-                  </div>
-                  <div class="col-md-4" *ngIf="priority">
-                    <label>Priority</label>
-                    <select class="form-control" name="priority" formControlName="priority">
-                      <option *ngFor="let types of roomType" value="{{types.type}}">{{types.type}}</option>
+                    </div>
+                    <div *ngIf="priority">
+                    <div class="col-md-4">
+                      <label>Room Priority</label>
+                      <select class="form-control" name="typepriority" formControlName="typepriority">
+                      <option *ngFor="let types of roomType" value="{{types.typeid}}">{{types.type}}</option>
                     </select>
+                    </div>
+                    </div>
+                    <div class="clearfix"></div><br>
+                    <div class="col-md-4 pull-right text-right"><button (click)="addRegistrtion(reg_Form.value)" class="btn btn-default btn-sm btn-square" style="margin-right: 5px;">Submit</button><button (click)="cancel()" class="btn btn-danger btn-sm btn-square">Cancel</button></div>
                   </div>
-                  <div class="clearfix"></div>
-                  <div class="bottom-mrg">
-                    <h3 class="bottom-line">Parent Info</h3>
-                  </div>
-                  <div class="col-md-4">
-                    <label>Father Full Name</label>
-                    <input type="text" class="form-control" name="fathername" formControlName="fathername" />
-                  </div>
-                  <!-- <div class="col-md-4">
-                  <label>Relation</label>
-                  <input type="text" class="form-control"/>
-                </div> -->
-                  <div class="col-md-4">
-                    <label>Occupation</label>
-                    <input type="text" class="form-control" name="occupation" formControlName="occupation" />
-                  </div>
-                  <!-- <div class="col-md-4">
-                  <label>Income</label>
-                  <input type="text" class="form-control"/>
-                </div> -->
-                  <div class="col-md-4">
-                    <label>Mobile.No</label>
-                    <input type="text" class="form-control" name="parentmobile" formControlName="parentmobile" />
-                  </div>
-                  <div class="col-md-4">
-                    <label>Email-ID</label>
-                    <input type="text" class="form-control" name="parentemail" formControlName="parentemail" />
-                  </div>
-                  <div class="col-md-4">
-                    <label>Address</label>
-                    <textarea style="resize:vertical" class="form-control" name="parentaddress" formControlName="parentaddress"></textarea>
-                  </div>
-                  <div class="col-md-4">
-                    <label>Permanent Address</label>
-                    <textarea style="resize:vertical" class="form-control" name="permanentaddress" formControlName="permanentaddress"></textarea>
-                  </div>
-                  <div class="clearfix"></div>
-                  <div class="bottom-mrg">
-                    <h3 class="bottom-line">Nearest Contact</h3>
-                  </div>
-                  <div class="col-md-4">
-                    <label>Name</label>
-                    <input type="text" class="form-control" name="guardianname" formControlName="guardianname" />
-                  </div>
-                  <div class="col-md-4">
-                    <label>Relation</label>
-                    <input type="text" class="form-control" name="guardianrelation" formControlName="guardianrelation" />
-                  </div>
-                  <div class="col-md-4">
-                    <label>Mobile.No</label>
-                    <input type="text" class="form-control" name="guardianmobile" formControlName="guardianmobile" />
-                  </div>
-                  <div class="col-md-4">
-                    <label>Email-ID</label>
-                    <input type="text" class="form-control" name="guardianemail" formControlName="guardianemail" />
-                  </div>
-                  <div class="col-md-4">
-                    <label>Address</label>
-                    <textarea style="resize:vertical" class="form-control" name="guardianaddress" formControlName="guardianaddress"></textarea>
-                  </div>
-                  <div class="col-md-4">
-                    <label>Permanent Address</label>
-                    <textarea style="resize:vertical" class="form-control" name="guardianpermanentaddress" formControlName="guardianpermanentaddress"></textarea>
-                  </div>
-                  <div class="clearfix"></div><br/>
-                  <div class="col-md-4 pull-right text-right"><button class="btn btn-default btn-sm btn-square" style="margin-right: 5px;">Submit</button><a class="btn btn-danger btn-sm btn-square">Cancel</a></div>
                 </div>
               </form>
               <div class="clearfix"></div>

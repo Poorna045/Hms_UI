@@ -9,7 +9,7 @@ import { FormGroup, FormControl } from "@angular/forms";
 })
 export class FeeconfigComponent implements OnInit {
 
-  constructor(private _apiService:ApiService) { }
+  constructor(public _apiService:ApiService) { }
 
   ngOnInit() {
     this._apiService.page = 'feeconfig';

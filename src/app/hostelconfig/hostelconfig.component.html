@@ -1,0 +1,252 @@
+<toaster-container [toasterconfig]="toasterconfig">
+</toaster-container>
+
+<div id="wrapper">
+  <!-- begin TOP NAVIGATION -->
+  <app-header></app-header>
+  <!-- end TOP NAVIGATION -->
+
+  <!-- begin SIDE NAVIGATION -->
+  <app-sidemenu [page]="_apiService.page"></app-sidemenu>
+  <!-- end SIDE NAVIGATION -->
+
+  <!-- begin MAIN PAGE CONTENT -->
+  <div id="page-wrapper">
+
+    <div class="spl-content">
+
+      <!-- begin PAGE TITLE ROW -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="page-title">
+            <!--<h1>
+              Admin <small>Dashboard</small>
+            </h1>-->
+            <ol class="breadcrumb">
+              <li><i class="fa fa-dashboard"></i> <a [routerLink]="['/dashboard']">Dashboard</a>
+              </li>
+              <!--<li class="active">Blank Page</li>-->
+            </ol>
+          </div>
+        </div>
+        <!-- /.col-lg-12 -->
+      </div>
+      <!-- /.row -->
+      <!-- end PAGE TITLE ROW -->
+      <div class="row">
+
+        <div class="portlet portlet-default">
+          <div class="portlet-heading">
+            <div class="portlet-title">
+              <h4> Hostel Configuration </h4>
+            </div>
+            <div class="portlet-widgets">
+              <i class="fa fa-plus-square" style="font-size:15px"></i> <a (click)="add()">Add New</a>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="portlet-body">
+            <form #form="ngForm">
+              <table id="employee" [mfData]="typelist | dataFilter : filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy"
+                [(mfSortOrder)]="sortOrder" class="table table-striped table-bordered dt-responsive nowrap table-hover table-green"
+                cellspacing="0" width="100%">
+                <thead>
+                  <tr>
+                    <th>
+                      <mfDefaultSorter by="">#</mfDefaultSorter>
+                    </th>
+                    <th>
+                      <mfDefaultSorter by="hostelname">Hostel Name</mfDefaultSorter>
+                    </th>
+                    <th>
+                      <mfDefaultSorter by="hosteltype">Hostel type</mfDefaultSorter>
+                    </th>
+                    <th>
+                      <mfDefaultSorter by="floors">Floors</mfDefaultSorter>
+                    </th>
+                    <th>
+                      <mfDefaultSorter by="hlocation">Location</mfDefaultSorter>
+                    </th>
+                    <!-- <th colspan="2" style="text-align:center">
+                      <mfDefaultSorter by="status">Status</mfDefaultSorter>
+                    </th> -->
+                    <th style="text-align:center">
+                      <mfDefaultSorter by="rcstatus">Action</mfDefaultSorter>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="mf.data.length != 0">
+                  <tr *ngFor="let dt of mf.data; let i=index;">
+                    <td>{{i+1}}</td>
+                    <td>{{dt.hostelname}}</td>
+                    <td> {{dt.hosteltype}}</td>
+                    <td>{{dt.floors}}</td>
+                    <td>{{dt.hlocation}}</td>
+                    <!-- <td style="text-align:center"> <button [disabled]="dt.hstatus=='enable'" (click)="statusUP('enable')" class="btn btn-success btn-xs btn-square">Enable</button>&nbsp;</td>
+                    <td style="text-align:center"><button [disabled]="dt.hstatus=='disable'" (click)="statusUP('disable')" class="btn btn-warning btn-xs btn-square">Disable</button></td> -->
+                    <td style="text-align:center">
+                      <a (click)="edit(dt)" class="btn btn-info btn-xs btn-square"><i class="fa fa-pencil"></i></a>&nbsp;
+                      <a (click)="delete(dt)" class="btn btn-danger btn-xs btn-square"><i class="fa fa-trash"></i></a></td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="mf.data.length == 0">
+                  <tr rowspan="2">
+                    <td colspan="14">
+                      <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="14">
+                      <mfBootstrapPaginator [rowsOnPageSet]="[5,10,12]"></mfBootstrapPaginator>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </form>
+
+          </div>
+        </div>
+
+
+      </div>
+      <!-- end DASHBOARD CIRCLE TILES -->
+
+    </div>
+    <!-- /.page-content -->
+
+  </div>
+  <!-- /#page-wrapper -->
+  <!-- end MAIN PAGE CONTENT -->
+
+</div>
+
+<popup #popup1 (confirmClick)="addhostel(newForm.value)">
+  <form [formGroup]="newForm">
+    <div class="form-horizontal">
+      <div class="col-md-12">
+        <div class="form-group">
+          <div class="col-md-6">
+            <label> Hostel Name  </label>
+            <input type="text" class="form-control" placeholder="Enter Hostel Name" formControlName="hostelname">
+          </div>
+          <div class="col-md-6">
+            <label> Hostel Type  </label>
+            <select formControlName="hosteltype" class="form-control">
+              <option  value="Boys"> Boys </option>    
+              <option  value="Girls"> Girls </option>  
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-6">
+            <label> Floors </label>
+            <input type="number" class="form-control" placeholder="Enter Number" formControlName="floors">
+          </div>
+          <div class="col-md-6">
+            <label> Location </label>
+            <input type="text" class="form-control" placeholder="Enter Location" formControlName="hlocation">
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</popup>
+
+<popup #popup2>
+  <form [formGroup]="editForm">
+      <div class="form-horizontal">
+          <div class="col-md-12">
+            <div class="form-group">
+              <div class="col-md-6">
+                <label> Hostel Name  </label>
+                <input type="text" class="form-control" placeholder="Enter Hostel Name" formControlName="hostelname">
+              </div>
+              <div class="col-md-6">
+                <label> Hostel Type  </label>
+                <select formControlName="hosteltype" class="form-control">
+                  <option  value="Boys"> Boys </option>    
+                  <option  value="Girls"> Girls </option>  
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-6">
+                <label> Floors </label>
+                <input type="number" class="form-control" placeholder="Enter Number" formControlName="floors">
+              </div>
+              <div class="col-md-6">
+                <label> Location </label>
+                <input type="text" class="form-control" placeholder="Enter Location" formControlName="hlocation">
+              </div>
+            </div>
+          </div>
+        </div>
+    <button (click)="hide()" class="pull-right btn btn-white btn-sm btn-square"> Cancel </button>
+    <button (click)="editHostel(editForm.value)" class="pull-right btn btn-info btn-sm btn-square" style="margin-right:5px;"> Edit </button>&nbsp;
+    <div class="clearfix"></div>
+  </form>
+</popup>
+
+<popup #popup3 (confirmClick)="deleteconfig()">
+
+  <h3>Are you Sure to Delete this Hostel Permanently ?</h3>
+
+</popup>
+
+<popup #popup4 (confirmClick)="hide()">
+  <div class="col-md-12">
+    <h4>Beds Available</h4>
+
+    <table id="employee" class="table table-striped table-bordered dt-responsive table-green nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th nowrap>Room No</th>
+          <th nowrap>Hosteltype</th>
+          <th nowrap>Bed No(s)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{roomno}}</td>
+          <td>{{hosteltype}}</td>
+          <td nowrap>{{bedlists.toString()}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</popup>
+
+<popup #popup5 (confirmClick)="hide()">
+  <div class="col-md-12">
+    <h4>Occupancy Status</h4>
+
+    <table id="employee" class="table table-striped table-bordered dt-responsive table-green nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th nowrap>Reg No</th>
+          <th nowrap>Name</th>
+          <th nowrap>Room No</th>
+          <th nowrap>Bed No</th>
+          <th nowrap>Hostel Type</th>
+          <th nowrap>Room Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of filledlist">
+          <td>{{a.reg_no}}</td>
+          <td nowrap>{{a.studentname}}</td>
+          <td>{{a.roomno}}</td>
+          <td nowrap>{{a.bedno}}</td>
+          <td>{{a.hosteltype}}</td>
+          <td>{{a.roomtype}}</td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+</popup>

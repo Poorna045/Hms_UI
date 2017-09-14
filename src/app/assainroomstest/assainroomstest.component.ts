@@ -12,9 +12,13 @@ import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
   styleUrls: ['./assainroomstest.component.css']
 })
 export class AssainroomstestComponent implements OnInit {
+  rcid = '';
+  sroomno = '';
+  shid = '';
+  usertype = '';
   model: { day: number; month: number; year: number; };
   goroomtype: any;
-
+  hostelsdata = [];
   enablebuttons = false;
   roomslists = [];
   bedlists = [];
@@ -30,33 +34,42 @@ export class AssainroomstestComponent implements OnInit {
   showEditForm = false;
 
   userdetails = {
-    rid: '',
-    dateofbirth:'',
-    studentname: '',
+    firstname: '',
     reg_no: '',
     dob: '',
-    distance: '',
     college: '',
-    genderT: '',
+    department: '',
+    designation: '',
     branch: '',
     year: '',
-    pwd: '',
+    course: '',
+    section: '',
+    gender: '',
+    email: '',
+    mobile: '',
+    dp: '',
+    living_status: '',
+    scholarship_status: '',
+    staff_child: '',
+    father_income: '',
+    mother_income: '',
     fathername: '',
-    parentmobile: '',
-    parentemail: '',
     mothername: '',
-    parentaddress: '',
-    guardianname: '',
-    guardianrelation: '',
-    guardianmobile: '',
-    guardianemail: '',
-    guardianaddress: '',
+    parent_address: '',
+    bloodgroup: '',
+    disability: '',
+    hostelname: '',
+    hosteltype: '',
+    hlocation: '',
     roomno: '',
+    rcid: '',
     bedno: '',
     type: '',
-    blockid: '',
-    hostelid: '',
-    rstatus:''
+    floorno: '',
+    distance: '',
+    registereddate: '',
+    rstatus: '',
+    utype: ''
   };
 
 
@@ -69,7 +82,7 @@ export class AssainroomstestComponent implements OnInit {
     pwd: new FormControl(),
     distance: new FormControl(),
     roomtype: new FormControl(),
-    // occupation                : new FormControl(),
+    mothername: new FormControl(),
     fathername: new FormControl(),
     occupation: new FormControl(),
     parentmobile: new FormControl(),
@@ -113,26 +126,22 @@ export class AssainroomstestComponent implements OnInit {
   bookingslist = [];
 
 
-
-  topForm1 = new FormGroup({
-    search: new FormControl(),
-    hosteltype: new FormControl()
-
-  });
   topForm = new FormGroup({
     reg_no: new FormControl(),
-    roomno: new FormControl(),
-    bedno: new FormControl()
+    utype: new FormControl(),
 
   });
+
   newForm = new FormGroup({
-    roomno: new FormControl(),
+    hid: new FormControl(),
+    rcid: new FormControl(),
     hosteltype: new FormControl(),
     bedno: new FormControl(),
     reg_no: new FormControl(),
     // roomtype: new FormControl()
 
   });
+
   editForm = new FormGroup({
     roomno: new FormControl(),
     avlbeds: new FormControl(),
@@ -156,14 +165,14 @@ export class AssainroomstestComponent implements OnInit {
   public toasterService: ToasterService;
   constructor(private _router: Router,
     private _route: ActivatedRoute,
-    private _apiService: ApiService,
+    public _apiService: ApiService,
     private fb: FormBuilder,
     private popup: Popup,
     toasterService: ToasterService) {
     this.toasterService = toasterService;
   }
 
-  private myDatePickerOptions: IMyDpOptions = {
+  public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'yyyy-mm-dd'
   };
@@ -186,50 +195,48 @@ export class AssainroomstestComponent implements OnInit {
 
   }
 
-  allocateroom(value){
-value['reg_no']=this.userdetails.reg_no;
-value['hsttype']=this.goroomtype;
+  allocateroom(value) {
+    value['reg_no'] = this.userdetails.reg_no;
+    value['utype'] = this.usertype;
+    value['prevrcid'] = this.userdetails.rcid
     console.log(value);
 
-this._apiService.allocateRoom(value).subscribe(allow=>{
-  console.log(allow);
-  this.submit(value);
+    this._apiService.allocateRoom(value).subscribe(allow => {
+      console.log(allow);
+      this.submit(value);
 
-this.back();
+      this.back();
 
-});
+    });
 
   }
 
-  searchwith($event) {
-    this.searchval = $event.target.value;
-    console.log($event.target.value);
-
-    if ($event.target.value == 'roomno') {
-      this.searchbox = false;
-      this.roombox = true;
-    } else {
-      this.roombox = false;
-      this.searchbox = true;
-    }
-  }
-
-  getRooms() {
+  getRooms(event) {
     this.roomslists = [];
-
-    if (this.userdetails.genderT == 'M') {
-      this.hsttypes = 'Boys';
-    }
-    else {
-      this.hsttypes = 'Girls';
-    }
+    this.bedlists = []
+    this.shid = event;
+    let obj = this.hostelsdata.find(o => o.hid === event);
+    this.newForm.patchValue({
+      hid: event,
+      hosteltype: obj.hosteltype
+    });
+    this.shid = event;
+    // getbedss()
 
     const value = {
-      hosteltype: this.hsttypes
+      hid: event
     }
     this._apiService.getAVLRoomsList(value).subscribe(rblist => {
       console.log(rblist);
       this.roomslists = rblist.data;
+      if (this.roomslists.length > 0) {
+        this.newForm.patchValue({
+          rcid: this.roomslists[0].rcid
+        });
+
+        this.getbedss(this.roomslists[0].rcid);
+      }
+
 
     });
   }
@@ -246,6 +253,11 @@ this.back();
     this._apiService.getRoomsList(val).subscribe(lists => {
       console.log(lists);
       this.roomsdata = lists.data;
+
+      this.newForm.patchValue({
+        hid: this.roomsdata[0].hid,
+        hosteltype: this.roomsdata[0].type
+      });
     });
   }
 
@@ -255,111 +267,57 @@ this.back();
     } else {
       this.showtype = false;
     }
-    this.roombox=false;
-    this.searchbox=false;
+    this.roombox = false;
+    this.searchbox = false;
   }
 
   submit(value) {
-    console.log(value, this.searchval);
+    console.log(value, 'value test');
     this.nobed = false;
-    if (this.searchval == 'roomno') {
-      this.roomval = value.roomno;
+    this.submitreg_no = value.reg_no;
+    this.usertype = value.utype;
+    value['type'] = this.hsttype;
+    this._apiService.getuserdetailsbyid(value).subscribe(lis => {
+      console.log(lis, 'user list test');
+      if (lis.data != null) {
 
-      this.bedval = value.bedno;
+        if (lis.data.firstname == null) {
+          this.shownodetails = true;
+          this.shownoroom = false;
+          this.invaliduser = false;
+          this.showdetails = false;
+          this.enableform = false;
+        } else if (lis.data.bedno == null) {
 
-      value['type'] = this.hsttype;
-      this._apiService.getuserdetailsbybedno(value).subscribe(userl => {
-
-        console.log(userl.data);
-
-        if (userl.data != null) {
-       
-
-          this.userdetails = userl.data;
+          this.nobed = true;
+          this.shownoroom = true;
+          this.shownodetails = false;
+          this.invaliduser = false;
+          this.showdetails = true;
+          this.enableform = false;
+          this.userdetails = lis.data;
+        } else {
+          this.userdetails = lis.data;
+          this.shownodetails = false;
           this.invaliduser = false;
           this.shownoroom = false;
-          this.enableform = false;
-          this.shownodetails = false;
           this.showdetails = true;
-          this.enablebuttons = true;
-        } else {
-          this.invaliduser = true;
-          this.shownoroom = false;
           this.enableform = false;
-          this.shownodetails = false;
-          this.showdetails = false;
-          this.enablebuttons = false;
         }
-        const value = {
-          hosteltype: this.hsttype
-        }
-this.roomslist=[];
-        this._apiService.getTOTRoomsList(value).subscribe(rblist => {
-          console.log(rblist);
-          this.roomslist = rblist.data;
-   this.getRooms();
-        });
-      });
-    } else {
-      this.submitreg_no = value.reg_no;
-       value['type'] = this.hsttype;
-      this._apiService.getuserdetailsbyid(value).subscribe(lis => {
-        console.log(lis);
-        if (lis.data != null) {
-        
-          if (lis.data.studentname == null) {
-            this.shownodetails = true;
-            this.shownoroom = false;
-            this.invaliduser = false;
-            this.showdetails = false;
-            this.enableform = false;
-          } else if (lis.data.bedno == null) {
+        this.enablebuttons = true;
+      } else {
+        this.invaliduser = true;
+        this.shownoroom = false;
+        this.shownodetails = false;
+        this.showdetails = false;
+        this.enableform = false;
+        this.enablebuttons = false;
+      }
 
-            this.nobed = true;
-            this.shownoroom = true;
-            this.shownodetails = false;
-            this.invaliduser = false;
-            this.showdetails = true;
-            this.enableform = false;
-            this.userdetails = lis.data;
-          } else {
-            this.userdetails = lis.data;
-            this.shownodetails = false;
-            this.invaliduser = false;
-            this.shownoroom = false;
-            this.showdetails = true;
-            this.enableform = false;
-          }
-          this.enablebuttons = true;
-        } else {
-          this.invaliduser = true;
-          this.shownoroom = false;
-          this.shownodetails = false;
-          this.showdetails = false;
-          this.enableform = false;
-          this.enablebuttons = false;
-        }
+      // this.getRooms();
+      console.log(this.userdetails, lis.data);
 
-  this.getRooms();
-        console.log(this.userdetails, lis.data);
-
-      });
-    }
-
-
-    // this.roomtype    = value.roomtype;
-    // this.hosteltype  = value.hosteltype;
-    // this._apiService.getRoomType().subscribe(list => {
-    //   console.log(list);
-    //   this.typelist = list.data;
-
-    //   const val = { rtype: value.roomtype, htype: value.hosteltype }
-
-    //   this._apiService.getRoomsList(val).subscribe(lists => {
-    //     console.log(lists);
-    //     this.roomsdata = lists.data;
-    //   });
-    // });
+    });
 
   }
 
@@ -395,13 +353,13 @@ this.roomslist=[];
       this.shownodetails = false;
       this.invaliduser = false;
       console.log('ifs');
-      
+
     } else {
       this.shownoroom = false;
       this.shownodetails = false;
       this.invaliduser = false;
       console.log('elses');
-      
+
     }
   }
   click() {
@@ -410,24 +368,40 @@ this.roomslist=[];
     this.shownoroom = true;
     this.enablebuttons = false;
 
-if(this.userdetails.genderT=='M'){
-  this.newForm.patchValue({
-    roomno: '',
-    hosteltype: 'Boys',
-    bedno: '',
-    reg_no: '',
-    roomtype: ''
-  });
- 
-}else if(this.userdetails.genderT=='F'){
-  this.newForm.patchValue({
-    roomno: '',
-    hosteltype: 'Girls',
-    bedno: '',
-    reg_no: '',
-    roomtype: ''
-  });
-}
+    this._apiService.gethostelconfig().subscribe(list => {
+      console.log(list);
+      if (this.userdetails.gender=='M') {
+        this.hostelsdata = list.data.filter(function (obj) {
+          return obj.hosteltype == 'Boys';
+        });
+      }else if (this.userdetails.gender=='F') {
+        this.hostelsdata = list.data.filter(function (obj) {
+          return obj.hosteltype == 'Girls';
+        });
+      }
+     
+      
+
+      this.getRooms(this.hostelsdata[0].hid);
+    });
+    // if (this.userdetails.gender == 'M') {
+    //   this.newForm.patchValue({
+    //     roomno: '',
+    //     hosteltype: 'Boys',
+    //     bedno: '',
+    //     reg_no: '',
+    //     roomtype: ''
+    //   });
+
+    // } else if (this.userdetails.gender == 'F') {
+    //   this.newForm.patchValue({
+    //     roomno: '',
+    //     hosteltype: 'Girls',
+    //     bedno: '',
+    //     reg_no: '',
+    //     roomtype: ''
+    //   });
+    // }
 
   }
 
@@ -437,7 +411,7 @@ if(this.userdetails.genderT=='M'){
 
     const val = {
       hosteltype: this.hsttype,
-      roomno: this.roomno
+      rcid: this.roomno
     }
 
     this._apiService.getbedslistbyroomno(val).subscribe(blist => {
@@ -463,51 +437,55 @@ if(this.userdetails.genderT=='M'){
 
   getbedss(event) {
     // this.goroomtype=roomtyp
-    console.log(event.target.value);
-    this.roomno = event.target.value;
+    console.log(event);
+    this.rcid = event
     this.bedlist = [];
 
     const val = {
-      hosteltype: this.hsttypes,
-      roomno: this.roomno
+      hostelid: this.shid,
+      rcid: event
     }
+    this.bedlists = [];
 
     this._apiService.getbedslistbyroomno(val).subscribe(blist => {
       console.log(blist);
+      if (blist.data.length > 0) {
 
-      let totbeds = blist.data[0].totbeds;
-      console.log(totbeds, 'totbeds');
 
-      var beds = [];
-      var check = 0;
-      let bed = 0;
+        let totbeds = blist.data[0].totbeds;
+        console.log(totbeds, 'totbeds');
 
-      for (var c = 1; c <= totbeds; c++) {
-        beds.push(c);
-      }
+        var beds = [];
+        var check = 0;
+        let bed = 0;
 
-      if (blist.data[0].rid) {
-        console.log('if test');
-        for (var j = 0; j < blist.data.length; j++) {
-          for (var i = 0; i < beds.length; i++) {
-
-            if (blist.data[j].bedno == beds[i]) {
-              beds.splice(i, 1);
-              break;
-            }
-
-          }
+        for (var c = 1; c <= totbeds; c++) {
+          beds.push(c);
         }
-        this.bedlists = beds;
+
+        if (blist.data[0].rid) {
+
+          console.log('if test');
+          for (var j = 0; j < blist.data.length; j++) {
+            for (var i = 0; i < beds.length; i++) {
+
+              if (blist.data[j].bedno == beds[i]) {
+                beds.splice(i, 1);
+                break;
+              }
+
+            }
+          }
+          this.bedlists = beds;
+        }
+        else {
+          console.log('else test');
+          this.bedlists = beds;
+        }
+
+
+        console.log(beds, this.bedlist);
       }
-      else {
-        console.log('else test');
-        this.bedlists = beds;
-      }
-
-
-      console.log(beds, this.bedlist);
-
 
     });
   }
@@ -534,46 +512,38 @@ if(this.userdetails.genderT=='M'){
   @ViewChild('popup4') popup4: Popup;
 
 
-EditRegistrtion(value){
+  // EditRegistrtion(value) {
 
-value['registrationid']=this.userdetails.rid;
-console.log(value,'skj',this.userdetails.rid);
-this._apiService.editStudDetails(value).subscribe(editDet=>{
-console.log(editDet);
-const val={}; 
-val['roomno']=this.roomval;
-val['bedno']=this.bedval;
-val['reg_no']=this.userdetails.reg_no;
-this.submit(val);
-setTimeout(()=>{    //<<<---    using ()=> syntax
-     
- },3000);
-this.back();
+  //   value['registrationid'] = this.userdetails.rid;
+  //   console.log(value, 'skj', this.userdetails.rid);
+  //   this._apiService.editStudDetails(value).subscribe(editDet => {
+  //     console.log(editDet);
+  //     const val = {};
+  //     val['roomno'] = this.roomval;
+  //     val['bedno'] = this.bedval;
+  //     val['reg_no'] = this.userdetails.reg_no;
+  //     this.submit(val);
+  //     setTimeout(() => {  
+
+  //     }, 3000);
+  //     this.back();
 
 
 
-});
+  //   });
 
-}
+  // }
 
-  editDetails() {
-    this.showEditForm = true;
-    var ds=new Date(this.userdetails.dateofbirth)
-    // this.model={day:ds.getDate(),month:ds.getMonth(),year:ds.getFullYear()};
-    
-    console.log(ds,'ds value',this.userdetails.dateofbirth);
-   
-    this.reg_Form.patchValue(this.userdetails);
-    this.reg_Form.patchValue({ dateofbirth: { formatted: this.userdetails.dateofbirth } });
-    // this.reg_Form.patchValue({
-    //   dateofbirth:{date:{
-    //     day:ds.getDate(),
-    //     month:ds.getMonth(),
-    //     year:ds.getFullYear()
-    //   }
-    // }
-    // })
-  }
+  // editDetails() {
+  //   this.showEditForm = true;
+  //   var ds = new Date(this.userdetails.dateofbirth)
+
+  //   console.log(ds, 'ds value', this.userdetails.dateofbirth);
+
+  //   this.reg_Form.patchValue(this.userdetails);
+  //   this.reg_Form.patchValue({ dateofbirth: { formatted: this.userdetails.dateofbirth } });
+
+  // }
 
   regisForm() {
     this.showEditForm = true;
@@ -724,26 +694,27 @@ this.back();
   }
 
   freetheroom() {
-    let tye='';
-    if(this.userdetails.genderT=='M'){
-      tye='Boys'
-    }else{
-      tye='Girls'
+    let tye = '';
+    if (this.userdetails.gender == 'M') {
+      tye = 'Boys'
+    } else {
+      tye = 'Girls'
     }
     const value = {
-      reg_no:this.userdetails.reg_no,
-      hosteltype:tye,
-      roomno:this.userdetails.roomno
+      reg_no: this.userdetails.reg_no,
+      rcid: this.userdetails.rcid,
+      utype: this.usertype,
+
     }
     this._apiService.freetheroom(value).subscribe(free => {
       console.log(free);
 
-    
-      value['hsttype']=tye;
-          console.log(value);
 
-        this.submit(value);
-      
+      value['hsttype'] = tye;
+      console.log(value);
+
+      this.submit(value);
+
       this.back();
       this.popup3.hide();
 

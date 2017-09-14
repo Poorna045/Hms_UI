@@ -12,12 +12,16 @@ import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
   styleUrls: ['./roomsconfig.component.css']
 })
 export class RoomsconfigComponent implements OnInit {
+  floorlength = [];
+  hostelsdata = [];
+
+  filledcount = 0;
   rcid: any;
   filledlist = [];
   roomno: any;
   bedlist = [];
   bedlists = [];
-  hosteltype = 'Boys';
+  hosteltype = 'all';
   roomtype = 'all';
   roomsdata = [];
   typerooms = '';
@@ -44,22 +48,53 @@ export class RoomsconfigComponent implements OnInit {
   public toasterService: ToasterService;
   constructor(private _router: Router,
     private _route: ActivatedRoute,
-    private _apiService: ApiService,
+    public _apiService: ApiService,
     private fb: FormBuilder,
     private popup: Popup,
     toasterService: ToasterService) {
     this.toasterService = toasterService;
   }
 
-  private myDatePickerOptions: IMyDpOptions = {
+  public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'yyyy-mm-dd'
   };
 
+  special = ['zeroth', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelvth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth'];
+  deca = ['twent', 'thirt', 'fourt', 'fift', 'sixt', 'sevent', 'eight', 'ninet'];
+
+  stringifyNumber(n) {
+    if (n < 20) return this.special[n];
+    if (n % 10 === 0) return this.deca[Math.floor(n / 10) - 2] + 'ieth';
+    return this.deca[Math.floor(n / 10) - 2] + 'y-' + this.special[n % 10];
+  }
+
+  ordinal_suffix_of(i) {
+    var j = i % 10,
+      k = i % 100;
+    if (j == 1 && k != 11) {
+      return i + "st";
+    }
+    if (j == 2 && k != 12) {
+      return i + "nd";
+    }
+    if (j == 3 && k != 13) {
+      return i + "rd";
+    }
+    return i + "th";
+  }
+
   ngOnInit() {
+
+    // for (var i = 0; i < 100; i++) {
+    //   console.log(this.ordinal_suffix_of(i) ,'  ',this.stringifyNumber(i),' ordinal test');
+    // }
+
+
+
     this.topForm.patchValue({
       roomtype: 'all',
-      hosteltype: 'Boys'
+      hostelid: 'all'
     });
 
     this._apiService.page = 'roomsconfig';
@@ -68,11 +103,20 @@ export class RoomsconfigComponent implements OnInit {
       console.log(list);
       this.typelist = list.data;
 
-      const val = { rtype: 'all', htype: 'Boys' }
+      const val = { rtype: 'all', hid: 'all' }
 
       this._apiService.getRoomsList(val).subscribe(lists => {
         console.log(lists);
         this.roomsdata = lists.data;
+
+        this._apiService.gethostelconfig().subscribe(listss => {
+          console.log(listss);
+          this.hostelsdata = listss.data;
+
+       
+
+
+        });
       });
     });
 
@@ -95,19 +139,28 @@ export class RoomsconfigComponent implements OnInit {
 
   submit(value) {
     console.log(value);
-    this.roomtype = value.roomtype;
-    this.hosteltype = value.hosteltype;
+    this.hosteltype = value.hostelid;
+    this.roomtype=value.roomtype
+
     this._apiService.getRoomType().subscribe(list => {
       console.log(list);
       this.typelist = list.data;
 
-      const val = { rtype: value.roomtype, htype: value.hosteltype }
+      const val = { rtype: value.roomtype, hid: value.hostelid }
 
       this._apiService.getRoomsList(val).subscribe(lists => {
         console.log(lists);
         this.roomsdata = lists.data;
+
+        this._apiService.gethostelconfig().subscribe(listss => {
+          console.log(listss);
+          this.hostelsdata = listss.data;
+
+
+        });
       });
     });
+
 
   }
   getTypeof2($event) {
@@ -125,7 +178,7 @@ export class RoomsconfigComponent implements OnInit {
 
   topForm = new FormGroup({
     roomtype: new FormControl(),
-    hosteltype: new FormControl(),
+    hostelid: new FormControl(),
 
   });
   newForm = new FormGroup({
@@ -135,19 +188,20 @@ export class RoomsconfigComponent implements OnInit {
     hosteltype: new FormControl(),
     hostelid: new FormControl(),
     blockid: new FormControl(),
-    roomrent: new FormControl()
+    roomrent: new FormControl(),
+    floorno: new FormControl()
 
   });
   editForm = new FormGroup({
     roomno: new FormControl(),
-    avlbeds: new FormControl(),
+    hostelid: new FormControl(),
     totbeds: new FormControl(),
     roomtype: new FormControl(),
     rcstatus: new FormControl(),
     hosteltype: new FormControl(),
-    hostelid: new FormControl(),
-    blockid: new FormControl(),
-    roomrent: new FormControl()
+    hostelname: new FormControl(),
+    roomrent: new FormControl(),
+    floorno: new FormControl()
 
   });
 
@@ -162,8 +216,15 @@ export class RoomsconfigComponent implements OnInit {
     this.newForm.reset()
     this.newForm.patchValue({
       roomtype: 'AC',
-      hosteltype: 'Boys'
+      hostelid: this.hostelsdata[0].hid,
+      hosteltype: this.hostelsdata[0].hosteltype,
+      floorno: 'g'
     });
+    this.floorlength = [];
+    for (var i = 0; i < parseInt(this.hostelsdata[0].floors); i++) {
+      this.floorlength[i] = i + 1;
+    }
+
 
     this.popup1.options = {
       header: "Add New Room",
@@ -182,16 +243,34 @@ export class RoomsconfigComponent implements OnInit {
   }
 
   edit(dt) {
+    console.log(dt);
+    
     this.fullview = dt;
     this.editForm.patchValue(dt);
+
+
     this.rcid = dt.rcid;
+    this.filledcount = JSON.parse(dt.totbeds) - JSON.parse(dt.avlbeds);
+    console.log(this.filledcount, 'filledcount');
+    for (var j = 0; j < this.hostelsdata.length; j++) {
+
+      if (this.hostelsdata[j].hid == dt.hid) {
+
+        this.floorlength = [];
+        for (var i = 0; i < parseInt(this.hostelsdata[j].floors); i++) {
+          this.floorlength[i] = i + 1;
+        }
+        break;
+      }
+    }
+
 
     this.popup2.options = {
       header: "Edit Room Config",
       color: "#2c3e50",                     // red, blue.... 
       widthProsentage: 40,                            // The with of the popou measured by browser width 
       animationDuration: 1,                             // in seconds, 0 = no animation 
-      showButtons: true,                          // You can hide this in case you want to use custom buttons 
+      showButtons: false,                          // You can hide this in case you want to use custom buttons 
       confirmBtnContent: "Edit",                        // The text on your confirm button 
       cancleBtnContent: "Cancel",                      // the text on your cancel button 
       confirmBtnClass: "btn btn-info btn-square btn-sm",     // your class for styling the confirm button 
@@ -212,6 +291,7 @@ export class RoomsconfigComponent implements OnInit {
 
   view(dt) {
     this.fullview = dt;
+    this.roomno=dt.roomno;
     this.popup4.options = {
       header: "Available Rooms Info !",
       color: "#2c3e50",                     // red, blue.... 
@@ -226,31 +306,14 @@ export class RoomsconfigComponent implements OnInit {
     };
 
     this.popup4.show(this.popup4.options);
-    this.getbedss(dt.roomno);
+    this.getbedss(dt.rcid,dt.hid);
   }
 
-  filllist(dt) {
-    this.fullview = dt;
-    this.popup5.options = {
-      header: "Filled Rooms Info !",
-      color: "#2c3e50",                     // red, blue.... 
-      widthProsentage: 40,                            // The with of the popou measured by browser width 
-      animationDuration: 1,                             // in seconds, 0 = no animation 
-      showButtons: true,                         // You can hide this in case you want to use custom buttons 
-      confirmBtnContent: "Ok",                        // The text on your confirm button 
-      cancleBtnContent: "Close",                          // the text on your cancel button 
-      confirmBtnClass: "btn btn-info btn-square btn-sm",     // your class for styling the confirm button 
-      cancleBtnClass: "btn btn-white btn-square btn-sm",   // you class for styling the cancel button 
-      animation: "fadeInDown",                  // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown' 
-    };
-
-    this.popup5.show(this.popup5.options);
-    this.getbedss(dt.roomno);
-  }
 
   delete(dt) {
     // this.popup.show();
     this.rcid = dt.rcid;
+    
     this.popup3.options = {
       header: "Delete Room Config",
       color: "#2c3e50",                      // red, blue.... 
@@ -294,22 +357,26 @@ export class RoomsconfigComponent implements OnInit {
     console.log(value, 'value');
 
 
-    this._apiService.editRoomConfig(value).subscribe(add => {
-      this._apiService.getRoomType().subscribe(list => {
-        console.log(list);
-        this.typelist = list.data;
+    this._apiService.editRoomConfig(value).subscribe(edit => {
 
-        const val = { rtype: this.roomtype, htype: this.hosteltype }
+      if (edit.data == 'valid') {
+        this._apiService.getRoomType().subscribe(list => {
+          console.log(list);
+          this.typelist = list.data;
 
-        this._apiService.getRoomsList(val).subscribe(lists => {
-          console.log(lists);
-          this.roomsdata = lists.data;
-          this.hide();
-          this.editpop();
+          const val = { rtype: this.roomtype, hid: this.hosteltype }
+
+          this._apiService.getRoomsList(val).subscribe(lists => {
+            console.log(lists);
+            this.roomsdata = lists.data;
+            this.hide();
+            this.editpop();
+          });
         });
-      });
 
-
+      } else {
+        this.popToast();
+      }
 
     });
   }
@@ -321,10 +388,8 @@ export class RoomsconfigComponent implements OnInit {
           console.log(list);
           this.typelist = list.data;
 
-          const val = { rtype: this.roomtype, htype: this.hosteltype }
-          if (val.rtype == '') {
-            val.rtype = 'all'
-          }
+          const val = { rtype: this.roomtype, hid: this.hosteltype }
+         
           this._apiService.getRoomsList(val).subscribe(lists => {
             console.log(lists);
             this.roomsdata = lists.data;
@@ -346,12 +411,9 @@ export class RoomsconfigComponent implements OnInit {
         console.log(list);
         this.typelist = list.data;
 
-        const val = { rtype: this.roomtype, htype: this.hosteltype }
+        const val = { rtype: this.roomtype, hid: this.hosteltype }
         console.log(val, 'init test');
-        if (val.rtype == '') {
-          val.rtype = 'all'
-        }
-
+      
         this._apiService.getRoomsList(val).subscribe(lists => {
           console.log(lists);
           this.roomsdata = lists.data;
@@ -365,15 +427,13 @@ export class RoomsconfigComponent implements OnInit {
 
 
 
-  getbedss(event) {
+  getbedss(event,hid) {
     // this.goroomtype=roomtyp
-
-    this.roomno = event;
     this.bedlist = [];
 
     const val = {
-      hosteltype: this.hosteltype,
-      roomno: this.roomno
+      hostelid: hid,
+      rcid: event
     }
 
     this._apiService.getbedslistbyroomno(val).subscribe(blist => {
@@ -414,6 +474,45 @@ export class RoomsconfigComponent implements OnInit {
 
 
     });
+  }
+
+  gethosteltype(value) {
+    console.log(value);
+
+    for (var i = 0; i < this.hostelsdata.length; i++) {
+      if (this.hostelsdata[i].hid == value) {
+        this.editForm.patchValue({
+          hosteltype: this.hostelsdata[i].hosteltype,
+          floorno: 'g'
+        });
+        this.newForm.patchValue({
+          hosteltype: this.hostelsdata[i].hosteltype,
+          floorno: 'g'
+        });
+        this.floorlength = [];
+
+
+        for (var j = 0; j < parseInt(this.hostelsdata[i].floors); j++) {
+
+          this.floorlength[j] = j + 1;
+        }
+
+        break;
+
+      }
+
+    }
+  }
+
+  checkvalue(value) {
+    if (value != '' || parseInt(value) >= 0) {
+      console.log(typeof value, 'if', parseInt(value));
+
+    } else {
+      console.log(typeof value, 'else', value);
+
+    }
+
   }
 
 }

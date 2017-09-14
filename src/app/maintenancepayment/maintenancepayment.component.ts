@@ -15,7 +15,7 @@ export class MaintenancepaymentComponent implements OnInit {
 
   constructor(private _router: Router,
     private _route: ActivatedRoute,
-    private _apiService: ApiService,
+    public _apiService: ApiService,
     private popup: Popup,
     public toasterService: ToasterService) { }
 

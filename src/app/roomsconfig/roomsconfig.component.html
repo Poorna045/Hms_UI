@@ -54,16 +54,16 @@
                     <label class="control-label col-md-2"> Select Room Type : </label>
                     <div class="col-md-2">
                       <select formControlName="roomtype" class="form-control">
-                     <option *ngFor="let item of typelist" value="{{item.type}}"> {{item.type}} </option> 
+                     <option *ngFor="let item of typelist" (click)="roomtype=item.type" value="{{item.typeid}}"> {{item.type}} </option> 
                       <option value="all"> ALL </option>  
                   </select>
                     </div>
 
-                    <label class="control-label col-md-2"> Select Hostel Type : </label>
+                    <label class="control-label col-md-2"> Select Hostel  : </label>
                     <div class="col-md-2">
-                      <select formControlName="hosteltype" class="form-control">
-                     <option  value="Girls"> Girls </option>
-                        <option value="Boys"> Boys </option>    
+                      <select formControlName="hostelid" class="form-control">
+                        <option *ngFor= "let a of hostelsdata" value="{{a.hid}}"> {{a.hostelname}} </option>  
+                      <option value="all"> ALL </option>  
                   </select>
                     </div>
                     <button class="btn btn-info btn-square" (click)="submit(topForm.value)">Submit </button>
@@ -85,14 +85,15 @@
                     <th>
                       <mfDefaultSorter by="roomno">Room No</mfDefaultSorter>
                     </th>
-                    <th>
-                      <mfDefaultSorter by="avlbeds">Avail Beds</mfDefaultSorter>
-                    </th>
-                    <th>
-                      <mfDefaultSorter by="">Filled Beds</mfDefaultSorter>
-                    </th>
+
+                    <!-- <th>
+                      <mfDefaultSorter by="">Occupancy Beds</mfDefaultSorter>
+                    </th> -->
                     <th>
                       <mfDefaultSorter by="totbeds">Total Beds</mfDefaultSorter>
+                    </th>
+                    <th>
+                      <mfDefaultSorter by="avlbeds">Beds Avail</mfDefaultSorter>
                     </th>
                     <th>
                       <mfDefaultSorter by="rcstatus">Status</mfDefaultSorter>
@@ -104,13 +105,13 @@
                       <mfDefaultSorter by="roomrent">Room Rent</mfDefaultSorter>
                     </th>
                     <th>
-                      <mfDefaultSorter by="hosteltype">Hstl Type</mfDefaultSorter>
+                      <mfDefaultSorter by="hosteltype">Hostel For</mfDefaultSorter>
                     </th>
                     <th>
-                      <mfDefaultSorter by="hosteltype">Hstl Id</mfDefaultSorter>
+                      <mfDefaultSorter by="hostelid">Hostel Name</mfDefaultSorter>
                     </th>
                     <th>
-                      <mfDefaultSorter by="hosteltype">Block Id</mfDefaultSorter>
+                      <mfDefaultSorter by="floorno">Floor</mfDefaultSorter>
                     </th>
                     <th style="text-align:center">
                       <mfDefaultSorter by="">Action</mfDefaultSorter>
@@ -121,22 +122,22 @@
                   <tr *ngFor="let dt of mf.data; let i=index;">
                     <td>{{i+1}}</td>
                     <td>{{dt.roomno}}</td>
-                    <td>{{dt.avlbeds }} &nbsp;
-                      <button [disabled]="dt.avlbeds<=0" (click)="view(dt)" class="btn btn-green btn-xs btn-square"><span tooltipPlacement="top" tooltip="view"><i class="fa fa-eye"></i></span></button>
-                    </td>
-                    <td>{{dt.totbeds-dt.avlbeds }} &nbsp;
+
+                    <!-- <td>{{dt.totbeds-dt.avlbeds }} &nbsp;
                       <button [disabled]="(dt.totbeds-dt.avlbeds)<=0" (click)="filllist(dt)" class="btn btn-green btn-xs btn-square"><span tooltipPlacement="top" tooltip="view"><i class="fa fa-eye"></i></span></button>
-                    </td>
+                    </td> -->
                     <td> {{dt.totbeds}}</td>
+                    <td>{{dt.avlbeds }}</td>
                     <td>{{dt.rcstatus}}</td>
-                    <td>{{dt.roomtype}}</td>
+                    <td>{{dt.type}}</td>
                     <td>{{dt.roomrent | currency:'INR':true}}</td>
                     <td>{{dt.hosteltype}}</td>
-                    <td>{{dt.hostelid}}</td>
-                    <td>{{dt.blockid}}</td>
+                    <td>{{dt.hostelname}}</td>
+                    <td>{{dt.floorno}}</td>
                     <td style="text-align:center">
-                      <a (click)="edit(dt)" class="btn btn-info btn-xs btn-square"><i class="fa fa-pencil"></i></a>&nbsp;
-                      <a (click)="delete(dt)" class="btn btn-danger btn-xs btn-square"><i class="fa fa-trash"></i></a></td>
+                      <button [disabled]="dt.avlbeds<=0" (click)="view(dt)" class="btn btn-green btn-xs btn-square"><span tooltipPlacement="top" tooltip="view"><i class="fa fa-eye"></i></span></button>&nbsp;
+                      <button (click)="edit(dt)" class="btn btn-info btn-xs btn-square"><span tooltipPlacement="top" tooltip="edit"><i class="fa fa-pencil"></i></span></button>&nbsp;
+                      <button (click)="delete(dt)" class="btn btn-danger btn-xs btn-square"><span tooltipPlacement="top" tooltip="delete"><i class="fa fa-trash"></i></span></button></td>
                   </tr>
                 </tbody>
                 <tbody *ngIf="mf.data.length == 0">
@@ -178,6 +179,13 @@
     <div class="form-horizontal">
       <div class="form-group col-md-12">
         <div class="col-md-4">
+          <label class="control-label"> Hostel Name  </label>
+          <select formControlName="hostelid" class="form-control" (change)="gethosteltype($event.target.value)">
+                <option *ngFor= "let a of hostelsdata"value="{{a.hid}}"> {{a.hostelname}} </option>  
+              </select>
+          <!-- <input type="text" class="form-control" placeholder="Enter Hostel Id" formControlName="hostelid"> -->
+        </div>
+        <div class="col-md-4">
           <label class="control-label"> Room No  </label>
           <input type="text" class="form-control" placeholder="Enter Room No" formControlName="roomno">
         </div>
@@ -186,110 +194,112 @@
           <input type="number" class="form-control" placeholder="Enter " formControlName="totbeds">
         </div>
         <div class="col-md-4">
+          <label class="control-label"> Select Hostel Type  </label>
+          <input type="text" class="form-control" disabled placeholder="Hostel Type " formControlName="hosteltype">
+
+        </div>
+        <div class="col-md-4">
           <label class="control-label"> Select Room Type  </label>
           <select formControlName="roomtype" class="form-control" (change)="getTypeof2($event)">
-                     <option *ngFor="let item of typelist" value="{{item.type}}"> {{item.type}} </option>  
+                     <option *ngFor="let item of typelist" value="{{item.typeid}}"> {{item.type}} </option>  
                   </select>
         </div>
-        <div class="col-md-4">
-          <label class="control-label"> Select Hostel Type  </label>
-          <select formControlName="hosteltype" class="form-control" (change)="getHstType($event)">
-                     <option  value="Girls"> Girls </option>
-                        <option  value="Boys"> Boys </option>    
-                  </select>
-        </div>
-        <div class="col-md-4">
-          <label class="control-label"> Hostel Id  </label>
-          <input type="text" class="form-control" placeholder="Enter Hostel Id" formControlName="hostelid">
-        </div>
-        <div class="col-md-4">
-          <label class="control-label"> Block Id  </label>
-          <input type="text" class="form-control" placeholder="Enter Block Id" formControlName="blockid">
-        </div>
+
         <div class="col-md-4">
           <label class="control-label"> Room Rent  </label>
-          <input type="number" class="form-control" placeholder="Enter Room Rent" formControlName="roomrent">
+          <div class="input-icon">
+            <i class="fa fa-inr" aria-hidden="true"></i><input type="number" class="form-control" placeholder="Enter RoomRent"
+              formControlName="roomrent">
+
+          </div>
+        </div>
+
+        <div class=" col-md-4">
+          <label class="control-label"> Floor </label>
+          <select formControlName="floorno" class="form-control">
+            <option value="g">Ground Floor</option>
+              <option *ngFor="let item of floorlength; let i=index;" value="{{item}}"> {{item}} </option>  
+           </select>
+          <!-- <input type="number" class="form-control" placeholder="Eg : g,1,2,3" formControlName="floorno"> -->
         </div>
       </div>
     </div>
   </form>
 </popup>
 
-<popup #popup2 (confirmClick)="editRoom(editForm.value)">
+<popup #popup2>
   <form [formGroup]="editForm">
     <div class="form-horizontal">
       <div class="form-group col-md-12">
         <div class=" col-md-4">
+          <label> Hostel Name </label>
+          <input type="text" class="form-control" disabled formControlName="hostelname">
+        </div>
+        <div class=" col-md-4">
           <label> Room No </label>
           <input type="text" class="form-control" formControlName="roomno">
         </div>
-        <div class=" col-md-4">
-          <label> Avail Beds </label>
-          <input type="number" class="form-control" formControlName="avlbeds">
-        </div>
         <div class="col-md-4">
           <label> Total Beds </label>
-          <input type="number" class="form-control" formControlName="totbeds">
-        </div>
-        <div class="col-md-4">
-          <label> Room Status </label>
-          <select formControlName="rcstatus" class="form-control">
-                <option  value="available"> Available </option>
-                <option value="filled"> Filled </option> 
-          </select>
+          <input type="number" min="{{filledcount}}" class="form-control" #val title="Entered Value Must be Greater Or Equal to Filled beds"
+            formControlName="totbeds" required>
+
         </div>
         <div class="col-md-4">
           <label> Select Room Type </label>
           <select formControlName="roomtype" class="form-control">
-             <option *ngFor="let item of typelist" value="{{item.type}}"> {{item.type}} </option>  
+             <option *ngFor="let item of typelist" value="{{item.typeid}}"> {{item.type}} </option>  
           </select>
         </div>
         <div class="col-md-4">
           <label> Room Rent </label>
-          <input type="number" class="form-control" formControlName="roomrent">
+          <div class="input-icon">
+            <i class="fa fa-inr" aria-hidden="true"></i><input type="number" class="form-control" formControlName="roomrent">
+          </div>
         </div>
         <div class="col-md-4">
           <label> Select Hostel Type </label>
-          <select formControlName="hosteltype" class="form-control">
-                    <option  value="Girls"> Girls </option>
-                    <option  value="Boys"> Boys </option>    
-               </select>
+          <input type="text" class="form-control" placeholder="HosteL Type" disabled formControlName="hosteltype">
+
         </div>
         <div class=" col-md-4">
-          <label> Hostel Id </label>
-          <input type="text" class="form-control" formControlName="hostelid">
-        </div>
-        <div class=" col-md-4">
-          <label> Block Id </label>
-          <input type="text" class="form-control" formControlName="blockid">
+          <label class="control-label"> Floor </label>
+          <input type="text" class="form-control" disabled formControlName="floorno">
         </div>
       </div>
+
     </div>
+    <!-- <div *ngIf="val.value == 'e' || val.value < 0" style="color:blue;">Value Must be Number</div>     -->
+    <div *ngIf="val.value<filledcount" style="color:red;">Total Beds Value Must be Greater Or Equal to Filled beds -> <b>{{filledcount}}</b></div>
+    <button (click)="hide()" class="pull-right btn btn-white btn-sm btn-square"> Cancel </button>
+    <button [disabled]="val.value<filledcount" (click)="editRoom(editForm.value)" class="pull-right btn btn-info btn-sm btn-square"
+      style="margin-right:5px;"> Edit </button>&nbsp;
+    <div class="clearfix"></div>
   </form>
 </popup>
 
 <popup #popup3 (confirmClick)="deleteconfig()">
 
-  <h3>Are you Sure to Delete this Room Permanently from {{hosteltype}} Hostel</h3>
+  <h4>Are you Sure to Delete this Room Permanently from <span style="color:cornflowerblue;font-size:22px;">{{hosteltype}} </span>    Hostel</h4>
 
 </popup>
 
 <popup #popup4 (confirmClick)="hide()">
   <div class="col-md-12">
-    <h4>Available Beds List</h4>
+    <h4>Beds Available</h4>
 
     <table id="employee" class="table table-striped table-bordered dt-responsive table-green nowrap" cellspacing="0" width="100%">
       <thead>
         <tr>
           <th nowrap>Room No</th>
-          <th nowrap>Hosteltype</th>
+          <th nowrap>Hostel Name</th>
           <th nowrap>Bed No(s)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>{{roomno}}</td>
-          <td>{{hosteltype}}</td>
+          <td>{{fullview.hostelname}}</td>
           <td nowrap>{{bedlists.toString()}}</td>
         </tr>
       </tbody>
@@ -300,12 +310,13 @@
 
 <popup #popup5 (confirmClick)="hide()">
   <div class="col-md-12">
-    <h4>Available Beds List</h4>
+    <h4>Occupancy Status</h4>
 
     <table id="employee" class="table table-striped table-bordered dt-responsive table-green nowrap" cellspacing="0" width="100%">
       <thead>
         <tr>
           <th nowrap>Reg No</th>
+          <th nowrap>Name</th>
           <th nowrap>Room No</th>
           <th nowrap>Bed No</th>
           <th nowrap>Hostel Type</th>
@@ -315,9 +326,10 @@
       <tbody>
         <tr *ngFor="let a of filledlist">
           <td>{{a.reg_no}}</td>
-          <td>{{a.roomno}}</td>
+          <td nowrap>{{a.studentname}}</td>
+          <td>{{a.roomnum}}</td>
           <td nowrap>{{a.bedno}}</td>
-          <td>{{a.hosteltype}}</td>
+          <td>{{a.htype}}</td>
           <td>{{a.roomtype}}</td>
 
         </tr>

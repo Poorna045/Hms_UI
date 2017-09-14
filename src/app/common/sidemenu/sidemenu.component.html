@@ -54,14 +54,40 @@
               </a>
           </li>
           <li>
+            <a [ngClass]="{'active': (page=='hostelconfig')}" [routerLink]="['/hostelconfig']">
+                    <i class="fa fa-angle-double-right"></i> Hostel Configuration
+                </a>
+          </li>
+          <li>
+            <a [ngClass]="{'active': (page=='roomsconfig')}" [routerLink]="['/roomsconfig']">
+                      <i class="fa fa-angle-double-right"></i> Rooms Configuration
+                  </a>
+          </li>
+          <li>
             <a [ngClass]="{'active': (page=='bookings')}" [routerLink]="['/bookings']">
                   <i class="fa fa-angle-double-right"></i> Bookings
               </a>
           </li>
           <li>
             <a [ngClass]="{'active': (page=='registration')}" [routerLink]="['/registration']">
-                  <i class="fa fa-angle-double-right"></i> Registration
-              </a>
+                    <i class="fa fa-angle-double-right"></i> Registration Form
+                </a>
+          </li>
+          <li>
+            <a [ngClass]="{'active': (page=='allot')}" [routerLink]="['/allot']">
+                    <i class="fa fa-angle-double-right"></i> Selection Process
+                </a>
+          </li>
+
+          <li>
+            <a [ngClass]="{'active': (page=='assainroomstest')}" [routerLink]="['/assainroomstest']">
+                    <i class="fa fa-angle-double-right"></i> Allot Rooms
+                </a>
+          </li>
+          <li>
+            <a [ngClass]="{'active': (page=='hostelers')}" [routerLink]="['/hostelers']">
+                    <i class="fa fa-angle-double-right"></i> Occupancy Status
+                </a>
           </li>
 
           <!-- <li>
@@ -74,21 +100,13 @@
                 <i class="fa fa-angle-double-right"></i> Complaints List
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a [ngClass]="{'active': (page=='feeconfig')}" [routerLink]="['/feeconfig']">
                   <i class="fa fa-angle-double-right"></i> Fee Config
               </a>
-          </li>
-          <li>
-            <a [ngClass]="{'active': (page=='allot')}" [routerLink]="['/allot']">
-                  <i class="fa fa-angle-double-right"></i> Rooms Allot
-              </a>
-          </li>
-          <li>
-            <a [ngClass]="{'active': (page=='roomsconfig')}" [routerLink]="['/roomsconfig']">
-                  <i class="fa fa-angle-double-right"></i> Rooms Config
-              </a>
-          </li>
+          </li> -->
+
+
           <!-- <li>
             <a [ngClass]="{'active': (page=='assignrooms')}" [routerLink]="['/assignrooms']">
                   <i class="fa fa-angle-double-right"></i> Assign Rooms
@@ -99,11 +117,7 @@
                   <i class="fa fa-angle-double-right"></i> Change Rooms
               </a>
           </li> -->
-          <li>
-            <a [ngClass]="{'active': (page=='assainroomstest')}" [routerLink]="['/assainroomstest']">
-                  <i class="fa fa-angle-double-right"></i> Assign Rooms
-              </a>
-          </li>
+
           <li>
             <a [ngClass]="{'active': (page=='maintenancehistory')}" [routerLink]="['/maintenancehistory']">
                   <i class="fa fa-angle-double-right"></i> Maintenance History
@@ -115,10 +129,49 @@
               </a>
           </li> -->
           <li>
-              <a [ngClass]="{'active': (page=='servicestype')}" [routerLink]="['/servicestype']">
+            <a [ngClass]="{'active': (page=='servicestype')}" [routerLink]="['/servicestype']">
                     <i class="fa fa-angle-double-right"></i> Services Types
                 </a>
-            </li>
+          </li>
+
+
+        </ul>
+      </li>
+      <li class="panel">
+        <a href="javascript:;" data-parent="#side2" data-toggle="collapse" class="accordion-toggle collapsed" data-target="#mess">
+              <i class="fa fa-university"></i> Mess <i class="fa fa-caret-down"></i>
+          </a>
+        <ul class="nav" id="mess">
+          <li>
+            <a [ngClass]="{'active': (page=='messincharg')}" [routerLink]="['/messincharg']">
+                  <i class="fa fa-angle-double-right"></i> Material Management
+              </a>
+          </li>
+          <li>
+            <a [ngClass]="{'active': (page=='menulist')}" [routerLink]="['/menulist']">
+                  <i class="fa fa-angle-double-right"></i> Menu List
+              </a>
+          </li>
+          <li>
+            <a [ngClass]="{'active': (page=='purchase')}" [routerLink]="['/purchase']">
+                  <i class="fa fa-angle-double-right"></i> Request Management
+              </a>
+          </li>
+          <li>
+            <a [ngClass]="{'active': (page=='purchaseitems')}" [routerLink]="['/purchaseitems']">
+                  <i class="fa fa-angle-double-right"></i> To be Purchased
+              </a>
+          </li>
+          <li>
+            <a [ngClass]="{'active': (page=='purchases')}" [routerLink]="['/purchases']">
+                  <i class="fa fa-angle-double-right"></i> Purchaser Management
+              </a>
+          </li>
+          <li>
+            <a [ngClass]="{'active': (page=='report')}" [routerLink]="['/report']">
+                  <i class="fa fa-angle-double-right"></i> Reports
+              </a>
+          </li>
 
         </ul>
       </li>

@@ -50,14 +50,14 @@ export class MaintenancehistoryComponent implements OnInit {
   @ViewChild('popup2') popup2: Popup;
 
 
-  private myDatePickerOptions: IMyDpOptions = {
+  public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'yyyy-mm-dd'
   };
 
   constructor(private _router: Router,
     private _route: ActivatedRoute,
-    private _apiService: ApiService,
+    public _apiService: ApiService,
     private popup: Popup,
     public toasterService: ToasterService) {
 

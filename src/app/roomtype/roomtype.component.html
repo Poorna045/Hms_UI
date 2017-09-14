@@ -46,14 +46,22 @@
               <div class="clearfix"></div>
             </div>
             <div class="portlet-body">
-              <div class="form-horizontal">
-                <div class="form-group">
-                  <div class="col-md-5">
-                    Search:
-                    <input class="form-control" name="filter" [(ngModel)]="filterQuery">
+
+              <form [formGroup]="topForm">
+                <div class="form-horizontal">
+                  <div class="form-group">
+                    <label class="control-label col-md-2"> Select Hostel  : </label>
+                    <div class="col-md-2">
+                      <select class="form-control" formControlName="hid" (change)="getEnabledata($event.target.value)">
+                                  <option *ngFor= "let a of hostelsdata" value="{{a.hid}}"> {{a.hostelname}} </option>   
+                            </select>
+                    </div>
                   </div>
+
                 </div>
-              </div>
+
+              </form>
+
 
               <form #form="ngForm">
                 <table id="employee" [mfData]="roomType | dataFilter : filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy"
@@ -67,17 +75,8 @@
                       <th>
                         <mfDefaultSorter by="type">Room Type</mfDefaultSorter>
                       </th>
-                      <th>
-                        <mfDefaultSorter by="totalcount">No.of.Seats</mfDefaultSorter>
-                      </th>
-                      <th>
-                        <mfDefaultSorter by="cost">Cost/Sem</mfDefaultSorter>
-                      </th>
-                      <th>
-                        <mfDefaultSorter by="totaldues">Total Dues</mfDefaultSorter>
-                      </th>
-                      <th>
-                        <mfDefaultSorter by="amt_perdue">Cost/Due</mfDefaultSorter>
+                      <th style="text-align:center" colspan="2">
+                        <mfDefaultSorter by="status">Status</mfDefaultSorter>
                       </th>
                       <th style="text-align:center">
                         <mfDefaultSorter by="">Action</mfDefaultSorter>
@@ -88,12 +87,10 @@
                     <tr *ngFor="let dt of mf.data; let i=index">
                       <td>{{i + 1}}</td>
                       <td>{{dt.type}}</td>
-                      <td>{{dt.totalcount}}</td>
-                      <td>{{dt.cost}}</td>
-                      <td>{{dt.totaldues}}</td>
-                      <td style="text-align:center">{{dt.amt_perdue}}</td>
-                      <td style="text-align:center"><a (click)="edit(dt)" class="btn btn-info btn-xs btn-square"><i class="fa fa-pencil"></i></a>&nbsp;
-                        <a (click)="delete(dt)" class="btn btn-danger btn-xs btn-square"><i class="fa fa-trash"></i></a></td>
+                      <!-- <td>{{dt.status}}</td> -->
+                      <td style="text-align:center"><button [disabled]="dt.status=='enable'" (click)="statpop('enable',dt)" class="btn btn-success btn-xs btn-square">Enable</button></td>
+                      <td style="text-align:center"><button [disabled]="dt.status=='disable'" (click)="statpop('disable',dt)" class="btn btn-warning btn-xs btn-square">Disable</button></td>
+                      <td style="text-align:center"><button (click)="delete(dt)" class="btn btn-danger btn-xs btn-square">Delete</button></td>
                     </tr>
                   </tbody>
                   <tbody *ngIf="mf.data.length == 0">
@@ -132,22 +129,14 @@
         <input type="text" class="form-control" placeholder="Room Type" formControlName="type" required>
       </div>
       <div class="col-md-6">
-        <label for="">No.of.Seats</label>
-        <input type="number" class="form-control" placeholder="No.of.Seats" formControlName="totalcount" required>
+        <label for="">Room Type</label>
+        <angular2-multiselect style="padding:6px !important ;" [data]="hostelsdata2" class="form-control" name="hostels" formControlName="hostels"
+          [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"></angular2-multiselect>
       </div>
     </div>
     <div class="clearfix"></div>
     <br/>
-    <div class="form-group">
-      <div class="col-md-6">
-        <label for="">Cost</label>
-        <input type="number" class="form-control" placeholder="Cost" formControlName="cost" required>
-      </div>
-      <div class="col-md-6">
-        <label for="">Total Dues</label>
-        <input type="number" class="form-control" placeholder="Total Dues" formControlName="totaldues" required>
-      </div>
-    </div>
+
   </form>
 </popup>
 <popup #popup2 (confirmClick)="editRoomType(editForm.value)">
@@ -159,22 +148,15 @@
         <input type="text" class="form-control" disabled placeholder="Room Type" formControlName="type" required>
       </div>
       <div class="col-md-6">
-        <label for="">No.of.Seats</label>
-        <input type="number" class="form-control" placeholder="No.of.Seats" formControlName="totalcount" required>
+        <label for="">Room Type</label>
+        <angular2-multiselect style="padding:6px !important ;" [data]="studsData" class="form-control" name="hostels" formControlName="hostels"
+          [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"></angular2-multiselect>
       </div>
+
+
     </div>
     <div class="clearfix"></div>
     <br/>
-    <div class="form-group">
-      <div class="col-md-6">
-        <label for="">Cost</label>
-        <input type="number" class="form-control" placeholder="Cost" formControlName="cost" required>
-      </div>
-      <div class="col-md-6">
-        <label for="">Total Dues</label>
-        <input type="number" class="form-control" placeholder="Total Dues" formControlName="totaldues" required>
-      </div>
-    </div>
   </form>
 </popup>
 <popup #popup3 (confirmClick)="deleteRoomType()">
@@ -182,3 +164,12 @@
   <h3>Are you sure to Delete this Room Type </h3>
 
 </popup>
+
+
+<popup #popup4 (confirmClick)="changestatus()">
+  
+    <h4 *ngIf="statustype=='enable'">Are you sure to <span style="color:cornflowerblue;font-size:22px;" >Enable </span> this Room Type  to this <span style="color:cornflowerblue;font-size:22px;" >{{ hostelname }} </span>   Hostel</h4>
+
+    <h4 *ngIf="statustype=='disable'">Are you sure to <span style="color:cornflowerblue;font-size:22px;" >Disable </span> this Room Type  to this <span style="color:cornflowerblue;font-size:22px;" >{{ hostelname }} </span>   Hostel</h4>
+  
+  </popup>

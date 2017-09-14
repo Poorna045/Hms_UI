@@ -12,7 +12,8 @@ import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
   styleUrls: ['./allot.component.css']
 })
 export class AllotComponent implements OnInit {
-  hosteltype='Boys';
+  seatsData=[];
+  hosteltype = 'Boys';
   regid: any;
   ANonacSeats: any;
   AacSeats: any;
@@ -41,15 +42,15 @@ export class AllotComponent implements OnInit {
   });
   public toasterService: ToasterService;
   constructor(private _router: Router,
-    private _route: ActivatedRoute,
-    private _apiService: ApiService,
-    private fb: FormBuilder,
-    private popup: Popup,
+    public _route: ActivatedRoute,
+    public _apiService: ApiService,
+    public fb: FormBuilder,
+    public popup: Popup,
     toasterService: ToasterService) {
     this.toasterService = toasterService;
   }
 
-  private myDatePickerOptions: IMyDpOptions = {
+  public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'yyyy-mm-dd'
   };
@@ -58,24 +59,25 @@ export class AllotComponent implements OnInit {
     this._apiService.page = "allot";
     this._apiService.getRoomType().subscribe(list => {
       console.log(list); this.typelist = list.data;
-      let gender='M';
+      let gender='Boys';
       
        const val = {
           type: 'all' ,
           gender:gender
       }
       this._apiService.getreglist(val).subscribe(lists => {
-        console.log(list);
+        console.log(lists,'reglists');
         this.reglist = lists.data;
         const gs = {
           hosteltype: 'Boys'
         }
         this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
           console.log(seats, 'seats test');
-          this.acSeats =  seats.data.acseats;
-          this.NonacSeats = seats.data.nonacseats;
-          this.AacSeats = seats.data.Aacseats;
-          this.ANonacSeats = seats.data.Anonacseats;
+          this.seatsData=seats.data;
+          // this.acSeats =  seats.data.acseats;
+          // this.NonacSeats = seats.data.nonacseats;
+          // this.AacSeats = seats.data.Aacseats;
+          // this.ANonacSeats = seats.data.Anonacseats;
 
         });
       });
@@ -91,19 +93,20 @@ export class AllotComponent implements OnInit {
   this.hosteltype=$event.target.value;
   this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
     console.log(seats, 'seats test');
-    this.acSeats = seats.data.acseats;
-    this.NonacSeats = seats.data.nonacseats;
-    this.AacSeats = seats.data.Aacseats;
-    this.ANonacSeats = seats.data.Anonacseats;
+    this.seatsData=seats.data;
+    // this.acSeats = seats.data.acseats;
+    // this.NonacSeats = seats.data.nonacseats;
+    // this.AacSeats = seats.data.Aacseats;
+    // this.ANonacSeats = seats.data.Anonacseats;
 
-    let gender='M';
-    if(this.hosteltype=='Girls'){
-      gender='F'
-    }
+    // let gender='M';
+    // if(this.hosteltype=='Girls'){
+    //   gender='F'
+    // }
     
      const val = {
         type: this.typeroom ,
-        gender:gender
+        gender:this.hosteltype
     }
     this._apiService.getreglist(val).subscribe(lists => {
       console.log(lists);
@@ -117,15 +120,15 @@ export class AllotComponent implements OnInit {
     console.log($event.target.value);
 
     this.typeroom = $event.target.value;
-    let gender='M';
-    if(this.hosteltype=='Girls'){
-      gender='F'
-    }
+    // let gender='M';
+    // if(this.hosteltype=='Girls'){
+    //   gender='F'
+    // }
     
    
     const val = {
       type: $event.target.value,
-      gender:gender
+      gender:this.hosteltype
     }
     this._apiService.getreglist(val).subscribe(list => {
       console.log(list);
@@ -221,7 +224,7 @@ export class AllotComponent implements OnInit {
   view(dt) {
     this.fullview = dt;
     this.popup4.options = {
-      header: "Student Info !",
+      header: "User Info !",
       color: "#2c3e50",                     // red, blue.... 
       widthProsentage: 60,                            // The with of the popou measured by browser width 
       animationDuration: 1,                             // in seconds, 0 = no animation 
@@ -303,15 +306,15 @@ export class AllotComponent implements OnInit {
       this._apiService.getRoomType().subscribe(list => {
         console.log(list); this.typelist = list.data; 
        
-        let gender='M';
-        if(this.hosteltype=='Girls'){
-          gender='F'
-        }
+        // let gender='M';
+        // if(this.hosteltype=='Girls'){
+        //   gender='F'
+        // }
       
        
         const val = {
           type: this.typeroom,
-          gender:gender
+          gender:this.hosteltype
         }
         this._apiService.getreglist(val).subscribe(lists => {
           console.log(list);

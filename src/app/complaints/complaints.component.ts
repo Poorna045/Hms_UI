@@ -15,7 +15,7 @@ export class ComplaintsComponent implements OnInit {
   // complaints_Form:FormGroup;
   constructor(private _router: Router,
     private _route: ActivatedRoute,
-    private _apiService: ApiService,
+    public _apiService: ApiService,
     private popup: Popup,
     public toasterService: ToasterService) { }
 

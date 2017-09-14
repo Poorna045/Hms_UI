@@ -11,12 +11,13 @@ import { ApiService } from "./services/api.service";
 
 
 //third party
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ToasterModule, ToasterService} from 'angular2-toaster';
-import {DataTableModule} from "angular2-datatable";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToasterModule, ToasterService } from 'angular2-toaster';
+import { DataTableModule } from "angular2-datatable";
 import { MyDatePickerModule } from 'mydatepicker';
-import {TooltipModule} from "ng2-tooltip";
-import {PopupModule} from 'ng2-opd-popup';
+import { TooltipModule } from "ng2-tooltip";
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { PopupModule } from 'ng2-opd-popup';
 
 
 
@@ -33,8 +34,8 @@ import { RoomtypeComponent } from "./roomtype/roomtype.component";
 import { DatatablesPipe } from "./datatables.pipe";
 import { AllotComponent } from './allot/allot.component';
 import { RoomsconfigComponent } from './roomsconfig/roomsconfig.component';
-import { AssignroomsComponent } from './assignrooms/assignrooms.component';
-import { ChangeroomComponent } from './changeroom/changeroom.component';
+// import { AssignroomsComponent } from './assignrooms/assignrooms.component';
+// import { ChangeroomComponent } from './changeroom/changeroom.component';
 import { AssainroomstestComponent } from './assainroomstest/assainroomstest.component';
 import { RegistrationComponent } from "./registration/registration.component";
 import { ComplaintsComponent } from "./complaints/complaints.component";
@@ -43,6 +44,15 @@ import { InstructionsComponent } from "./instructions/instructions.component";
 import { MaintenancepaymentComponent } from './maintenancepayment/maintenancepayment.component';
 import { MaintenancehistoryComponent } from './maintenancehistory/maintenancehistory.component';
 import { BilltypesComponent } from './billtypes/billtypes.component';
+import { HostelconfigComponent } from './hostelconfig/hostelconfig.component';
+import { HostelerslistComponent } from './hostelerslist/hostelerslist.component';
+import { MessinchargeComponent } from './messincharge/messincharge.component';
+import { MenulistComponent } from './menulist/menulist.component';
+import { PurchaserComponent } from './purchaser/purchaser.component';
+import { PurchaseitemsComponent } from './purchaseitems/purchaseitems.component';
+import { PurchasersComponent } from './purchasers/purchasers.component';
+import { ReportsComponent } from './reports/reports.component';
+import { UploadService } from './upload.service';
 
 
 @NgModule({
@@ -59,8 +69,8 @@ import { BilltypesComponent } from './billtypes/billtypes.component';
     DatatablesPipe,
     AllotComponent,
     RoomsconfigComponent,
-    AssignroomsComponent,
-    ChangeroomComponent,
+    // AssignroomsComponent,
+    // ChangeroomComponent,
     AssainroomstestComponent,
     RegistrationComponent,
     ComplaintsComponent,
@@ -69,6 +79,14 @@ import { BilltypesComponent } from './billtypes/billtypes.component';
     MaintenancepaymentComponent,
     MaintenancehistoryComponent,
     BilltypesComponent,
+    HostelconfigComponent,
+    HostelerslistComponent,
+    MessinchargeComponent,
+    MenulistComponent,
+    PurchaserComponent,
+    PurchaseitemsComponent,
+    PurchasersComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,
@@ -76,16 +94,19 @@ import { BilltypesComponent } from './billtypes/billtypes.component';
     ToasterModule,
     PopupModule.forRoot(),
     routing,
-     FormsModule,
-     HttpModule,
-     ReactiveFormsModule,
-     DataTableModule,
-     MyDatePickerModule,
-     TooltipModule
+    FormsModule,
+    HttpModule,
+    ReactiveFormsModule,
+    DataTableModule,
+    MyDatePickerModule,
+    TooltipModule,
+    AngularMultiSelectModule
   ],
-  providers: [ AuthGuard,
+  providers: [AuthGuard,
     AuthenticationService,
-    ApiService],
+    ApiService,
+    UploadService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

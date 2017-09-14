@@ -55,7 +55,7 @@
                     <li><span class="li-color">{{data.notificationdate}}
                       <!-- {{data.notificationdate | date:'y MMM d j'}} -->
                      </span>:
-                      <a href="#">
+                      <a >
                         <font>{{data.noticedescription}}</font>
                       </a>
                     </li><br>
@@ -65,7 +65,7 @@
                 <div class="tab-pane fade" id="instructions">
                   <ul style="margin-top: 10px;" *ngFor="let data of instruction_detail">
                     <li><span class="li-color">{{data.instructiondate}} </span>:
-                      <a href="#">
+                      <a >
                         <font>{{data.instructiondescription}}</font>
                       </a>
                     </li><br>
@@ -74,7 +74,7 @@
                 <div class="tab-pane fade" id="upcomingevents">
                   <ul style="margin-top: 10px;" *ngFor="let data of event_detail">
                     <li><span class="li-color">{{data.eventtype}}</span><br/>
-                      <a href="#">
+                      <a >
                         <font>{{data.eventdate}} {{data.eventtime}}<br/> {{data.eventdescription}}</font>
                       </a>
                     </li><br>

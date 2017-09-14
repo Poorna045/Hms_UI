@@ -1,3 +1,5 @@
+<toaster-container [toasterconfig]="toasterconfig">
+</toaster-container>
 <div id="wrapper">
   <!-- begin TOP NAVIGATION -->
   <app-header></app-header>
@@ -14,7 +16,7 @@
 
       <!-- begin PAGE TITLE ROW -->
       <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
           <div class="page-title">
             <!--<h1>
               Admin <small>Dashboard</small>
@@ -31,87 +33,248 @@
       <!-- /.row -->
       <!-- end PAGE TITLE ROW -->
       <div class="row">
+        <div class="col-md-12">
 
-        <div class="portlet portlet-default">
-          <div class="portlet-heading">
-            <div class="portlet-title">
-              <h4>Add New Booking</h4>
+          <div class="portlet portlet-default">
+            <div class="portlet-heading">
+              <div class="portlet-title">
+                <h4>Add New Booking</h4>
+              </div>
+              <div class="portlet-widgets">
+                <i class="fa fa-plus-square" style="font-size:15px"></i> <a (click)="add()">Add Booking</a>
+              </div>
+              <div class="clearfix"></div>
+              <div class="clearfix"></div>
             </div>
-            <div class="portlet-widgets">
-              <i class="fa fa-plus-square" style="font-size:15px"></i> <a (click)="add()">Add Booking</a>
-            </div>
-            <div class="clearfix"></div>
-            <div class="clearfix"></div>
-          </div>
-          <div class="portlet-body">
-            <form #form="ngForm">
-              <table id="employee" [mfData]="bookingslist | dataFilter : filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy"
-                [(mfSortOrder)]="sortOrder" class="table table-striped table-bordered dt-responsive nowrap table-hover table-green"
-                cellspacing="0" width="100%">
-                <thead>
-                  <tr>
-                    <th>
-                      <mfDefaultSorter by="">#</mfDefaultSorter>
-                    </th>
-                    <th>
-                      <mfDefaultSorter by="startdate">Start date</mfDefaultSorter>
-                    </th>
-                    <th>
-                      <mfDefaultSorter by="enddate">End Date</mfDefaultSorter>
-                    </th>
-                    <th>
-                      <mfDefaultSorter by="semstartdate">Sem Start</mfDefaultSorter>
-                    </th>
-                    <th>
-                      <mfDefaultSorter by="semenddate">Sem End</mfDefaultSorter>
-                    </th>
-                    <th>
-                      <mfDefaultSorter by="hosteltype">Hostel Type</mfDefaultSorter>
-                    </th>
-                    <th>
-                      <mfDefaultSorter by="description">description</mfDefaultSorter>
-                    </th>
-                    <th style="text-align:center">
-                      <mfDefaultSorter by="">Action</mfDefaultSorter>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody *ngIf="mf.data.length != 0">
-                  <tr *ngFor="let dt of mf.data; let i=index">
-                    <td>{{i + 1}}</td>
-                    <td>{{dt.startdate }}</td>
-                    <td>{{dt.enddate}}</td>
-                    <td>{{dt.semstartdate}}</td>
-                    <td>{{dt.semenddate}}</td>
-                    <td>{{dt.hosteltype}}</td>
-                    <td style="text-align:center">{{dt.description}}</td>
-                    <td style="text-align:center"><a (click)="edit(dt)" class="btn btn-info btn-xs btn-square"><i class="fa fa-pencil"></i></a>&nbsp;
-                      <a (click)="delete(dt)" class="btn btn-danger btn-xs btn-square"><i class="fa fa-trash"></i></a></td>
-                  </tr>
-                </tbody>
-                <tbody *ngIf="mf.data.length == 0">
-                  <tr rowspan="2">
-                    <td colspan="12">
-                      <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
-                    </td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td colspan="14">
-                      <mfBootstrapPaginator [rowsOnPageSet]="[5,10,12]"></mfBootstrapPaginator>
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
-            </form>
+            <div class="portlet-body" style="overflow:auto;">
+              <form #form="ngForm">
+                <table id="employee" [mfData]="bookingslist | dataFilter : filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy"
+                  [(mfSortOrder)]="sortOrder" class="table table-striped table-scrollable table-bordered dt-responsive nowrap table-hover table-green"
+                  cellspacing="0" width="100%">
+                  <thead>
+                    <tr>
+                      <th>
+                        <mfDefaultSorter by="">#</mfDefaultSorter>
+                      </th>
+                      <th>
+                        <mfDefaultSorter by="startdate">Booking Start Date</mfDefaultSorter>
+                      </th>
+                      <th>
+                        <mfDefaultSorter by="enddate">Booking End Date</mfDefaultSorter>
+                      </th>
+                      <th>
+                        <mfDefaultSorter by="semstartdate">Semister Start</mfDefaultSorter>
+                      </th>
+                      <th>
+                        <mfDefaultSorter by="semenddate">Semister End</mfDefaultSorter>
+                      </th>
+                      <th>
+                        <mfDefaultSorter by="hosteltype">Hostel Type</mfDefaultSorter>
+                      </th>
+                      <th>
+                        <mfDefaultSorter by="status">Status</mfDefaultSorter>
+                      </th>
+                      <th style="text-align:center">
+                        <mfDefaultSorter by="description">Remarks</mfDefaultSorter>
+                      </th>
+                      <th style="text-align:center">
+                        <mfDefaultSorter by="">Action</mfDefaultSorter>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="mf.data.length != 0">
+                    <tr *ngFor="let dt of mf.data; let i=index">
+                      <td>{{i + 1}}</td>
+                      <td>{{dt.startdate }}</td>
+                      <td>{{dt.enddate}}</td>
+                      <td>{{dt.semstartdate}}</td>
+                      <td>{{dt.semenddate}}</td>
+                      <td>{{dt.hosteltype}}</td>
+                      <td><span [ngClass]="dt.status=='enable' ? 'badge green' : 'badge yellow' ">{{dt.status}}</span></td>
+                      <td style="text-align:center">{{dt.description}}</td>
+                      <td nowrap style="text-align:center">
+                        <!-- <button (click)="edit(dt)"  class="btn btn-success btn-xs btn-square"><span tooltipPlacement="top" tooltip="Postpone Booking End Date"><i class="fa fa-calendar-plus-o"></i></span></button> &nbsp; -->
 
+                        <button *ngIf="dt.status!='disable'" [disabled]="utc>dt.enddate" (click)="changedate(dt,'postpone')" class="btn btn-success btn-xs btn-square"><span tooltipPlacement="top" tooltip="Postpone Booking End Date"><i class="fa fa-calendar-plus-o"></i></span></button>                        &nbsp;
+                        <button *ngIf="dt.status!='disable'" [disabled]="utc>=dt.enddate" (click)="changedate(dt,'prepone')" class="btn btn-warning btn-xs btn-square"> <span tooltipPlacement="top" tooltip="Prepone Booking End Date"> <i class="fa fa-calendar-minus-o"></i></span></button>&nbsp;
+                        <button *ngIf="dt.status=='disable'" (click)="delete(dt)" class="btn btn-danger btn-xs btn-square"><span tooltipPlacement="top" tooltip="Delete"><i class="fa fa-trash"></i></span></button></td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="mf.data.length == 0">
+                    <tr rowspan="2">
+                      <td colspan="12">
+                        <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="14">
+                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,12]"></mfBootstrapPaginator>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </form>
+
+            </div>
           </div>
+
+
         </div>
-
-
       </div>
       <!-- end DASHBOARD CIRCLE TILES -->
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="portlet portlet-default">
+            <div class="portlet-heading">
+              <div class="portlet-title">
+                <h4>Registered Users</h4>
+              </div>
+              <div class="portlet-widgets">
+                <button (click)="deleteall()" class="btn btn-danger btn-xs">Delete All</button> &nbsp;
+                <i (click)="add()" class="fa fa-close" style="font-size:15px; cursor:pointer;"></i>
+              </div>
+              <div class="clearfix"></div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="portlet-body" style="overflow:auto;">
+              <form #form2="ngForm">
+                <table id="employee" [mfData]="regList | dataFilter : filterQuery" #mf2="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy"
+                  [(mfSortOrder)]="sortOrder" class="table table-striped table-scrollable table-bordered dt-responsive nowrap table-hover table-green"
+                  cellspacing="0" width="100%">
+                  <thead>
+                    <tr>
+                      <th>
+                        <mfDefaultSorter by="">#</mfDefaultSorter>
+                      </th>
+                      <th>
+                        <mfDefaultSorter by="reg_no">Reg No</mfDefaultSorter>
+                      </th>
+                      <th>
+                        <mfDefaultSorter by="firstname">Name</mfDefaultSorter>
+                      </th>
+                      <th>
+                        <mfDefaultSorter by="college">College</mfDefaultSorter>
+                      </th>
+                      <th>
+                        <mfDefaultSorter by="department">Department</mfDefaultSorter>
+                      </th>
+                      <th>
+                        <mfDefaultSorter by="year">Year</mfDefaultSorter>
+                      </th>
+                      <th>
+                        <mfDefaultSorter by="utype">User Type</mfDefaultSorter>
+                      </th>
+                      <th>
+                        <mfDefaultSorter by="rstatus">Status</mfDefaultSorter>
+                      </th>
+                      <th style="text-align:center">
+                        <mfDefaultSorter by="">Action</mfDefaultSorter>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="mf2.data.length != 0">
+                    <tr *ngFor="let dt of mf2.data; let i=index;">
+                      <td>{{i+1}}</td>
+                      <td>{{dt.reg_no }} </td>
+                      <td> {{dt.firstname}} </td>
+                      <td> {{dt.college}}</td>
+                      <td> {{dt.department}} </td>
+                      <td> {{dt.year}} </td>
+                      <td *ngIf="dt.utype=='stf'"><span class="badge blue">Staff</span></td>
+                      <td *ngIf="dt.utype=='std'"><span class="badge green">Student</span> </td>
+                      <td>{{dt.rstatus}}</td>
+                      <td nowrap style="text-align:center">
+                        <!-- <a (click)="edit(dt)" class="btn btn-info btn-xs btn-square"><i class="fa fa-pencil"></i></a>&nbsp; -->
+                        <a (click)="delete2(dt)" class="btn btn-danger btn-xs btn-square"><i class="fa fa-trash"></i></a></td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="mf2.data.length == 0">
+                    <tr rowspan="2">
+                      <td colspan="12">
+                        <h4 *ngIf="mf2.data.length == 0" class="text-center"> No Data found</h4>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="14">
+                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,12]"></mfBootstrapPaginator>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </form>
+
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="portlet portlet-default">
+            <div class="portlet-heading">
+              <div class="portlet-title">
+                <h4>Empty The Rooms</h4>
+              </div>
+             
+              <div class="clearfix"></div>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="portlet-body" style="overflow:auto;">
+              <form [formGroup]="emptyForm">
+                <div class="form-horizontal">
+                  <div class="form-group">
+                    <label class="control-label col-md-4"> Empty With : </label>
+                    <div class="col-md-3">
+                    <input checked type="radio" (change)="changeVal('hostel')" name="empty" /> Hostel &nbsp;
+                    <input type="radio" (change)="changeVal('room')" name="empty" /> Room &nbsp;
+                    <input type="radio"  (change)="changeVal('hosteltype')" name="empty" /> Hostel Type
+                    </div>
+                  </div>
+                  <div *ngIf="selctval=='hosteltype'" class="form-group">
+                    <label class="control-label col-md-4"> Hostel Type : </label>
+                    <div class="col-md-3">
+                      <select formControlName="hosteltype" class="form-control">
+                        <option value="Boys"> Boys </option>    
+                        <option  value="Girls"> Girls </option>
+                 </select>
+                    </div>
+                  </div>
+                  <div *ngIf="selctval=='hostel' || selctval=='room'" class="form-group">
+                    <label class="control-label col-md-4"> Hostel : </label>
+                    <div class="col-md-3">
+                      <select formControlName="hostel" class="form-control" (change)="getRoomslist($event.target.value)">
+                        <option *ngFor="let a of hostelsdata" value="{{a.hid}}"> {{a.hostelname}} </option>   
+                   </select>
+                    </div>
+                  </div>
+                  <div *ngIf="selctval=='room'" class="form-group">
+                    <label class="control-label col-md-4"> Rooms : </label>
+                    <div class="col-md-3">
+                      <select formControlName="room" class="form-control">
+                           <option *ngFor="let a of roomslist" value="{{a.rcid}}"> {{a.roomno}} -- {{a.type}} </option> 
+                     </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                <button (click)="empTy(emptyForm.value)" class="btn btn-danger btn-sm btn-square pull-right"> Empty </button>
+              </div>
+              </form>
+
+            </div>
+          </div>
+
+
+        </div>
+      </div>
 
     </div>
     <!-- /.page-content -->
@@ -127,31 +290,31 @@
   <form [formGroup]="newForm">
     <div class="form-horizontal">
       <div class="form-group">
-        <label class="control-label col-md-4"> Start date : </label>
+        <label class="control-label col-md-4"> Booking Start date : </label>
         <div class="col-md-6">
           <my-date-picker [options]="myDatePickerOptions" formControlName="startdate"></my-date-picker>
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-md-4"> End date : </label>
+        <label class="control-label col-md-4">Booking End date : </label>
         <div class="col-md-6">
           <my-date-picker [options]="myDatePickerOptions" formControlName="enddate"></my-date-picker>
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-md-4"> Sem startdate : </label>
+        <label class="control-label col-md-4"> Semester Start Date : </label>
         <div class="col-md-6">
           <my-date-picker [options]="myDatePickerOptions" formControlName="semstartdate"></my-date-picker>
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-md-4"> Sem enddate : </label>
+        <label class="control-label col-md-4"> Semester End Date : </label>
         <div class="col-md-6">
           <my-date-picker [options]="myDatePickerOptions" formControlName="semenddate"></my-date-picker>
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-md-4"> Hosteltype : </label>
+        <label class="control-label col-md-4"> Hostel Type : </label>
         <div class="col-md-6">
           <select formControlName="hosteltype" class="form-control">
               <option value="Boys"> Boys </option>    
@@ -160,7 +323,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-md-4"> Description : </label>
+        <label class="control-label col-md-4"> Remarks : </label>
         <div class="col-md-6">
           <textarea style="resize:vertical" class="form-control" formControlName="description"></textarea>
         </div>
@@ -174,31 +337,31 @@
   <form [formGroup]="editForm">
     <div class="form-horizontal">
       <div class="form-group">
-        <label class="control-label col-md-4"> Start date : </label>
+        <label class="control-label col-md-4">Booking Start date : </label>
         <div class="col-md-6">
           <my-date-picker [options]="myDatePickerOptions" formControlName="startdate"></my-date-picker>
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-md-4"> End date : </label>
+        <label class="control-label col-md-4">Booking End date : </label>
         <div class="col-md-6">
           <my-date-picker [options]="myDatePickerOptions" formControlName="enddate"></my-date-picker>
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-md-4"> Sem startdate : </label>
+        <label class="control-label col-md-4"> Semester start date : </label>
         <div class="col-md-6">
           <my-date-picker [options]="myDatePickerOptions" formControlName="semstartdate"></my-date-picker>
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-md-4"> Sem enddate : </label>
+        <label class="control-label col-md-4"> Semester end date : </label>
         <div class="col-md-6">
           <my-date-picker [options]="myDatePickerOptions" formControlName="semenddate"></my-date-picker>
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-md-4"> Hosteltype : </label>
+        <label class="control-label col-md-4"> Hostel type : </label>
         <div class="col-md-6">
           <select formControlName="hosteltype" class="form-control">
                 <option value="Boys"> Boys </option> 
@@ -207,7 +370,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="control-label col-md-4"> Description : </label>
+        <label class="control-label col-md-4"> Remarks : </label>
         <div class="col-md-6">
           <textarea style="resize:vertical" class="form-control" formControlName="description"></textarea>
         </div>
@@ -218,6 +381,55 @@
 
 <popup #popup3 (confirmClick)="deletebookings()">
 
-  <h3>Are you sure to Delete this Room Type </h3>
+  <h3>Are you sure to Delete this Booking </h3>
+
+</popup>
+
+<popup #popup7 (confirmClick)="emptyTheRooms()">
+    
+      <h3>Are you sure you want to Vacate rooms for the Entire <span *ngIf="selctval=='hosteltype'"> Hosteltype </span> <span *ngIf="selctval=='hostel'"> Hostel </span> <span *ngIf="selctval=='room'"> Room </span> </h3>
+    
+    </popup>
+
+
+<popup #popup4 (confirmClick)="deleteusers()">
+
+  <h3>Are you sure to Delete this Record </h3>
+
+</popup>
+
+<popup #popup5 (confirmClick)="deleteALlusers()">
+  <div class="col-md-8">
+    <h4>Are you sure to Delete All Records of</h4>
+  </div>
+  <div class="col-md-3">
+    <select class="form-control" (change)="cvalue=$event.target.value">
+              <option value="M">Boys</option>
+              <option value="F">Girls</option>
+              <option value="all">All</option>
+            </select>
+  </div>
+
+</popup>
+
+<popup #popup6 (confirmClick)="changeDateValue()">
+  <div *ngIf="changetype=='postpone'" class="col-md-9">
+    <h4> Enter How Many Days To Postpone this Booking End date</h4>
+  </div>
+  <div *ngIf="changetype=='prepone'" class="col-md-9">
+    <h4>Enter How Many Days To Prepone this Booking End date</h4>
+  </div>
+  <div class="col-md-3">
+    <input type="number" min="1" class="form-control" (keyup)="gocheck($event)" placeholder="Enter Number" name="vals" [(ngModel)]="valss">
+
+  </div>
+  <div class="clearfix"></div>
+  <div *ngIf="valss<1" class="alert alert-danger"> Enter Atleast More Than One Day </div>
+  <div *ngIf="seemes" class="alert alert-danger"> You End Date Must be More Than Today(s) Date </div>
+  <div class="clearfix"></div>
+
+  <button class="btn btn-info btn-sm btn-square pull-right" [disabled]="valss<1 || valss==undefined || valss==null" style="margin-left: 7px;"
+    (click)="changeDateValue()">Change</button>&nbsp;
+  <button class="btn btn-white btn-sm btn-square pull-right" (click)="hide()">Cancel</button>&nbsp;
 
 </popup>

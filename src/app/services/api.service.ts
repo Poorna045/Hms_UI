@@ -7,7 +7,9 @@ import { AppSettings } from '../app.settings';
 export class ApiService {
 
 
-
+  public year;
+  public month;
+  public day;
   page = "dashboard";
 
   constructor(private _http: Http) { }
@@ -81,8 +83,13 @@ export class ApiService {
 
   // add new room
   addRoomConfig(body) {
-
     return this.callApi(AppSettings.ADD_ROOM_API, 'post', body);
+  }
+
+
+  // Empty Rooms
+  emptyTheRooms(body) {
+    return this.callApi(AppSettings.EMPTY_THE_ROOM_API, 'post', body);
   }
 
   getRoomType() {
@@ -252,12 +259,227 @@ export class ApiService {
     return this.callApi(AppSettings.ADD_PAYMENT_DATA_API, 'post', body);
   }
 
+  // Add Payment Data
+  getStudDataExReg() {
 
-   // get maintenance data
-   getmaintenancedata(body) {
-    
-        return this.callApi(AppSettings.GET_PAYMENT_DATA_API, 'post', body);
-      }
+    return this.callApi(AppSettings.GET_STUD_EX_REG_API, 'get', {});
+  }
+
+
+  // get maintenance data
+  getmaintenancedata(body) {
+
+    return this.callApi(AppSettings.GET_PAYMENT_DATA_API, 'post', body);
+  }
+
+  // get Student data by id
+  getStudDataByid(body) {
+
+    return this.callApi(AppSettings.GET_STUD_DATA_BY_ID_API, 'post', body);
+  }
+
+  // get Hostel Config Data
+  gethostelconfig() {
+
+    return this.callApi(AppSettings.GET_HOSTEL_CONFIG_API, 'get', {});
+  }
+
+  // add Hostel Config Data
+  addhostelconfig(body) {
+
+    return this.callApi(AppSettings.ADD_HOSTEL_CONFIG_API, 'post', body);
+  }
+
+  // edit Hostel Config Data
+  edithostelconfig(body) {
+
+    return this.callApi(AppSettings.EDIT_HOSTEL_CONFIG_API, 'post', body);
+  }
+
+  // delete Hostel Config Data
+  deletehostelonfig(body) {
+
+    return this.callApi(AppSettings.DELETE_HOSTEL_CONFIG_API, 'post', body);
+  }
+
+  // change status in roomtypes according to hostel
+  changeTypeStatus(body) {
+
+    return this.callApi(AppSettings.CHANGE_STATUS_TYPE_API, 'post', body);
+  }
+
+  // getusersdata for registration by utype
+  getUsersDataR(body) {
+
+    return this.callApi(AppSettings.GET_USERS_DATA_R_API, 'post', body);
+  }
+  // get rooms list by hid 
+  getroomslistByhid(body) {
+
+    return this.callApi(AppSettings.GET_ROOMS_LIST_BY_HID_API, 'post', body);
+  }
+
+  // get occupancy list  
+  getOccupancyData(body) {
+
+    return this.callApi(AppSettings.GET_OCCUPY_DATA_API, 'post', body);
+  }
+
+  // get registered users List  
+  getregisteredUsers() {
+
+    return this.callApi(AppSettings.GET_REGIS_USERS_DATA_API, 'get', {});
+  }
+
+
+  // delete registered user  
+  deleteuser(body) {
+
+    return this.callApi(AppSettings.DEL_REGIS_USER_API, 'post', body);
+  }
+
+  // delete all registered users  
+  deleteAllUsers(body) {
+
+    return this.callApi(AppSettings.DEL_ALL_REGIS_USERS_API, 'post', body);
+  }
+
+  // get registration page show status  
+  getRegStatus(body) {
+
+    return this.callApi(AppSettings.GET_REG_STATUS_API, 'post', body);
+  }
+
+  // postpone/prepone booking end date  
+  changeDateValue(body) {
+
+    return this.callApi(AppSettings.CHANGE_BOOKING_END_DATE_API, 'post', body);
+  }
+
+
+  //MESS
+
+
+
+  getlist() {
+    const body = {}
+    return this.callApi(AppSettings.GETLIST_API, 'get', body);
+  }
+  insertlist(data) {
+    return this.callApi(AppSettings.INSERTLIST_API, 'post', data);
+  }
+  itemoutlist(data) {
+    return this.callApi(AppSettings.ITEMOUTLIST_API, 'post', data);
+  }
+  addnewitem(data) {
+    return this.callApi(AppSettings.ADDNEWITEM_API, 'post', data);
+  }
+  menulist(data) {
+    return this.callApi(AppSettings.MENULIST_API, 'post', data);
+  }
+  getmenulist() {
+    const body = {}
+    return this.callApi(AppSettings.GETMENULIST_API, 'get', body);
+  }
+  updatelist(data) {
+    return this.callApi(AppSettings.UPDATELIST_API, 'post', data);
+  }
+
+  stockRegister() {
+    const body = {}
+    return this.callApi(AppSettings.STOCKREGISTER_API, 'get', body);
+  }
+  stockBalance() {
+    const body = {}
+    return this.callApi(AppSettings.STOCKBALANCE_API, 'get', body);
+  }
+  getunits(data) {
+ 
+    return this.callApi(AppSettings.GETUNITS_API, 'post', data);
+  }
+
+  purchaserlist(data) {
+    console.log(data);
+    return this.callApi(AppSettings.PURCHASERLIST_API, 'post', data);
+  }
+
+  purchaseItemsList() {
+    const body = {}
+    return this.callApi(AppSettings.PURCHASEITEMSLIST_API, 'get', body);
+  }
+
+  updatemateriallist(data) {
+    return this.callApi(AppSettings.UPDATEMATERIALLIST_API, 'post', data);
+  }
+
+  deleteitem(data) {
+    return this.callApi(AppSettings.DELETEITEM_API, 'post', data);
+  }
+  selected_PurchaseData(data) {
+    return this.callApi(AppSettings.SELECTED_PURCHASEDATA, 'post', data);
+  }
+
+  itembuy(body) {
+    return this.callApi(AppSettings.ITEMBUY_API, 'post', body);
+  }
+
+  getCategories() {
+    const body = {}
+    return this.callApi(AppSettings.GETCATEGORIES_API, 'get', body);
+  }
+
+  getItemsbyCategory(value) {
+    return this.callApi(AppSettings.GETITEMSBYCATEGORY_API, 'post', value);
+  }
+
+  getnames() {
+    const body = {}
+    return this.callApi(AppSettings.GETNAMES_API, 'get', body);
+
+  }
+  purchaserdetails(body) {
+    return this.callApi(AppSettings.PURCHASERDETAILS_API, 'post', body);
+  }
+  status(body) {
+    return this.callApi(AppSettings.STATUS_API, 'post', body);
+  }
+
+  purchasernames(body) {
+    return this.callApi(AppSettings.PURCHASERS_NAME_API, 'post', body);
+  }
+  purchaserupdate(body) {
+    return this.callApi(AppSettings.PURCHASERS_UPDATE_API, 'post', body);
+  }
+  delete1(body) {
+    return this.callApi(AppSettings.PURCHASERS_DELETE_API, 'post', body);
+  }
+
+  addcategory(body) {
+    return this.callApi(AppSettings.ADDCATEGORY_API, 'post', body);
+  }
+  getCategoriesfornewItem() {
+    const body = {}
+    return this.callApi(AppSettings.GETCATEGORIESFORNEWITEM, 'get', body);
+  }
+
+  getlastInsertDate() {
+    const body = {}
+    return this.callApi(AppSettings.GETLASTINSERTDATE, 'get', body);
+  }
+
+  getImagesbyId(id: any, billno: any) {
+    const body = JSON.stringify({ 'id': id, 'billno': billno });
+    return this.callApi(AppSettings.GETIMAGESBYID, 'post', body);
+  }
+  reports(body) {
+    return this.callApi(AppSettings.REPORTSDATE_API, 'post', body);
+  }
+  details(body) {
+    return this.callApi(AppSettings.DETAILS_API, 'post', body);
+  }
+
+
+
   // responsible for making api calls
   callApi(url: string, method: string, body: Object): Observable<any> {
     console.log(`Http call - url: ${url}, body: ${JSON.stringify(body)}`);

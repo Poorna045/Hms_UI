@@ -1,0 +1,338 @@
+<toaster-container [toasterconfig]="toasterconfig">
+</toaster-container>
+
+<div id="wrapper">
+  <!-- begin TOP NAVIGATION -->
+  <app-header></app-header>
+  <!-- end TOP NAVIGATION -->
+
+  <!-- begin SIDE NAVIGATION -->
+  <app-sidemenu [page]="_apiService.page"></app-sidemenu>
+  <!-- end SIDE NAVIGATION -->
+
+  <!-- begin MAIN PAGE CONTENT -->
+  <div id="page-wrapper">
+
+    <div class="spl-content">
+
+      <!-- begin PAGE TITLE ROW -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="page-title">
+            <!--<h1>
+              Admin <small>Dashboard</small>
+            </h1>-->
+            <ol class="breadcrumb">
+              <li><i class="fa fa-dashboard"></i> <a [routerLink]="['/dashboard']">Dashboard</a>
+              </li>
+              <!--<li class="active">Blank Page</li>-->
+            </ol>
+          </div>
+        </div>
+        <!-- /.col-lg-12 -->
+      </div>
+      <!-- /.row -->
+      <!-- end PAGE TITLE ROW -->
+      <div class="row">
+
+        <div class="portlet portlet-default">
+          <div class="portlet-heading">
+            <div class="portlet-title">
+              <h4> Occupancy Status </h4>
+            </div>
+            <div class="portlet-widgets">
+              <i class="fa fa-plus-square" style="font-size:15px"></i> <a (click)="add()">Add Room</a>
+            </div>
+            <div class="clearfix"></div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="portlet-body">
+            <div class="">
+              <form [formGroup]="topForm">
+                <div class="form-horizontal">
+                  <div class="form-group">
+                    <div class="col-md-2">
+                      <label> Select Room Type : </label>
+                      <select formControlName="roomtype" class="form-control">
+                     <option *ngFor="let item of typelist" (click)="roomtype=item.type" value="{{item.typeid}}"> {{item.type}} </option> 
+                      <option value="all"> ALL </option>  
+                  </select>
+                    </div>
+                    <div class="col-md-2">
+                      <label> Select Hostel  : </label>
+                      <select formControlName="hid" class="form-control" (change)="getRoomslist($event.target.value)">
+                        <option *ngFor= "let a of hostelsdata" value="{{a.hid}}"> {{a.hostelname}} </option>  
+                      <!-- <option value="all"> ALL </option>   -->
+                  </select>
+                    </div>
+                    <div *ngIf="roomslist.length>0" class="col-md-2">
+                      <label> Select Room No   : </label>
+                      <select formControlName="roomno" class="form-control">
+                        <option *ngFor= "let a of roomslist" value="{{a.rcid}}"> {{a.roomno}} -- {{a.type}} </option>  
+                      <option value="all"> ALL </option>  
+                  </select>
+                    </div>
+                    <div class="col-md-2">
+                      <button style="margin-top: 23px;" class="btn btn-info btn-square" (click)="submit(topForm.value)">Submit </button>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </form>
+            </div>
+            <form #form="ngForm">
+              <table id="employee" [mfData]="roomsdata | dataFilter : filterQuery" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy"
+                [(mfSortOrder)]="sortOrder" class="table table-striped table-bordered dt-responsive nowrap table-hover table-green"
+                cellspacing="0" width="100%">
+                <thead>
+                  <tr>
+                    <th>
+                      <mfDefaultSorter by="">#</mfDefaultSorter>
+                    </th>
+                    <th>
+                      <mfDefaultSorter by="roomno">Room No</mfDefaultSorter>
+                    </th>
+                    <th>
+                      <mfDefaultSorter by="bedno">Bed No</mfDefaultSorter>
+                    </th>
+                    <th>
+                      <mfDefaultSorter by="hostelname">Hstl Name</mfDefaultSorter>
+                    </th>
+                    <th>
+                      <mfDefaultSorter by="hosteltype">Hstl Type</mfDefaultSorter>
+                    </th>
+                    <th>
+                      <mfDefaultSorter by="floorno">Floor</mfDefaultSorter>
+                    </th>
+                    <th>
+                      <mfDefaultSorter by="type">Room Type</mfDefaultSorter>
+                    </th>
+                    <th>
+                      <mfDefaultSorter by="reg_no">Reg No</mfDefaultSorter>
+                    </th>
+                    <th>
+                      <mfDefaultSorter by="avlbeds">Name</mfDefaultSorter>
+                    </th>
+                    <th>
+                        <mfDefaultSorter by="avlbeds">College</mfDefaultSorter>
+                      </th>
+                      <th>
+                          <mfDefaultSorter by="avlbeds">Department</mfDefaultSorter>
+                        </th>
+                    <th>
+                        <mfDefaultSorter by="utype">User Type</mfDefaultSorter>
+                      </th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="mf.data.length != 0">
+                  <tr *ngFor="let dt of mf.data; let i=index;">
+                    <td>{{i+1}}</td>
+                    <td> {{dt.roomno}}</td>
+                    <td>{{dt.bedno}}</td>
+                    <td>{{dt.hostelname}}</td>
+                    <td>{{dt.hosteltype }}</td>
+                    <td>{{dt.floorno}}</td>
+                    <td>{{dt.type}}</td>
+                    <td>{{dt.reg_no }} </td>
+                    <td> Poorna </td>
+                    <td> REC </td>
+                    <td> CSE </td>
+                    <td *ngIf="dt.utype=='stf'">Staff</td>
+                    <td *ngIf="dt.utype=='std'">Student</td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="mf.data.length == 0">
+                  <tr rowspan="2">
+                    <td colspan="14">
+                      <h4 *ngIf="mf.data.length == 0" class="text-center"> No Data found</h4>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="14">
+                      <mfBootstrapPaginator [rowsOnPageSet]="[5,10,12]"></mfBootstrapPaginator>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </form>
+
+          </div>
+        </div>
+
+
+      </div>
+      <!-- end DASHBOARD CIRCLE TILES -->
+
+    </div>
+    <!-- /.page-content -->
+
+  </div>
+  <!-- /#page-wrapper -->
+  <!-- end MAIN PAGE CONTENT -->
+
+</div>
+
+<popup #popup1 (confirmClick)="addRoom(newForm.value)">
+
+  <form [formGroup]="newForm">
+    <div class="form-horizontal">
+      <div class="form-group col-md-12">
+        <div class="col-md-4">
+          <label class="control-label"> Hostel Name  </label>
+          <select formControlName="hostelid" class="form-control" (change)="gethosteltype($event.target.value)">
+                <option *ngFor= "let a of hostelsdata"value="{{a.hid}}"> {{a.hostelname}} </option>  
+              </select>
+          <!-- <input type="text" class="form-control" placeholder="Enter Hostel Id" formControlName="hostelid"> -->
+        </div>
+        <div class="col-md-4">
+          <label class="control-label"> Room No  </label>
+          <input type="text" class="form-control" placeholder="Enter Room No" formControlName="roomno">
+        </div>
+        <div class="col-md-4">
+          <label class="control-label"> Total Beds  </label>
+          <input type="number" class="form-control" placeholder="Enter " formControlName="totbeds">
+        </div>
+        <div class="col-md-4">
+          <label class="control-label"> Select Hostel Type  </label>
+          <input type="text" class="form-control" disabled placeholder="Hostel Type " formControlName="hosteltype">
+
+        </div>
+        <div class="col-md-4">
+          <label class="control-label"> Select Room Type  </label>
+          <select formControlName="roomtype" class="form-control" (change)="getTypeof2($event)">
+                     <option *ngFor="let item of typelist" value="{{item.type}}"> {{item.type}} </option>  
+                  </select>
+        </div>
+
+        <div class="col-md-4">
+          <label class="control-label"> Room Rent  </label>
+          <input type="number" class="form-control" placeholder="Enter RoomRent" formControlName="roomrent">
+        </div>
+
+        <div class=" col-md-4">
+          <label class="control-label"> Floor </label>
+          <select formControlName="floorno" class="form-control">
+            <option value="g">Ground Floor</option>
+              <option *ngFor="let item of floorlength; let i=index;" value="{{item}}"> {{item}} </option>  
+           </select>
+          <!-- <input type="number" class="form-control" placeholder="Eg : g,1,2,3" formControlName="floorno"> -->
+        </div>
+      </div>
+    </div>
+  </form>
+</popup>
+
+<popup #popup2>
+  <form [formGroup]="editForm">
+    <div class="form-horizontal">
+      <div class="form-group col-md-12">
+        <div class=" col-md-4">
+          <label> Hostel Name </label>
+          <input type="text" class="form-control" disabled formControlName="hostelname">
+        </div>
+        <div class=" col-md-4">
+          <label> Room No </label>
+          <input type="text" class="form-control" formControlName="roomno">
+        </div>
+        <div class="col-md-4">
+          <label> Total Beds </label>
+          <input type="number" min="{{filledcount}}" class="form-control" #val title="Entered Value Must be Greater Or Equal to Filled beds"
+            formControlName="totbeds" required>
+
+        </div>
+        <div class="col-md-4">
+          <label> Select Room Type </label>
+          <select formControlName="roomtype" class="form-control">
+             <option *ngFor="let item of typelist" value="{{item.type}}"> {{item.type}} </option>  
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label> Room Rent </label>
+          <input type="number" class="form-control" formControlName="roomrent">
+        </div>
+        <div class="col-md-4">
+          <label> Select Hostel Type </label>
+          <input type="text" class="form-control" placeholder="HosteL Type" disabled formControlName="hosteltype">
+
+        </div>
+        <div class=" col-md-4">
+          <label class="control-label"> Floor </label>
+          <input type="text" class="form-control" disabled formControlName="floorno">
+        </div>
+      </div>
+
+    </div>
+    <!-- <div *ngIf="val.value == 'e' || val.value < 0" style="color:blue;">Value Must be Number</div>     -->
+    <div *ngIf="val.value<filledcount" style="color:red;">Total Beds Value Must be Greater Or Equal to Filled beds -> <b>{{filledcount}}</b></div>
+    <button (click)="hide()" class="pull-right btn btn-white btn-sm btn-square"> Cancel </button>
+    <button [disabled]="val.value<filledcount" (click)="editRoom(editForm.value)" class="pull-right btn btn-info btn-sm btn-square"
+      style="margin-right:5px;"> Edit </button>&nbsp;
+    <div class="clearfix"></div>
+  </form>
+</popup>
+
+<popup #popup3 (confirmClick)="deleteconfig()">
+
+  <h3>Are you Sure to Delete this Room Permanently from {{hosteltype}} Hostel</h3>
+
+</popup>
+
+<popup #popup4 (confirmClick)="hide()">
+  <div class="col-md-12">
+    <h4>Beds Available</h4>
+
+    <table id="employee" class="table table-striped table-bordered dt-responsive table-green nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th nowrap>Room No</th>
+          <th nowrap>Hosteltype</th>
+          <th nowrap>Bed No(s)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{roomno}}</td>
+          <td>{{hosteltype}}</td>
+          <td nowrap>{{bedlists.toString()}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</popup>
+
+<popup #popup5 (confirmClick)="hide()">
+  <div class="col-md-12">
+    <h4>Occupancy Status</h4>
+
+    <table id="employee" class="table table-striped table-bordered dt-responsive table-green nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th nowrap>Reg No</th>
+          <th nowrap>Name</th>
+          <th nowrap>Room No</th>
+          <th nowrap>Bed No</th>
+          <th nowrap>Hostel Type</th>
+          <th nowrap>Room Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of filledlist">
+          <td>{{a.reg_no}}</td>
+          <td nowrap>{{a.studentname}}</td>
+          <td>{{a.roomnum}}</td>
+          <td nowrap>{{a.bedno}}</td>
+          <td>{{a.htype}}</td>
+          <td>{{a.roomtype}}</td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+</popup>

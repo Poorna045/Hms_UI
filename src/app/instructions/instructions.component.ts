@@ -21,11 +21,11 @@ export class InstructionsComponent implements OnInit {
 
   constructor(private _router: Router,
     private _route: ActivatedRoute,
-    private _apiService: ApiService,
+    public _apiService: ApiService,
     private popup: Popup,
     public toasterService: ToasterService) { }
 
-  private myDatePickerOptions: IMyDpOptions = {
+  public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'yyyy-mm-dd'
   };
