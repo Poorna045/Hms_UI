@@ -69,7 +69,9 @@ export class AssainroomstestComponent implements OnInit {
     distance: '',
     registereddate: '',
     rstatus: '',
-    utype: ''
+    utype: '',
+    appliedlocation:'',
+    selectedtype:''
   };
 
 

@@ -75,12 +75,11 @@
                       <label>Hostel Location</label>
                       <select class="form-control" name="hostellocation" formControlName="hostellocation" (change)="hostelChange($event.target.value)"> 
                         <option *ngFor="let types of selectedhosteldata" value="{{types.hid}}">{{types.hlocation}}</option>                        
-                        <option value="all">Any</option>
+                        <!-- <option value="all">Any</option> -->
                     </select>
                     </div>
                   </div>  <br>
                    <div class="form-group">
-
 
                     <div *ngIf="hlpriority">
                     <div class="col-md-4">
@@ -106,7 +105,7 @@
                     </div>
                     </div>
                     <div class="clearfix"></div><br>
-                    <div class="col-md-4 pull-right text-right"><button (click)="addRegistrtion(reg_Form.value)" class="btn btn-default btn-sm btn-square" style="margin-right: 5px;">Submit</button><button (click)="cancel()" class="btn btn-danger btn-sm btn-square">Cancel</button></div>
+                    <div class="col-md-6 pull-right text-right"><button *ngIf="!change" (click)="addRegistrtion(reg_Form.value)" class="btn btn-default btn-sm btn-square" style="margin-right: 5px;">Submit</button><button *ngIf="change" (click)="changeRegis(reg_Form.value)" class="btn btn-default btn-sm btn-square" style="margin-right: 5px;">Change</button><button (click)="cancel()" class="btn btn-danger btn-sm btn-square">Cancel</button></div>
                   </div>
                 </div>
               </form>

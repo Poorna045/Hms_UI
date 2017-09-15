@@ -69,6 +69,19 @@ export class ApiService {
 
     return this.callApi(AppSettings.REGLIST_API, 'post', body);
   }
+
+   // get valid registered user
+   getvalidtest(body) {
+    return this.callApi(AppSettings.GET_VALID_USER_TEST_API, 'post', body);
+  }
+
+     // change registered user
+     changeRegistration(body) {
+      return this.callApi(AppSettings.CHANGE_REGISTRATION_API, 'post', body);
+    }
+  
+
+
   // accept the allocation 
   vacantroom(body) {
 

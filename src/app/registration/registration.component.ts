@@ -13,6 +13,8 @@ import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent implements OnInit {
+  registerid='';
+  change = false;
   studsDataN = [];
   selectedhosteldata = [];
   utypes = '';
@@ -91,6 +93,10 @@ export class RegistrationComponent implements OnInit {
     this.toasterService.pop('success', '', " Your Registration Was Succesful !");
   }
 
+  addpop2() {
+    this.toasterService.pop('success', '', " Your Changes Was Succesful !");
+  }
+
 
   popToast2() {
     this.toasterService.pop('warning', '', 'Please fill all the feilds');
@@ -108,7 +114,19 @@ export class RegistrationComponent implements OnInit {
       this.hostelsdata = dat.data;
       this.selectedhosteldata = dat.data;
 
-     
+      if (this.utype != 'adm') {
+        this._apiService.getvalidtest({
+          reg_no: this.reg_no,
+        }).subscribe(dataas => {
+          console.log(dataas, 'valid test');
+          if (dataas.data.length > 0) {
+            this.change = true;
+            this.registerid=dataas.data[0].registerid;
+          }
+        })
+      }
+
+
       this.getuserdata('std');
 
       if (this.utype != 'adm') {
@@ -220,7 +238,7 @@ export class RegistrationComponent implements OnInit {
     value['registeredtype'] = localStorage.getItem('utype');
 
     this._apiService.addRegistrtion(value).subscribe(add => {
-     
+
       console.log(add, 'regiter testing');
 
       this.addpop();
@@ -252,7 +270,7 @@ export class RegistrationComponent implements OnInit {
       this.reg_Form.patchValue({
         roomtype: this.roomType[0].typeid,
         typepriority: this.roomType[0].typeid,
-        hostellocation:this.hid,
+        hostellocation: this.hid,
         locationpriority: this.hid,
 
       });
@@ -284,5 +302,15 @@ export class RegistrationComponent implements OnInit {
       utype: this.utypes
     });
   }
+  changeRegis(value) {
+    value['registerid']=this.registerid;
+    console.log(value, 'change registration');
 
+    this._apiService.changeRegistration(value).subscribe(change => {
+
+      console.log(change, 'regiter testing');
+      this.priority=false;
+      this.addpop2();
+    });
+  }
 }

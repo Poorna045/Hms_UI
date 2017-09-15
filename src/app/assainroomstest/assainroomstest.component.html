@@ -288,6 +288,14 @@
                               <td>Employement Type </td>
                               <th>{{userdetails.employement_type}}</th>
                             </tr>
+                            <tr *ngIf="userdetails.utype=='std'">
+                                <td>Year </td>
+                                <th>{{userdetails.year}}</th>
+                              </tr>
+                              <tr *ngIf="userdetails.utype=='std'">
+                                <td>Section </td>
+                                <th>{{userdetails.section}}</th>
+                              </tr>
 
                           </tbody>
                         </table>
@@ -295,14 +303,15 @@
                       <div class="col-lg-6 col-sm-6" style="padding: 8px;">
                         <table class="table table-hover table-bordered table-striped">
                           <tbody>
-                            <tr *ngIf="userdetails.utype=='std'">
-                              <td>Year </td>
-                              <th>{{userdetails.year}}</th>
-                            </tr>
-                            <tr *ngIf="userdetails.utype=='std'">
-                              <td>Section </td>
-                              <th>{{userdetails.section}}</th>
-                            </tr>
+                          
+                            <tr >
+                                <td width="150">Selected Room Type </td>
+                                <th>{{userdetails.selectedtype}}</th>
+                              </tr>
+                              <tr >
+                                <td>Applied location </td>
+                                <th>{{userdetails.appliedlocation}}</th>
+                              </tr>
 
                           </tbody>
                         </table>

@@ -81,6 +81,8 @@ export class AppSettings {
     public static GET_REG_STATUS_API: string = 'http://192.168.0.118/hmsserver/Api/getregstatus';
     public static CHANGE_BOOKING_END_DATE_API: string = 'http://192.168.0.118/hmsserver/Api/changebookingenddate';
     public static EMPTY_THE_ROOM_API: string = 'http://192.168.0.118/hmsserver/Api/emptytheroom';
+    public static GET_VALID_USER_TEST_API: string = 'http://192.168.0.118/hmsserver/Api/getvalidusertest';
+    public static CHANGE_REGISTRATION_API: string = 'http://192.168.0.118/hmsserver/Api/changeregistration';
 
 
     // venkat

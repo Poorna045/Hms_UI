@@ -20,8 +20,8 @@
         <div class="col-lg-12">
           <div class="page-title">
             <!--<h1>
-              Admin <small>Dashboard</small>
-            </h1>-->
+                Admin <small>Dashboard</small>
+              </h1>-->
             <ol class="breadcrumb">
               <li><i class="fa fa-dashboard"></i> <a [routerLink]="['/dashboard']">Dashboard</a>
               </li>
@@ -40,75 +40,100 @@
             <div class="portlet-title">
               <h4>Hostel Selection Process</h4>
             </div>
+            <div class="portlet-widgets">
+              <i class="fa fa-plus-square" style="font-size:15px"></i> <a>Done Selection</a>
+            </div>
+            <div class="clearfix"></div>
             <div class="clearfix"></div>
           </div>
           <div class="portlet-body">
             <div class="row">
-              <div class="col-md-3">
+              <div class="col-md-12">
                 <div class="form-horizontal">
                   <div class="form-group">
-                    <div class="col-md-6">
-                      <label class="control-label"> Room Type : </label>
-                      <div>
+                      <label class="control-label col-md-2"> Room Type</label>
+                      <div class="col-md-3">
                         <select name="typeof" class="form-control" (change)="getTypeof($event)">
-                           <option  class="form-control" *ngFor="let item of typelist" value="{{item.typeid}}"> Only {{item.type}} </option>
-                           <option value="all"> All </option>    
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <label class="control-label"> Hostel Type  : </label>
-                      <div>
+                        <option *ngFor="let item of typelist" class="form-control"  value="{{item.typeid}}"> Only {{item.type}} </option>
+                        <option value="all"> All </option>    
+                      </select>                    
+                    </div>                   
+                      <label class="control-label col-md-2"> Hostel Type</label>
+                      <div class="col-md-3">
                         <select name="typeof" class="form-control" (change)="getavlseats($event)">
-                     <option value="Boys"> Boys </option>    
-                     <option value="Girls"> Girls </option>   
-                  </select>
-                      </div>
+                        <option value="Boys"> Boys </option>    
+                        <option value="Girls"> Girls </option>   
+                      </select>
                     </div>
                   </div>
-                  <!-- <div class="col-md-2">
-                      <label class="control-label"> Total seats : </label>
-                      <div>
-                        <label class="control-label"> AC : &nbsp;<span style="font-size:16px;" [ngClass]="acSeats!='0' ? 'greencolor' : 'redcolor'"> {{ acSeats  }} </span>  &nbsp; Non-AC  : &nbsp;<span style="font-size:16px;" [ngClass]="NonacSeats !='0' ? 'greencolor' : 'redcolor'"> {{ NonacSeats }} </span> &nbsp; AC Delux  : 20 &nbsp; &nbsp; Non-AC Delux  : 25 &nbsp; &nbsp; Normal  : 30 &nbsp;</label>
-                      </div>
-                    </div>
-                    <div class="col-md-2">
-                      <label class="control-label"> Selected Candidates : </label>
-                      <div>
-                        <label class="control-label"> AC : &nbsp;<span style="font-size:16px; color:#16a023"> {{ AacSeats  }} </span>&nbsp; Non-AC  : &nbsp; <span style="font-size:16px; color:#16a023">{{ ANonacSeats }} </span> &nbsp; AC Delux  : 5 &nbsp; &nbsp; Non-AC Delux  :  6 &nbsp; &nbsp; Normal  : 10 &nbsp;</label>
-                      </div>
-                    </div>
-                    <div class="col-md-2">
-                      <label class="control-label"> Remaining seats : </label>
-                      <div>
-                        <label class="control-label"> AC : &nbsp;<span style="font-size:16px; color:#16a023"> {{acSeats- AacSeats  }} </span>&nbsp; Non-AC  : &nbsp; <span style="font-size:16px; color:#16a023">{{ NonacSeats-ANonacSeats }} </span>&nbsp; AC Delux  : 15  &nbsp; &nbsp; Non-AC Delux  : 19 &nbsp; &nbsp; Normal  : 20 &nbsp; </label>
-                      </div>
-                    </div> -->
                 </div>
+                <!-- <div class="col-md-2">
+                        <label class="control-label"> Total seats : </label>
+                        <div>
+                          <label class="control-label"> AC : &nbsp;<span style="font-size:16px;" [ngClass]="acSeats!='0' ? 'greencolor' : 'redcolor'"> {{ acSeats  }} </span>  &nbsp; Non-AC  : &nbsp;<span style="font-size:16px;" [ngClass]="NonacSeats !='0' ? 'greencolor' : 'redcolor'"> {{ NonacSeats }} </span> &nbsp; AC Delux  : 20 &nbsp; &nbsp; Non-AC Delux  : 25 &nbsp; &nbsp; Normal  : 30 &nbsp;</label>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <label class="control-label"> Selected Candidates : </label>
+                        <div>
+                          <label class="control-label"> AC : &nbsp;<span style="font-size:16px; color:#16a023"> {{ AacSeats  }} </span>&nbsp; Non-AC  : &nbsp; <span style="font-size:16px; color:#16a023">{{ ANonacSeats }} </span> &nbsp; AC Delux  : 5 &nbsp; &nbsp; Non-AC Delux  :  6 &nbsp; &nbsp; Normal  : 10 &nbsp;</label>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <label class="control-label"> Remaining seats : </label>
+                        <div>
+                          <label class="control-label"> AC : &nbsp;<span style="font-size:16px; color:#16a023"> {{acSeats- AacSeats  }} </span>&nbsp; Non-AC  : &nbsp; <span style="font-size:16px; color:#16a023">{{ NonacSeats-ANonacSeats }} </span>&nbsp; AC Delux  : 15  &nbsp; &nbsp; Non-AC Delux  : 19 &nbsp; &nbsp; Normal  : 20 &nbsp; </label>
+                        </div>
+                      </div> -->
               </div>
 
 
-              <div class="col-md-9">
+              <!-- <div class="col-md-8">
                 <label class="control-label col-md-2"> Total seats : </label>
                 <div class="col-md-2" *ngFor="let a of seatsData">
-                  <label class="control-label"> {{a.type}} : &nbsp;<span style="font-size:16px; color:#16a023"> {{a.avlbeds  }} </span>&nbsp; </label>
-                
-                </div> <div class="clearfix"></div>
+                  <label class="control-label"> {{a.type}} : &nbsp;<span [ngClass]="a.avlbeds<=0 ?  'redcolor' : 'greencolor'  " style="font-size:16px;"> {{a.avlbeds  }} </span>&nbsp; </label>
+
+                </div>
+                <div class="clearfix"></div>
 
                 <label class="control-label col-md-2"> Selected Candidates : </label>
                 <div class="col-md-2" *ngFor="let a of seatsData">
                   <label class="control-label"> {{a.type}} : &nbsp;<span style="font-size:16px; color:#16a023"> {{a.selected  }} </span>&nbsp; </label>
-                </div><div class="clearfix"></div>
-                
+                </div>
+                <div class="clearfix"></div>
+
                 <label class="control-label col-md-2"> Remaining seats : </label>
                 <div class="col-md-2" *ngFor="let a of seatsData">
-                  <label class="control-label"> {{a.type}} : &nbsp;<span style="font-size:16px; color:#16a023"> {{ a.avlbeds - selected }} </span>&nbsp; </label>
+                  <label class="control-label"> {{a.type}} : &nbsp;<span [ngClass]="(a.avlbeds - a.selected)<=0 ?  'redcolor' : 'greencolor' " style="font-size:16px; color:#16a023"> {{ a.avlbeds - a.selected }} </span>&nbsp; </label>
                 </div>
+              </div> -->
 
 
-
+              <div class="clearfix"></div>
+              <div class="col-md-12">
+                <table class="table table-striped table-bordered table-hover table-green">
+                  <thead>
+                    <tr>
+                      <th style="width: 300px;">#</th>
+                      <th *ngFor="let a of seatsData">{{a.type}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th>Total Seats</th>
+                      <td  *ngFor="let a of seatsData"><a [ngClass]="(a.avlbeds - a.selected)<=0 ?  'btn btn-red btn-xs btn-square a_color' : 'btn btn-green btn-xs btn-square a_color' ">{{a.avlbeds}}</a></td>
+                    </tr>
+                    <tr>
+                      <th>Selected Candidates</th>
+                      <td *ngFor="let a of seatsData"><a class="btn btn-green btn-xs btn-square a_color">{{a.selected}}</a></td>
+                    </tr>
+                    <tr>
+                      <th>Remaining seats</th>
+                      <td *ngFor="let a of seatsData"><a [ngClass]="(a.avlbeds - a.selected)<=0 ?  'btn btn-red btn-xs btn-square a_color' : 'btn btn-green btn-xs btn-square a_color' ">{{a.avlbeds- a.selected}}</a></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-
             </div>
 
             <form #form="ngForm">
@@ -118,7 +143,7 @@
                 <thead>
                   <tr>
 
-                    <th nowrap>
+                    <th>
                       <mfDefaultSorter by="reg_no">Reg No</mfDefaultSorter>
                     </th>
                     <th>
@@ -128,23 +153,20 @@
                       <mfDefaultSorter by="prioritytype">Room Priority</mfDefaultSorter>
                     </th>
                     <th>
-                        <mfDefaultSorter by="selectedtype">Selected Roomtype</mfDefaultSorter>
-                      </th>
+                      <mfDefaultSorter by="selectedtype">Selected Roomtype</mfDefaultSorter>
+                    </th>
                     <th>
                       <mfDefaultSorter by="appliedlocation">Applied Location</mfDefaultSorter>
                     </th>
-                    <th>
+                    <!-- <th>
                       <mfDefaultSorter by="prioritylocation">Location Priority</mfDefaultSorter>
                     </th>
                     <th>
-                        <mfDefaultSorter by="selectedlocation">Selected Location</mfDefaultSorter>
-                      </th>
-                    <th>
-                      <mfDefaultSorter by="disability">Disability</mfDefaultSorter>
-                    </th>
-                    <th>
-                      <mfDefaultSorter by="distance">DistToClg</mfDefaultSorter>
-                    </th>
+                      <mfDefaultSorter by="selectedlocation">Selected Location</mfDefaultSorter>
+                    </th> -->
+                    <!-- <th>
+                        <mfDefaultSorter by="distance">DistToClg</mfDefaultSorter>
+                      </th> -->
                     <th style="text-align:center">
                       <mfDefaultSorter by="">Action</mfDefaultSorter>
                     </th>
@@ -152,25 +174,31 @@
                 </thead>
                 <tbody *ngIf="mf.data.length != 0">
                   <tr *ngFor="let dt of mf.data">
-                    <td><u style="color:#1512f5">
-                      <span tooltipPlacement="top" tooltip="colg - {{dt.college}} , branch - {{dt.branch}} , year - {{dt.year}} , section - {{dt.section}}"> {{dt.reg_no}} </span></u>   &nbsp;
-                       <span tooltipPlacement="top" tooltip="Pending" class="btn btn-default btn-xs" *ngIf="dt.rstatus=='pending'"> Pe </span>
-                      <span tooltipPlacement="top" tooltip="Accepted" class="btn btn-success btn-xs" *ngIf="dt.rstatus=='accepted'"> Ac </span>
-                      <span tooltipPlacement="top" tooltip="Waiting list" class="btn btn-info btn-xs" *ngIf="dt.rstatus=='waiting'"> Wa </span>
-                    </td>                                        
-                    <td>{{dt.appliedtype}}</td>                    
+                    <td>
+                      <span tooltipPlacement="top" tooltip="colg - {{dt.college}} , branch - {{dt.branch}} , year - {{dt.year}} , section - {{dt.section}}"
+                       > {{dt.reg_no}}
+                      </span><span tooltipPlacement="top" tooltip="Pending" class="btn btn-default btn-xs pull-right" *ngIf="dt.rstatus=='pending'"> P </span>
+                      <span tooltipPlacement="top" tooltip="Selected" class="btn btn-success btn-xs pull-right" *ngIf="dt.rstatus=='selected'">S</span>
+                      <span tooltipPlacement="top" tooltip="Waiting list" class="btn btn-info btn-xs pull-right" *ngIf="dt.rstatus=='waiting'"> W </span>
+                      
+                    </td>
+                    <td>{{dt.appliedtype}} 
+                         
+                    </td>
                     <td>{{dt.prioritytype}}</td>
-                    <td>{{dt.selectedtype}}</td>  
-                    <td>{{dt.appliedlocation}}</td>                    
-                    <td>{{dt.prioritylocation}}</td>
-                    <td>{{dt.selectedlocation}}</td>  
-                    <td>{{dt.disability}}</td>
-                    <td>{{dt.distance}}</td>
+                    <td>{{dt.selectedtype}}</td>
+                    <td>{{dt.appliedlocation}}</td>
+                    <!-- <td>{{dt.prioritylocation}}</td>
+                    <td>{{dt.selectedlocation}}</td> -->
+                    <!-- <td>{{dt.distance}}</td> -->
+
+                    <!-- [disabled]="dt.rstatus=='selected'" -->
+
                     <td nowrap>
-                       <button (click)="view(dt)" class="btn btn-green btn-xs btn-square"><span tooltipPlacement="top" tooltip="view"><i class="fa fa-eye"></i></span></button> &nbsp;
+                      <button (click)="view(dt)" class="btn btn-green btn-xs btn-square"><span tooltipPlacement="top" tooltip="view"><i class="fa fa-eye"></i></span></button>                      &nbsp;
                       <span tooltipPlacement="top" tooltip="select"><button [disabled]="dt.rstatus=='selected'" (click)="accept(dt)"
-                        class="btn btn-info btn-xs btn-square"><i class="fa fa-check"></i></button></span>      &nbsp;
-                      <span tooltipPlacement="top" tooltip="waiting"><button [disabled]="dt.rstatus=='waiting'" (click)="wait(dt)" class="btn btn-primary btn-xs btn-square"><i class="fa fa-ellipsis-h"></i></button></span></td>
+                          class="btn btn-info btn-xs btn-square"><i class="fa fa-check"></i></button></span>                      &nbsp;
+                      <span tooltipPlacement="top" tooltip="waiting"><button [disabled]="dt.rstatus=='waiting' || dt.rstatus=='pending' " (click)="wait(dt)" class="btn btn-primary btn-xs btn-square"><i class="fa fa-ellipsis-h"></i></button></span></td>
                   </tr>
                 </tbody>
                 <tbody *ngIf="mf.data.length == 0">
@@ -206,67 +234,38 @@
 
 </div>
 
-<popup #popup1 (confirmClick)="addBooking(newForm.value)">
-
-  <form [formGroup]="newForm">
-    <div class="form-horizontal">
-      <div class="form-group">
-        <label class="control-label col-md-4"> Start date : </label>
-        <div class="col-md-6">
-          <my-date-picker [options]="myDatePickerOptions" formControlName="startdate"></my-date-picker>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> End date : </label>
-        <div class="col-md-6">
-          <my-date-picker [options]="myDatePickerOptions" formControlName="enddate"></my-date-picker>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Sem startdate : </label>
-        <div class="col-md-6">
-          <my-date-picker [options]="myDatePickerOptions" formControlName="semstartdate"></my-date-picker>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Sem enddate : </label>
-        <div class="col-md-6">
-          <my-date-picker [options]="myDatePickerOptions" formControlName="semenddate"></my-date-picker>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="control-label col-md-4"> Description : </label>
-        <div class="col-md-6">
-          <textarea style="resize:vertical" class="form-control" formControlName="description"></textarea>
-        </div>
-      </div>
-    </div>
-  </form>
-</popup>
 
 <popup #popup2>
-  <div *ngIf="typeroom == 'all' " class="row">
-    <div class="form-group">
-      <label class="control-label col-md-3"> Room Type : </label>
-      <div class="col-md-6">
-        <select name="typeof" class="form-control" (change)="getTypeof2($event)" required>
-                     <option  *ngFor="let item of typelist" value="{{item.type}}"> {{item.type}} </option>   
-                  </select>
+  <form [formGroup]="newForm">
+    <div *ngIf="typeroom == 'all' " class="row">
+
+      <div class="form-group">
+        <label class="control-label col-md-3"> Room Type : </label>
+        <div class="col-md-6">
+          <select name="type" class="form-control" formControlName="type" (change)="getTypeof2($event)" required>
+                       <option  *ngFor="let item of typelist" value="{{item.typeid}}"> {{item.type}} </option>   
+                    </select>
+        </div>
       </div>
     </div>
-  </div>
-  <h4>Are you sure to accept this {{ typerooms }} Room Type</h4>
-  <button (click)="hide()" class="pull-right btn btn-white btn-sm btn-square"> Cancel </button>
-  <button *ngIf="typerooms=='AC'" [disabled]="(typerooms=='AC' && (acSeats-AacSeats )<=0)" (click)="addstudent()" class="pull-right btn btn-default btn-sm btn-square"
-    style="margin-right:5px;"> Accept </button>&nbsp;
-  <button *ngIf="typerooms=='Non-AC'" [disabled]="(typerooms=='Non-AC' && (NonacSeats-ANonacSeats) <=0) " (click)="addstudent()"
-    class="pull-right btn btn-default btn-sm btn-square" style="margin-right:5px;"> Accept </button>&nbsp;
-  <div class="clearfix"></div>
+    <div class="clearfix"></div><br>
+    <h4 *ngIf="typeroom != 'all' && targetval>0">Are you sure to accept this {{ newname }} Room Type to this User ! </h4>
+    <h4 *ngIf="typeroom == 'all' && targetval>0 ">Are you sure to accept this {{ newnames }} Room Type to this User ! </h4>
+
+    <div *ngIf="typeroom != 'all' && targetval<=0" class="alert alert-danger">Alert ! Seats are filled in this {{ newname }} Room type </div>
+    <div *ngIf="typeroom == 'all' && targetval<=0" class="alert alert-danger">Alert ! Seats are filled in this {{ newnames }} Room type </div>
+
+    <button (click)="hide()" class="pull-right btn btn-white btn-sm btn-square"> Cancel </button>
+    <button [disabled]="targetval<=0" (click)="addstudent()" class="pull-right btn btn-default btn-sm btn-square" style="margin-right:5px;"> Accept </button>&nbsp;
+    <!-- <button *ngIf="typerooms=='Non-AC'" [disabled]="(typerooms=='Non-AC' && (NonacSeats-ANonacSeats) <=0) " (click)="addstudent()"
+    class="pull-right btn btn-default btn-sm btn-square" style="margin-right:5px;"> Accept </button>&nbsp; -->
+    <div class="clearfix"></div>
+  </form>
 </popup>
 
 <popup #popup3 (confirmClick)="waitinglist()">
 
-  <h3>Are you sure to Put this Person in Waiting List </h3>
+  <h3>Are you sure to Keep this Person in Waiting List </h3>
 
 </popup>
 
@@ -285,16 +284,28 @@
           <td>{{fullview.firstname}}</td>
         </tr>
         <tr>
-          <td>DOB</td>
-          <td>{{fullview.dob}}</td>
-        </tr>
-        <tr>
           <td>Mobile</td>
           <td>{{fullview.mobile}}</td>
         </tr>
         <tr>
           <td>Email</td>
           <td>{{fullview.email}}</td>
+        </tr>
+        <tr>
+          <td>College</td>
+          <td>{{fullview.college}}</td>
+        </tr>
+        <tr>
+          <td>Department</td>
+          <td>{{fullview.branch}}</td>
+        </tr>
+        <tr>
+          <td>Year</td>
+          <td>{{fullview.year}}</td>
+        </tr>
+        <tr>
+          <td>Section</td>
+          <td>{{fullview.section}}</td>
         </tr>
         <tr>
           <td>Gender</td>
@@ -312,31 +323,39 @@
         </tr>
       </thead>
       <tbody>
-          <tr>
-              <td>Mobile</td>
-              <td>{{fullview.parentmobile}}</td>
-            </tr>
-            <tr>
-              <td>Email</td>
-              <td>{{fullview.parentemail}}</td>
-            </tr>
-            <tr>
-              <td>Present Address</td>
-              <td>{{fullview.present_address}}</td>
-            </tr>
-            <tr>
-                <td>Scholarship status</td>
-                <td>{{fullview.scholarship_status}}</td>
-              </tr>
+
+        <tr>
+          <td>DOB</td>
+          <td>{{fullview.dob}}</td>
+        </tr>
+        <tr>
+          <td>Disability</td>
+          <td>{{fullview.disability}}</td>
+        </tr>
+        <tr>
+          <td>Bloodgroup</td>
+          <td>{{fullview.bloodgroup}}</td>
+        </tr>
+        <tr>
+          <td>Present Address</td>
+          <td>{{fullview.present_address}}</td>
+        </tr>
         <tr>
           <td>Father Name</td>
           <td>{{fullview.fathername}}</td>
         </tr>
         <tr>
+          <td>Father Income</td>
+          <td>{{fullview.father_income}}</td>
+        </tr>
+        <tr>
           <td>Mother Name</td>
           <td>{{fullview.mothername}}</td>
         </tr>
-       
+        <tr>
+          <td>Scholarship status</td>
+          <td>{{fullview.scholarship_status}}</td>
+        </tr>
       </tbody>
 
     </table>

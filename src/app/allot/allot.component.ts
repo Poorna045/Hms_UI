@@ -12,7 +12,10 @@ import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
   styleUrls: ['./allot.component.css']
 })
 export class AllotComponent implements OnInit {
-  seatsData=[];
+  selectedval='';
+
+  targetval = 0;
+  seatsData = [];
   hosteltype = 'Boys';
   regid: any;
   ANonacSeats: any;
@@ -24,6 +27,8 @@ export class AllotComponent implements OnInit {
   fullview = new Object();
   reglist = [];
   typelist = [];
+  newname = 'all';
+  newnames='';
 
   bid: any;
   public filterQuery = "";
@@ -59,76 +64,92 @@ export class AllotComponent implements OnInit {
     this._apiService.page = "allot";
     this._apiService.getRoomType().subscribe(list => {
       console.log(list); this.typelist = list.data;
-      let gender='Boys';
-      
-       const val = {
-          type: 'all' ,
-          gender:gender
+      let gender = 'Boys';
+
+      const val = {
+        type: 'all',
+        gender: gender
       }
       this._apiService.getreglist(val).subscribe(lists => {
-        console.log(lists,'reglists');
+        console.log(lists, 'reglists');
         this.reglist = lists.data;
         const gs = {
           hosteltype: 'Boys'
         }
         this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
           console.log(seats, 'seats test');
-          this.seatsData=seats.data;
-          // this.acSeats =  seats.data.acseats;
-          // this.NonacSeats = seats.data.nonacseats;
-          // this.AacSeats = seats.data.Aacseats;
-          // this.ANonacSeats = seats.data.Anonacseats;
+          this.seatsData = seats.data;
+          
+          this.newnames = this.typelist[0].type;
+          
+      
+            this.selectedval=this.typelist[0].typeid;
+         
 
+          if(seats.data.length>0)
+          this.targetval=this.seatsData[0].avlbeds - this.seatsData[0].selected;
+          
+          console.log(this.targetval,'targetval');
+          
         });
       });
 
     })
   }
 
-  getavlseats($event)
-{
-  const gs = {
-    hosteltype: $event.target.value
-  }
-  this.hosteltype=$event.target.value;
-  this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
-    console.log(seats, 'seats test');
-    this.seatsData=seats.data;
-    // this.acSeats = seats.data.acseats;
-    // this.NonacSeats = seats.data.nonacseats;
-    // this.AacSeats = seats.data.Aacseats;
-    // this.ANonacSeats = seats.data.Anonacseats;
-
-    // let gender='M';
-    // if(this.hosteltype=='Girls'){
-    //   gender='F'
-    // }
-    
-     const val = {
-        type: this.typeroom ,
-        gender:this.hosteltype
+  getavlseats($event) {
+    const gs = {
+      hosteltype: $event.target.value
     }
-    this._apiService.getreglist(val).subscribe(lists => {
-      console.log(lists);
-      this.reglist = lists.data;
-    
-    });
+    this.hosteltype = $event.target.value;
+    this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
+      console.log(seats, 'seats test');
+      this.seatsData = seats.data;
+   
 
-  });
-}
+      if(seats.data.length>0)
+      this.targetval=this.seatsData[0].avlbeds - this.seatsData[0].selected;
+
+      const val = {
+        type: this.typeroom,
+        gender: this.hosteltype
+      }
+      this._apiService.getreglist(val).subscribe(lists => {
+        console.log(lists);
+        this.reglist = lists.data;
+
+      });
+
+    });
+  }
   getTypeof($event) {
-    console.log($event.target.value);
+
 
     this.typeroom = $event.target.value;
-    // let gender='M';
-    // if(this.hosteltype=='Girls'){
-    //   gender='F'
-    // }
-    
+
+    if (this.typeroom != 'all') {
+      var nsa = this.typelist.filter(function (obj) {
+        return obj.typeid == $event.target.value;
+      });
+      this.newname = nsa[0].type;
+
+      var nsas = this.seatsData.filter(function (obj) {
+        return obj.typeid == $event.target.value;
+      });
+      this.targetval=nsas[0].avlbeds - nsas[0].selected;
+
+      this.selectedval=nsas[0].typeid
+    } else {
+      this.newname = this.typeroom;
+    }
+
+
    
+
+    console.log($event.target.value, 'newname type testing', this.newname);
     const val = {
       type: $event.target.value,
-      gender:this.hosteltype
+      gender: this.hosteltype
     }
     this._apiService.getreglist(val).subscribe(list => {
       console.log(list);
@@ -138,28 +159,33 @@ export class AllotComponent implements OnInit {
   }
 
   getTypeof2($event) {
-    console.log($event.target.value);
+
     this.typerooms = $event.target.value;
+
+      var nsa = this.typelist.filter(function (obj) {
+        return obj.typeid == $event.target.value;
+      });
+
+      var nsas = this.seatsData.filter(function (obj) {
+        return obj.typeid == $event.target.value;
+      });
+
+      this.targetval=nsas[0].avlbeds - nsas[0].selected;
+   
+
+      this.selectedval=nsas[0].typeid
+
+    
+      console.log($event.target.value,nsa);
+      this.newnames = nsa[0].type;
+ 
   }
   onDateChanged(event: IMyDateModel) {
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
   }
 
   newForm = new FormGroup({
-    startdate: new FormControl(),
-    enddate: new FormControl(),
-    description: new FormControl(),
-    semstartdate: new FormControl(),
-    semenddate: new FormControl()
-
-  });
-  editForm = new FormGroup({
-    startdate: new FormControl(),
-    enddate: new FormControl(),
-    description: new FormControl(),
-    semstartdate: new FormControl(),
-    semenddate: new FormControl()
-
+    type: new FormControl(),
   });
 
   @ViewChild('popup1') popup1: Popup;
@@ -189,14 +215,20 @@ export class AllotComponent implements OnInit {
 
   accept(dt) {
     this.fullview = dt;
-    if(this.typeroom=='AC'){
-      this.typerooms = 'AC';
-    }else if(this.typeroom=='Non-AC'){
-      this.typerooms='Non-AC';
-    }else if(this.typeroom=='all'){
-      this.typerooms='AC';
+
+    if (this.typeroom != 'all') {
+      this.typerooms = this.typeroom;
+    } else {
+      this.typerooms = this.typeroom;
+      this.selectedval=this.typelist[0].typeid
     }
-    
+ 
+    this.newForm.patchValue({
+      type:this.typelist[0].typeid
+    })
+         
+    if(this.seatsData.length>0)
+    this.targetval=this.seatsData[0].avlbeds - this.seatsData[0].selected;
 
     this.popup2.options = {
       header: "Acceptance ",
@@ -215,7 +247,6 @@ export class AllotComponent implements OnInit {
   }
 
   hide() {
-    this.popup1.hide();
     this.popup2.hide();
     this.popup3.hide();
     this.popup4.hide();
@@ -241,18 +272,18 @@ export class AllotComponent implements OnInit {
   wait(dt) {
     // this.popup.show();
     // this.fullview=dt;
-    this.regid=dt.registrationid;
+    this.regid = dt.registerid;
     this.popup3.options = {
       header: "Waiting List",
       color: "#2c3e50",                      // red, blue.... 
       widthProsentage: 40,                             // The with of the popou measured by browser width 
       animationDuration: 1,                              // in seconds, 0 = no animation 
       showButtons: true,
-      cancleBtnContent: "Cancel",  
+      cancleBtnContent: "Cancel",
       cancleBtnClass: "btn btn-white btn-square btn-sm",    // you class for styling the cancel button 
       confirmBtnContent: "Submit",
       confirmBtnClass: "btn btn-warning btn-square btn-sm",   // your class for styling the confirm button                             
-     
+
 
 
       animation: "fadeInDown",                   // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown' 
@@ -296,25 +327,27 @@ export class AllotComponent implements OnInit {
     });
   }
   addstudent() {
-    // this.fullview["newtype"] = this.typeroom;
-    if (this.typeroom == 'all') {
-      this.fullview["type"] = this.typerooms;
-    }
-    console.log(this.fullview);
 
-    this._apiService.vacantroom(this.fullview).subscribe(add => {
+    if (this.typeroom == 'all') {
+      this.fullview["type"] = this.selectedval;
+    }
+    else{
+      this.fullview["type"]=this.selectedval;     
+    }
+
+    const vals={
+      type:this.selectedval,
+      registerid:this.fullview['registerid']
+    }
+    console.log(this.fullview,this.typeroom,this.hosteltype);
+
+    this._apiService.vacantroom(vals).subscribe(add => {
       this._apiService.getRoomType().subscribe(list => {
-        console.log(list); this.typelist = list.data; 
-       
-        // let gender='M';
-        // if(this.hosteltype=='Girls'){
-        //   gender='F'
-        // }
-      
-       
+        console.log(list); this.typelist = list.data;
+
         const val = {
           type: this.typeroom,
-          gender:this.hosteltype
+          gender: this.hosteltype
         }
         this._apiService.getreglist(val).subscribe(lists => {
           console.log(list);
@@ -326,11 +359,11 @@ export class AllotComponent implements OnInit {
           }
           this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
             console.log(seats, 'seats test');
-            this.acSeats = seats.data.acseats;
-            this.NonacSeats = seats.data.nonacseats;
-            this.AacSeats = seats.data.Aacseats;
-            this.ANonacSeats = seats.data.Anonacseats;
-  
+            this.seatsData = seats.data;
+         
+               if(seats.data.length>0)
+               this.targetval=this.seatsData[0].avlbeds - this.seatsData[0].selected;
+
           });
 
         });
@@ -341,21 +374,16 @@ export class AllotComponent implements OnInit {
 
   waitinglist() {
     const value = {
-      registrationid:this.regid
+      registerid: this.regid
     }
     this._apiService.waitinglist(value).subscribe(deletes => {
       this._apiService.getRoomType().subscribe(list => {
-        console.log(list); this.typelist = list.data; 
-      
-        let gender='M';
-        if(this.hosteltype=='Girls'){
-          gender='F'
-        }
-      
-       
+        console.log(list); this.typelist = list.data;
+
+
         const val = {
           type: this.typeroom,
-          gender:gender
+          gender: this.hosteltype
         }
         this._apiService.getreglist(val).subscribe(lists => {
           console.log(list);
@@ -367,11 +395,11 @@ export class AllotComponent implements OnInit {
           }
           this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
             console.log(seats, 'seats test');
-            this.acSeats = seats.data.acseats;
-            this.NonacSeats = seats.data.nonacseats;
-            this.AacSeats = seats.data.Aacseats;
-            this.ANonacSeats = seats.data.Anonacseats;
-  
+            this.seatsData=seats.data;
+
+            if(seats.data.length>0)
+            this.targetval=this.seatsData[0].avlbeds - this.seatsData[0].selected;
+
           });
         });
 
