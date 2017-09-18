@@ -13,6 +13,7 @@ import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
   styleUrls: ['./bookings.component.css']
 })
 export class BookingsComponent implements OnInit {
+  gohtype='Boys';
   hid: any;
   roomslist = [];
   roomsdata = [];
@@ -151,6 +152,7 @@ export class BookingsComponent implements OnInit {
   @ViewChild('popup5') popup5: Popup;
   @ViewChild('popup6') popup6: Popup;
   @ViewChild('popup7') popup7: Popup;
+  @ViewChild('popup8') popup8: Popup;
 
   add() {
 
@@ -303,6 +305,48 @@ export class BookingsComponent implements OnInit {
 
     this.popup7.show(this.popup7.options);
   }
+
+  clearData() {
+
+
+    this.popup8.options = {
+      header: 'Clear The Data',
+      color: "#2c3e50",                     // red, blue.... 
+      widthProsentage: 40,                            // The with of the popou measured by browser width 
+      animationDuration: 1,                             // in seconds, 0 = no animation 
+      showButtons: true,                          // You can hide this in case you want to use custom buttons 
+      confirmBtnContent: "Clear",                        // The text on your confirm button 
+      cancleBtnContent: "Cancel",                      // the text on your cancel button 
+      confirmBtnClass: "btn btn-danger btn-sm btn-square",     // your class for styling the confirm button 
+      cancleBtnClass: "btn btn-white btn-sm btn-square",   // you class for styling the cancel button 
+      animation: "fadeInDown",                  // 'fadeInLeft', 'fadeInRight', 'fadeInUp', 'bounceIn','bounceInDown' 
+    };
+
+    this.popup8.show(this.popup8.options);
+  }
+
+  gohosteltype(val){
+    this.gohtype=val;
+    console.log(this.gohtype);
+    
+  }
+
+
+
+  ClearTheData() {
+    const val = {
+      hosteltype: this.gohtype
+    }
+
+    this._apiService.ClearTheData(val).subscribe(clea => {
+        this._apiService.getboolkingslist().subscribe(bookings => {
+          this.bookingslist = bookings.data;
+          this.popup8.hide();
+          this.delpop();
+        })
+    });
+  }
+
 
   popToast() {
     this.toasterService.pop('warning', '', 'Bookings are already opened on those days . please verify');

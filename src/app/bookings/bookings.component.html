@@ -41,6 +41,7 @@
                 <h4>Add New Booking</h4>
               </div>
               <div class="portlet-widgets">
+                <i class="fa fa-plus-square" style="font-size:15px"></i> <a (click)="clearData()">Clear Data</a>
                 <i class="fa fa-plus-square" style="font-size:15px"></i> <a (click)="add()">Add Booking</a>
               </div>
               <div class="clearfix"></div>
@@ -222,7 +223,7 @@
               <div class="portlet-title">
                 <h4>Empty The Rooms</h4>
               </div>
-             
+
               <div class="clearfix"></div>
               <div class="clearfix"></div>
             </div>
@@ -233,9 +234,9 @@
                   <div class="form-group">
                     <label class="control-label col-md-4"> Empty With : </label>
                     <div class="col-md-3">
-                    <input checked type="radio" (change)="changeVal('hostel')" name="empty" /> Hostel &nbsp;
-                    <input type="radio" (change)="changeVal('room')" name="empty" /> Room &nbsp;
-                    <input type="radio"  (change)="changeVal('hosteltype')" name="empty" /> Hostel Type
+                      <input checked type="radio" (change)="changeVal('hostel')" name="empty" /> Hostel &nbsp;
+                      <input type="radio" (change)="changeVal('room')" name="empty" /> Room &nbsp;
+                      <input type="radio" (change)="changeVal('hosteltype')" name="empty" /> Hostel Type
                     </div>
                   </div>
                   <div *ngIf="selctval=='hosteltype'" class="form-group">
@@ -265,8 +266,8 @@
                   </div>
                 </div>
                 <div class="col-md-6">
-                <button (click)="empTy(emptyForm.value)" class="btn btn-danger btn-sm btn-square pull-right"> Empty </button>
-              </div>
+                  <button (click)="empTy(emptyForm.value)" class="btn btn-danger btn-sm btn-square pull-right"> Empty </button>
+                </div>
               </form>
 
             </div>
@@ -330,6 +331,7 @@
       </div>
     </div>
   </form>
+  <div> <b>Note</b> : No More Selection Process for Previous Bookings of this HostelType</div>
 </popup>
 
 <popup #popup2 (confirmClick)="editbookings(editForm.value)">
@@ -386,10 +388,10 @@
 </popup>
 
 <popup #popup7 (confirmClick)="emptyTheRooms()">
-    
-      <h3>Are you sure you want to Vacate rooms for the Entire <span *ngIf="selctval=='hosteltype'"> Hosteltype </span> <span *ngIf="selctval=='hostel'"> Hostel </span> <span *ngIf="selctval=='room'"> Room </span> </h3>
-    
-    </popup>
+
+  <h3>Are you sure you want to Vacate rooms for the Entire <span *ngIf="selctval=='hosteltype'"> Hosteltype </span> <span *ngIf="selctval=='hostel'"> Hostel </span>    <span *ngIf="selctval=='room'"> Room </span> </h3>
+
+</popup>
 
 
 <popup #popup4 (confirmClick)="deleteusers()">
@@ -431,5 +433,27 @@
   <button class="btn btn-info btn-sm btn-square pull-right" [disabled]="valss<1 || valss==undefined || valss==null" style="margin-left: 7px;"
     (click)="changeDateValue()">Change</button>&nbsp;
   <button class="btn btn-white btn-sm btn-square pull-right" (click)="hide()">Cancel</button>&nbsp;
+
+</popup>
+
+<popup #popup8 (confirmClick)="ClearTheData()">
+  <div class="col-md-12">
+    <div class="col-md-9">
+      <h4>Are you sure to clear the previous registration data on selection process of this {{gohtype}} HostelType </h4>
+    </div>
+    <br>
+    <div class="col-md-3">
+      <select class="form-control" [(ngModel)]="gohtype" (change)="gohosteltype($event.target.value)">
+           <option value="Boys"> Boys </option> 
+           <option  value="Girls"> Girls </option>    
+    </select>
+    </div>
+    <div class="clearfix"></div>
+    <div>
+    <b>Note</b> : No More Selection Process for these Users
+  </div>
+  </div>
+
+
 
 </popup>

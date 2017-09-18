@@ -227,11 +227,11 @@
                             <tr>
                               <td width="150">User Name</td>
                               <th>{{userdetails.firstname}}
-                                <span *ngIf="userdetails.rstatus=='allocated'" class="btn btn-success btn-sm pull-right" tooltipPlacement="top" tooltip="{{userdetails.rstatus}}">{{userdetails.rstatus | slice:0:1 | uppercase}}{{userdetails.rstatus | slice:1:4}}</span>
-                                <span *ngIf="userdetails.rstatus=='accepted'" class="btn btn-info btn-sm pull-right" tooltipPlacement="top" tooltip="{{userdetails.rstatus}}">{{userdetails.rstatus | slice:0:1 | uppercase}}{{userdetails.rstatus | slice:1:4}}</span>
-                                <span *ngIf="userdetails.rstatus=='waiting'" class="btn btn-primary btn-sm pull-right" tooltipPlacement="top" tooltip="{{userdetails.rstatus}}">{{userdetails.rstatus | slice:0:1 | uppercase}}{{userdetails.rstatus | slice:1:4}}</span>
-                                <span *ngIf="userdetails.rstatus=='pending'" class="btn btn-warning btn-sm pull-right" tooltipPlacement="top" tooltip="{{userdetails.rstatus}}">{{userdetails.rstatus | slice:0:1 | uppercase}}{{userdetails.rstatus | slice:1:4}}</span>
-                                <span *ngIf="userdetails.rstatus=='deallocated'" class="btn btn-default btn-sm pull-right" tooltipPlacement="top" tooltip="{{userdetails.rstatus}}">{{userdetails.rstatus | slice:0:1 | uppercase}}{{userdetails.rstatus | slice:1:4}}</span>
+                                <span *ngIf="userdetails.rstatus=='allocated'" class="btn btn-success btn-sm pull-right" tooltipPlacement="top" tooltip="{{userdetails.rstatus}}">{{userdetails.rstatus | slice:0:1 | uppercase}}{{userdetails.rstatus | slice:1:4 | lowercase }}</span>
+                                <span *ngIf="userdetails.rstatus=='selected'" class="btn btn-info btn-sm pull-right" tooltipPlacement="top" tooltip="{{userdetails.rstatus}}">{{userdetails.rstatus | slice:0:1 | uppercase}}{{userdetails.rstatus | slice:1:4  | lowercase}}</span>
+                                <span *ngIf="userdetails.rstatus=='waiting'" class="btn btn-primary btn-sm pull-right" tooltipPlacement="top" tooltip="{{userdetails.rstatus}}">{{userdetails.rstatus | slice:0:1 | uppercase}}{{userdetails.rstatus | slice:1:4  | lowercase}}</span>
+                                <span *ngIf="userdetails.rstatus=='pending'" class="btn btn-warning btn-sm pull-right" tooltipPlacement="top" tooltip="{{userdetails.rstatus}}">{{userdetails.rstatus | slice:0:1 | uppercase}}{{userdetails.rstatus | slice:1:4  | lowercase}}</span>
+                                <span *ngIf="userdetails.rstatus=='deallocated'" class="btn btn-default btn-sm pull-right" tooltipPlacement="top" tooltip="{{userdetails.rstatus}}">{{userdetails.rstatus | slice:0:1 | uppercase}}{{userdetails.rstatus | slice:1:4  | lowercase}}</span>
 
                               </th>
                             </tr>

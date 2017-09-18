@@ -8,7 +8,7 @@ import { ApiService } from '../../services/api.service';
 })
 export class SidemenuComponent implements OnInit {
   reg_no: string;
-  showReg = true;
+  showReg = '';
   @Input() page;
   name: string;
   utype: any;
@@ -49,9 +49,12 @@ export class SidemenuComponent implements OnInit {
       gender:this.gender
     };
 
-    // this._apiService.getRegStatus(vals).subscribe(stat => {
-    //   this.showReg = stat.data;
-    // })
+    this._apiService.getRegStatus(vals).subscribe(stat => {
+      this.showReg = stat.data;
+      console.log(stat.data,'stat data');
+      
+
+    })
    
     var utc = new Date().toJSON().slice(0,10).replace(/-/g,'-');
     console.log(utc,'utcdate');

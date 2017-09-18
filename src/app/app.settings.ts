@@ -83,6 +83,8 @@ export class AppSettings {
     public static EMPTY_THE_ROOM_API: string = 'http://192.168.0.118/hmsserver/Api/emptytheroom';
     public static GET_VALID_USER_TEST_API: string = 'http://192.168.0.118/hmsserver/Api/getvalidusertest';
     public static CHANGE_REGISTRATION_API: string = 'http://192.168.0.118/hmsserver/Api/changeregistration';
+    public static CLEAR_REGISTER_DATA_VISIBLE_API: string = 'http://192.168.0.118/hmsserver/Api/clearregdatavisible';
+    public static VISI_SELC_API: string = 'http://192.168.0.118/hmsserver/Api/visiselc';
 
 
     // venkat

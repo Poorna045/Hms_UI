@@ -30,6 +30,12 @@ export class ApiService {
     return this.callApi(AppSettings.ADD_BOOKING_API, 'post', data);
   }
 
+
+    // clear the registered data 
+    ClearTheData(data) {
+      return this.callApi(AppSettings.CLEAR_REGISTER_DATA_VISIBLE_API, 'post', data);
+    }
+
   // add new booking 
   editBooking(data) {
     return this.callApi(AppSettings.EDIT_BOOKING_API, 'post', data);
@@ -69,6 +75,12 @@ export class ApiService {
 
     return this.callApi(AppSettings.REGLIST_API, 'post', body);
   }
+
+
+  visibledatainSelc(body) {
+    
+        return this.callApi(AppSettings.VISI_SELC_API, 'post', body);
+      }
 
    // get valid registered user
    getvalidtest(body) {

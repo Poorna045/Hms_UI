@@ -12,7 +12,8 @@ import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
   styleUrls: ['./allot.component.css']
 })
 export class AllotComponent implements OnInit {
-  selectedval='';
+  visiSelc = 'disable';
+  selectedval = '';
 
   targetval = 0;
   seatsData = [];
@@ -28,7 +29,7 @@ export class AllotComponent implements OnInit {
   reglist = [];
   typelist = [];
   newname = 'all';
-  newnames='';
+  newnames = '';
 
   bid: any;
   public filterQuery = "";
@@ -66,6 +67,18 @@ export class AllotComponent implements OnInit {
       console.log(list); this.typelist = list.data;
       let gender = 'Boys';
 
+
+
+
+      const vsa = {
+        hosteltype: this.hosteltype
+      }
+  
+      this._apiService.visibledatainSelc(vsa).subscribe(dasa => {
+        this.visiSelc = dasa.data;
+        if (dasa.data == 'enable') {
+  
+        
       const val = {
         type: 'all',
         gender: gender
@@ -73,26 +86,37 @@ export class AllotComponent implements OnInit {
       this._apiService.getreglist(val).subscribe(lists => {
         console.log(lists, 'reglists');
         this.reglist = lists.data;
-        const gs = {
-          hosteltype: 'Boys'
-        }
-        this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
-          console.log(seats, 'seats test');
-          this.seatsData = seats.data;
-          
-          this.newnames = this.typelist[0].type;
-          
       
-            this.selectedval=this.typelist[0].typeid;
-         
-
-          if(seats.data.length>0)
-          this.targetval=this.seatsData[0].avlbeds - this.seatsData[0].selected;
-          
-          console.log(this.targetval,'targetval');
-          
-        });
+     
       });
+        }
+        else if (dasa.data == 'disable') {
+          this.reglist = [];
+        }
+      });
+
+      const gs = {
+        hosteltype: 'Boys'
+      }
+
+      this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
+        console.log(seats, 'seats test');
+        this.seatsData = seats.data;
+
+        this.newnames = this.typelist[0].type;
+
+
+        this.selectedval = this.typelist[0].typeid;
+
+
+        if (seats.data.length > 0)
+          this.targetval = this.seatsData[0].avlbeds - this.seatsData[0].selected;
+
+        console.log(this.targetval, 'targetval');
+
+      });
+
+
 
     })
   }
@@ -105,20 +129,35 @@ export class AllotComponent implements OnInit {
     this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
       console.log(seats, 'seats test');
       this.seatsData = seats.data;
-   
 
-      if(seats.data.length>0)
-      this.targetval=this.seatsData[0].avlbeds - this.seatsData[0].selected;
 
-      const val = {
-        type: this.typeroom,
-        gender: this.hosteltype
-      }
-      this._apiService.getreglist(val).subscribe(lists => {
-        console.log(lists);
-        this.reglist = lists.data;
+      if (seats.data.length > 0)
+        this.targetval = this.seatsData[0].avlbeds - this.seatsData[0].selected;
 
-      });
+
+        const vsa = {
+          hosteltype: this.hosteltype
+        }
+    
+        this._apiService.visibledatainSelc(vsa).subscribe(dasa => {
+          this.visiSelc = dasa.data;
+          if (dasa.data == 'enable') {
+    
+            const val = {
+              type: this.typeroom,
+              gender: this.hosteltype
+            }
+            this._apiService.getreglist(val).subscribe(lists => {
+              console.log(lists);
+              this.reglist = lists.data;
+      
+            });
+          }
+          else if (dasa.data == 'disable') {
+            this.reglist = [];
+          }
+        });
+
 
     });
   }
@@ -136,25 +175,39 @@ export class AllotComponent implements OnInit {
       var nsas = this.seatsData.filter(function (obj) {
         return obj.typeid == $event.target.value;
       });
-      this.targetval=nsas[0].avlbeds - nsas[0].selected;
+      this.targetval = nsas[0].avlbeds - nsas[0].selected;
 
-      this.selectedval=nsas[0].typeid
+      this.selectedval = nsas[0].typeid
     } else {
       this.newname = this.typeroom;
     }
 
 
-   
+
 
     console.log($event.target.value, 'newname type testing', this.newname);
-    const val = {
-      type: $event.target.value,
-      gender: this.hosteltype
-    }
-    this._apiService.getreglist(val).subscribe(list => {
-      console.log(list);
 
-      this.reglist = list.data;
+    const vsa = {
+      hosteltype: this.hosteltype
+    }
+
+    this._apiService.visibledatainSelc(vsa).subscribe(dasa => {
+      this.visiSelc = dasa.data;
+      if (dasa.data == 'enable') {
+
+        const val = {
+          type: $event.target.value,
+          gender: this.hosteltype
+        }
+        this._apiService.getreglist(val).subscribe(list => {
+          console.log(list);
+
+          this.reglist = list.data;
+        });
+      }
+      else if (dasa.data == 'disable') {
+        this.reglist = [];
+      }
     });
   }
 
@@ -162,23 +215,23 @@ export class AllotComponent implements OnInit {
 
     this.typerooms = $event.target.value;
 
-      var nsa = this.typelist.filter(function (obj) {
-        return obj.typeid == $event.target.value;
-      });
+    var nsa = this.typelist.filter(function (obj) {
+      return obj.typeid == $event.target.value;
+    });
 
-      var nsas = this.seatsData.filter(function (obj) {
-        return obj.typeid == $event.target.value;
-      });
+    var nsas = this.seatsData.filter(function (obj) {
+      return obj.typeid == $event.target.value;
+    });
 
-      this.targetval=nsas[0].avlbeds - nsas[0].selected;
-   
+    this.targetval = nsas[0].avlbeds - nsas[0].selected;
 
-      this.selectedval=nsas[0].typeid
 
-    
-      console.log($event.target.value,nsa);
-      this.newnames = nsa[0].type;
- 
+    this.selectedval = nsas[0].typeid
+
+
+    console.log($event.target.value, nsa);
+    this.newnames = nsa[0].type;
+
   }
   onDateChanged(event: IMyDateModel) {
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
@@ -220,15 +273,15 @@ export class AllotComponent implements OnInit {
       this.typerooms = this.typeroom;
     } else {
       this.typerooms = this.typeroom;
-      this.selectedval=this.typelist[0].typeid
+      this.selectedval = this.typelist[0].typeid
     }
- 
+
     this.newForm.patchValue({
-      type:this.typelist[0].typeid
+      type: this.typelist[0].typeid
     })
-         
-    if(this.seatsData.length>0)
-    this.targetval=this.seatsData[0].avlbeds - this.seatsData[0].selected;
+
+    if (this.seatsData.length > 0)
+      this.targetval = this.seatsData[0].avlbeds - this.seatsData[0].selected;
 
     this.popup2.options = {
       header: "Acceptance ",
@@ -331,42 +384,58 @@ export class AllotComponent implements OnInit {
     if (this.typeroom == 'all') {
       this.fullview["type"] = this.selectedval;
     }
-    else{
-      this.fullview["type"]=this.selectedval;     
+    else {
+      this.fullview["type"] = this.selectedval;
     }
 
-    const vals={
-      type:this.selectedval,
-      registerid:this.fullview['registerid']
+    const vals = {
+      type: this.selectedval,
+      registerid: this.fullview['registerid']
     }
-    console.log(this.fullview,this.typeroom,this.hosteltype);
+    console.log(this.fullview, this.typeroom, this.hosteltype);
 
     this._apiService.vacantroom(vals).subscribe(add => {
       this._apiService.getRoomType().subscribe(list => {
         console.log(list); this.typelist = list.data;
 
-        const val = {
-          type: this.typeroom,
-          gender: this.hosteltype
+        const vsa = {
+          hosteltype: this.hosteltype
         }
-        this._apiService.getreglist(val).subscribe(lists => {
-          console.log(list);
-          this.reglist = lists.data;
-          this.popup2.hide();
-          this.editpop();
-          const gs = {
-            hosteltype: this.hosteltype
+    
+        this._apiService.visibledatainSelc(vsa).subscribe(dasa => {
+          this.visiSelc = dasa.data;
+          if (dasa.data == 'enable') {
+            const val = {
+              type: this.typeroom,
+              gender: this.hosteltype
+            }
+            this._apiService.getreglist(val).subscribe(lists => {
+              console.log(list);
+              this.reglist = lists.data;
+              this.popup2.hide();
+              this.editpop();
+            
+    
+            });
           }
-          this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
-            console.log(seats, 'seats test');
-            this.seatsData = seats.data;
-         
-               if(seats.data.length>0)
-               this.targetval=this.seatsData[0].avlbeds - this.seatsData[0].selected;
+          else if (dasa.data == 'disable') {
+            this.reglist = [];
+          }
+        });
 
-          });
+        const gs = {
+          hosteltype: this.hosteltype
+        }
+        this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
+          console.log(seats, 'seats test');
+          this.seatsData = seats.data;
+
+          if (seats.data.length > 0)
+            this.targetval = this.seatsData[0].avlbeds - this.seatsData[0].selected;
 
         });
+
+     
 
       })
     });
@@ -381,27 +450,46 @@ export class AllotComponent implements OnInit {
         console.log(list); this.typelist = list.data;
 
 
-        const val = {
-          type: this.typeroom,
-          gender: this.hosteltype
+
+        const vsa = {
+          hosteltype: this.hosteltype
         }
-        this._apiService.getreglist(val).subscribe(lists => {
-          console.log(list);
-          this.reglist = lists.data;
-          this.popup3.hide();
-          this.delpop();
-          const gs = {
-            hosteltype: this.hosteltype
+    
+        this._apiService.visibledatainSelc(vsa).subscribe(dasa => {
+          this.visiSelc = dasa.data;
+          if (dasa.data == 'enable') {
+
+            const val = {
+              type: this.typeroom,
+              gender: this.hosteltype
+            }
+            this._apiService.getreglist(val).subscribe(lists => {
+              console.log(list);
+              this.reglist = lists.data;
+              this.popup3.hide();
+              this.delpop();
+            
+            });
+
           }
-          this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
-            console.log(seats, 'seats test');
-            this.seatsData=seats.data;
-
-            if(seats.data.length>0)
-            this.targetval=this.seatsData[0].avlbeds - this.seatsData[0].selected;
-
-          });
+          else if (dasa.data == 'disable') {
+            this.reglist = [];
+          }
         });
+
+        const gs = {
+          hosteltype: this.hosteltype
+        }
+        this._apiService.getAvailableSeatsCount(gs).subscribe(seats => {
+          console.log(seats, 'seats test');
+          this.seatsData = seats.data;
+
+          if (seats.data.length > 0)
+            this.targetval = this.seatsData[0].avlbeds - this.seatsData[0].selected;
+
+        });
+
+    
 
       })
 

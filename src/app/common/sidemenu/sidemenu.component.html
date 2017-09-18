@@ -68,7 +68,7 @@
                   <i class="fa fa-angle-double-right"></i> Bookings
               </a>
           </li>
-          <li>
+          <li *ngIf="showReg=='enable'">
             <a [ngClass]="{'active': (page=='registration')}" [routerLink]="['/registration']">
                     <i class="fa fa-angle-double-right"></i> Registration Form
                 </a>
